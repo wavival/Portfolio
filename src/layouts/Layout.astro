@@ -1,0 +1,38 @@
+---
+import "@/styles/global.css";
+import NavBar from "@/components/ui/NavBar.astro";
+import Footer from "@/components/ui/Footer.astro";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "Valentina Ramírez | Backend Developer & Founder · Colombia",
+  description = "Backend developer, fundadora de Lúmina W. Construyo software real con mentalidad de seguridad.",
+} = Astro.props;
+---
+
+<html lang="es" class="scroll-smooth">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Raleway:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" href="/brand/logo-w.ico" />
+  </head>
+  <body class="bg-[var(--bg-page)] text-[var(--text-primary)] antialiased">
+    <NavBar />
+    <main class="pt-16">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

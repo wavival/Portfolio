@@ -1,0 +1,22 @@
+---
+interface Props {
+  href: string;
+  target?: "_blank" | "_self";
+  class?: string;
+  icon?: string;
+}
+
+const ICONS_BASE = "/icons/ui";
+
+const {
+  href,
+  target = "_self",
+  class: extra = "",
+  icon
+} = Astro.props;
+---
+
+<a href={href} target={target} class={`link ${extra}`}>
+{icon && <img src={`${ICONS_BASE}/${icon}.svg`} alt="" class="w-[24px] h-[24px] shrink-0" />}
+  <slot />
+</a>

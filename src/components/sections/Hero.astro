@@ -1,0 +1,48 @@
+---
+import Button from "@/components/ui/Button.astro";
+import Link from "@/components/ui/Link.astro";
+---
+
+<section class="section min-h-[calc(100vh-64px)] flex items-center">
+  <div class="w-full flex flex-col md:flex-row-reverse items-center gap-12">
+
+    <div class="w-full md:w-2/5 flex justify-center">
+      <img
+        src="/images/profile.webp"
+        alt="Valentina Ramírez"
+        class="w-64 h-64 md:w-80 md:h-80 rounded-full object-cover border-4 border-[var(--brand-blue)] shadow-lg"
+      />
+    </div>
+
+    <div class="w-full md:w-3/5 flex flex-col gap-6">
+
+      <div class="flex flex-wrap gap-2">
+        <span class="chip">Backend</span>
+        <span class="chip">IA</span>
+        <span class="chip">AppSec</span>
+      </div>
+
+      <h1 class="font-display font-bold text-[var(--text-primary)] text-4xl md:text-5xl leading-tight">
+        Del problema al producto.<br />
+        <span class="text-[var(--brand-blue)]">Yo construyo el camino.</span>
+      </h1>
+
+      <p class="text-[var(--text-muted)] text-base md:text-lg leading-relaxed">
+        Diseño y construyo el software que los resuelve.<br />
+        Código limpio, seguridad desde el primer commit, productos que escalan.
+      </p>
+
+      <div class="flex items-center gap-5 flex-wrap">
+        <Button href="/cv_valentina_ramirez_es.pdf" target="_blank" icon="download-cv-white">
+          Descargar CV
+        </Button>
+        <div class="flex items-center gap-[16px]">
+    <Link href="https://linkedin.com/in/wavival" target="_blank" icon="linkedin" />
+<Link href="https://github.com/wavival" target="_blank" icon="github" />
+<Link href="https://platzi.com/p/wavival" target="_blank" icon="link"
+  </div>
+      </div>
+
+    </div>
+  </div>
+</section>

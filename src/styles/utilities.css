@@ -1,0 +1,66 @@
+@layer utilities {
+  .section {
+    @apply w-full max-w-5xl mx-auto px-6 py-24;
+  }
+
+  .section-title {
+    @apply text-3xl font-display font-bold text-[var(--text-primary)] mb-2;
+  }
+
+  .section-subtitle {
+    @apply text-[var(--brand-blue)] font-semibold text-sm uppercase tracking-widest mb-10;
+  }
+
+  .btn-primary {
+  @apply inline-flex items-center gap-2 px-[14px] py-[12px] rounded-lg font-display font-semibold text-sm uppercase tracking-wide text-white transition-all duration-300 cursor-pointer;
+  background-color: #1e90ff;
+}
+
+.btn-primary:hover {
+  background-color: #1a7fe0;
+  transform: translateX(4px);
+}
+
+  .btn-ghost {
+    @apply inline-flex items-center gap-2 px-5 py-2.5 rounded-lg font-display font-semibold text-sm uppercase tracking-wide border border-[var(--accent-link)] text-[var(--accent-link)] hover:bg-[var(--accent-link)] hover:text-white transition-all duration-300 cursor-pointer;
+  }
+
+  .chip {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-[var(--bg-blur)] text-[var(--brand-blue)] border border-[var(--border-base)];
+  }
+
+  .card {
+    @apply bg-[var(--bg-card)] rounded-2xl border border-[var(--border-base)] shadow-[var(--shadow-base)] p-6 transition-all duration-300 hover:-translate-y-1;
+  }
+
+  .nav-link {
+    @apply text-sm font-display font-semibold uppercase tracking-wide text-[var(--text-muted)] hover:text-[var(--accent-link)] transition-colors duration-200;
+  }
+.link {
+  @apply inline-block text-[var(--accent-link)] hover:text-[var(--accent-hover)] font-display font-semibold uppercase text-sm tracking-wide transition-all duration-300 cursor-pointer;
+}
+
+.link:hover {
+  transform: translateX(4px);
+}
+
+  .icon {
+    @apply shrink-0 transition-transform duration-200;
+  }
+
+  .icon-sm {
+    @apply w-4 h-4;
+  }
+
+  .icon-md {
+    @apply w-5 h-5;
+  }
+
+  .icon-lg {
+    @apply w-6 h-6;
+  }
+
+  .icon-xl {
+    @apply w-8 h-8;
+  }
+}

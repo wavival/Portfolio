@@ -1,0 +1,40 @@
+---
+import Link from "@/components/ui/Link.astro";
+
+const year = new Date().getFullYear();
+---
+
+<footer class="w-full border-t border-[var(--border-base)] mt-24">
+  <div class="max-w-5xl mx-auto px-6 py-12">
+    
+    <div class="flex flex-col md:flex-row justify-between gap-10 mb-10">
+      
+      <div class="flex flex-col gap-3">
+        <a href="/">
+          <img src="/brand/logo-w.webp" alt="wavival.dev" class="h-10 w-auto" />
+        </a>
+        <p class="text-xs text-[var(--text-muted)] max-w-[240px]">
+          IA como herramienta. Seguridad como mentalidad. Software como resultado.
+        </p>
+        <div class="flex items-center gap-4 mt-2">
+          <Link href="https://linkedin.com/in/wavival" target="_blank" class="!text-xs">LinkedIn</Link>
+          <Link href="https://github.com/wavival" target="_blank" class="!text-xs">GitHub</Link>
+        </div>
+      </div>
+
+      <nav class="flex flex-col gap-3">
+        <span class="text-xs font-display font-bold uppercase tracking-widest text-[var(--text-muted)]">Navegación</span>
+        <Link href="#projects" class="!text-xs">Proyectos</Link>
+        <Link href="#stack" class="!text-xs">Stack</Link>
+        <Link href="#about" class="!text-xs">Sobre mí</Link>
+        <Link href="#contact" class="!text-xs">Contacto</Link>
+      </nav>
+
+    </div>
+
+    <div class="border-t border-[var(--border-base)] pt-6 text-xs text-[var(--text-muted)] text-center">
+      <span>© {year} Valentina Ramírez</span>
+    </div>
+
+  </div>
+</footer>

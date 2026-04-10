@@ -1,0 +1,31 @@
+---
+interface Props {
+  href?: string;
+  target?: "_blank" | "_self";
+  type?: "button" | "submit" | "reset";
+  class?: string;
+  icon?: string;
+}
+
+const ICONS_BASE = "/icons/ui";
+
+const {
+  href,
+  target = "_self",
+  type = "button",
+  class: extra = "",
+  icon,
+} = Astro.props;
+---
+
+{href ? (
+  <a href={href} target={target} class={`btn-primary ${extra}`}>
+    {icon && <img src={`${ICONS_BASE}/${icon}.svg`} alt="" class="w-[20px] h-[20px] shrink-0" />}
+    <slot />
+  </a>
+) : (
+  <button type={type} class={`btn-primary ${extra}`}>
+    {icon && <img src={`${ICONS_BASE}/${icon}.svg`} alt="" class="w-[20px] h-[20px] shrink-0" />}
+    <slot />
+  </button>
+)}
