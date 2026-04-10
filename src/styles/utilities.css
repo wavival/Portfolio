@@ -30,8 +30,25 @@
   }
 
   .card {
-    @apply bg-[var(--bg-card)] rounded-2xl border border-[var(--border-base)] shadow-[var(--shadow-base)] p-6 transition-all duration-300 hover:-translate-y-1;
-  }
+  @apply bg-transparent rounded-2xl border border-[var(--border-base)] border-b-[4px] p-6 transition-all duration-300;
+  min-height: 200px;
+  box-shadow: 0 2px 12px rgba(64, 123, 255, 0.07);
+}
+
+.card:hover {
+  background-color: var(--bg-card);
+  transform: scale(1.01);
+  box-shadow: 0 6px 24px rgba(64, 123, 255, 0.15);
+}
+
+.card-plain {
+  @apply rounded-2xl p-6 transition-all duration-300;
+  min-height: 200px;
+}
+
+.card-plain:hover {
+  transform: translateX(6px);
+}
 
   .nav-link {
     @apply text-sm font-display font-semibold uppercase tracking-wide text-[var(--text-muted)] hover:text-[var(--accent-link)] transition-colors duration-200;

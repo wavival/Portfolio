@@ -1,0 +1,24 @@
+---
+import Button from "@/components/ui/Button.astro";
+import Link from "@/components/ui/Link.astro";
+---
+
+<section id="contact" class="section">
+  <p class="section-subtitle">A un clic</p>
+
+  <div class="flex flex-col items-center text-center gap-8 mt-10 max-w-xl mx-auto">
+
+    <h2 class="font-display font-bold text-2xl md:text-3xl text-[var(--text-primary)] leading-tight">
+      ¿Tienes un problema que resolver?<br />
+      <span class="text-[var(--brand-blue)]">Hablemos.</span>
+    </h2>
+
+    <p class="text-[var(--text-muted)] leading-relaxed">
+      No solo escribo código, construyo cosas que la gente usa.
+    </p>
+      <Button href="mailto:wavival.dev@luminaw.co" icon="send-email-white">
+        Contáctame
+      </Button>
+
+  </div>
+</section>

@@ -1,0 +1,44 @@
+---
+const stack = [
+  {
+    category: "Backend",
+    description: "El núcleo de todo lo que construyo.",
+    tools: ["Python", "Django REST Framework", "PostgreSQL"],
+  },
+  
+  {
+    category: "Seguridad",
+    description: "Mentalidad ofensiva para escribir código defensivo.",
+    tools: ["OWASP", "Burp Suite", "Nmap", "MITRE ATT&CK"],
+  },
+  {
+    category: "IA & Automatización",
+    description: "IA como copiloto real, no como atajo.",
+    tools: ["Claude API", "n8n", "Git", "Linux"],
+  },
+  {
+    category: "Frontend",
+    description: "Interfaces limpias que comunican sin estorbar.",
+    tools: ["Astro", "React", "Tailwind CSS", "TypeScript"],
+  },
+];
+---
+
+<section id="stack" class="section !pb-0">
+  <p class="section-subtitle">Con qué trabajo</p>
+  <h2 class="section-title">Stack favorito</h2>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10">
+    {stack.map((s) => (
+      <article class="card-plain flex flex-col gap-4">
+        <div>
+          <h3 class="font-display font-bold text-lg text-[var(--text-primary)]">{s.category}</h3>
+          <p class="text-xs text-[var(--text-muted)] mt-1 italic">{s.description}</p>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          {s.tools.map((t) => <span class="chip">{t}</span>)}
+        </div>
+      </article>
+    ))}
+  </div>
+</section>

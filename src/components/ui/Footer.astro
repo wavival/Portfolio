@@ -16,9 +16,10 @@ const year = new Date().getFullYear();
         <p class="text-xs text-[var(--text-muted)] max-w-[240px]">
           IA como herramienta. Seguridad como mentalidad. Software como resultado.
         </p>
-        <div class="flex items-center gap-4 mt-2">
-          <Link href="https://linkedin.com/in/wavival" target="_blank" class="!text-xs">LinkedIn</Link>
-          <Link href="https://github.com/wavival" target="_blank" class="!text-xs">GitHub</Link>
+        <div class="flex items-center gap-3 mt-2">
+          <Link href="https://linkedin.com/in/wavival" target="_blank" icon="linkedin" />
+          <Link href="https://github.com/wavival" target="_blank" icon="github" />
+          <Link href="https://instagram.com/wavival" target="_blank" icon="instagram" />
         </div>
       </div>
 
@@ -30,9 +31,23 @@ const year = new Date().getFullYear();
         <Link href="#contact" class="!text-xs">Contacto</Link>
       </nav>
 
+      <nav class="flex flex-col gap-3">
+        <span class="text-xs font-display font-bold uppercase tracking-widest text-[var(--text-muted)]">Recursos</span>
+        <Link href="#" class="!text-xs">Bitácora</Link>
+      </nav>
+      
+      
+
     </div>
 
-    <div class="border-t border-[var(--border-base)] pt-6 text-xs text-[var(--text-muted)] text-center">
+    <div class="border-t border-[var(--border-base)] pt-8 w-full flex flex-col items-center gap-3">
+      <p class="text-sm text-[var(--text-muted)]">¿Buscas servicios o productos de software?</p>
+      <Link href="https://luminaw.co" target="_blank" class="!text-xs">
+        Conoce Lúmina W
+      </Link>
+    </div>
+
+    <div class="pt-4 text-xs text-[var(--text-muted)] text-center">
       <span>© {year} Valentina Ramírez</span>
     </div>
 

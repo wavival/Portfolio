@@ -1,0 +1,36 @@
+---
+import Link from "@/components/ui/Link.astro";
+import Button from "@/components/ui/Button.astro";
+---
+
+<section id="about" class="section">
+  <p class="section-subtitle">Más allá del código</p>
+  <h2 class="section-title">Sobre mí</h2>
+
+  <div class="max-w-3xl flex flex-col gap-6 mt-10">
+    
+    <div class="flex flex-col gap-4 text-[var(--text-muted)] leading-relaxed">
+      <p>
+        Soy autodidacta por naturaleza y founder por decisión. <br> Estudio Análisis y Desarrollo 
+        de Software en el SENA y Lengua Inglesa en la 
+        Universidad de San Buenaventura, aprendo en paralelo porque no sé hacerlo de otra forma.
+      </p>
+      <p>
+        Fuera del código me encuentra la fotografía, la batería y una playlist que no respeta géneros.
+      </p>
+    </div>
+
+    <blockquote class="border-l-4 border-[var(--brand-blue)] pl-5 my-2">
+      <p class="italic font-display font-semibold text-[var(--text-primary)] leading-snug">
+        "El mejor software lo construyen personas que entienden el problema antes de abrir el editor."
+      </p>
+    </blockquote>
+
+    <div class="flex flex-wrap items-center gap-3 mt-2">
+  <Button href="#" target="_blank" icon="read-more-white">Bitácora</Button>
+  <Link href="https://instagram.com/wavival" target="_blank" icon="instagram" />
+  <Link href="https://wa.me/573116865766" target="_blank" icon="whatsapp" />
+</div>
+
+  </div>
+</section>
