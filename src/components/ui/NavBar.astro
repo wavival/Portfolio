@@ -1,26 +1,52 @@
 ---
 import Button from "@/components/ui/Button.astro";
 import Link from "@/components/ui/Link.astro";
+const BASE = import.meta.env.BASE_URL;
 ---
 
 <header class="fixed w-full top-0 z-50 backdrop-blur-md bg-[var(--nav-blur)] border-b border-[var(--border-base)]">
   <nav class="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
-    <a href="/" aria-label="Inicio">
-  <img 
-src={`${import.meta.env.BASE_URL}brand/logo-w.webp`}    alt="wavival.dev" 
-    class="h-[48px] w-auto"
-  />
-</a>
+    <a href="/">
+      <img src={`${BASE}brand/logo-w.webp`} alt="wavival.dev" class="h-8 w-auto" />
+    </a>
 
     <ul class="hidden md:flex items-center gap-8">
-      <li><Link href="#projects">Proyectos</Link></li>
-      <li><Link href="#stack">Stack</Link></li>
-      <li><Link href="#about">Sobre mí</Link></li>
-      <li><Button icon="send-email-white" href="mailto:wavival.dev@luminaw.co">Contáctame</Button></li>
+      <li><Link href="#projects" class="!text-xs">Proyectos</Link></li>
+      <li><Link href="#stack" class="!text-xs">Stack</Link></li>
+      <li><Link href="#about" class="!text-xs">Sobre mí</Link></li>
+      <li><Button href="mailto:wavival.dev@luminaw.co" icon="send-email-white">Contáctame</Button></li>
+      <li>
+        <button id="theme-toggle-desktop" aria-label="Cambiar tema" class="p-2">
+          <img id="sun-desktop" src={`${BASE}icons/ui/sun.svg`} class="w-5 h-5 hidden" />
+          <img id="moon-desktop" src={`${BASE}icons/ui/moon.svg`} class="w-5 h-5" />
+        </button>
+      </li>
     </ul>
 
-    <button id="menu-btn" class="md:hidden p-2 text-[var(--text-primary)]" aria-label="Abrir menú">
-      ☰
-    </button>
+    <div class="flex md:hidden items-center gap-2">
+      <button id="theme-toggle-mobile" aria-label="Cambiar tema" class="p-2">
+        <img id="sun-mobile" src={`${BASE}icons/ui/sun.svg`} class="w-5 h-5 hidden" />
+        <img id="moon-mobile" src={`${BASE}icons/ui/moon.svg`} class="w-5 h-5" />
+      </button>
+      <button id="menu-btn" class="p-2" aria-label="Abrir menú">
+        <img id="icon-open" src={`${BASE}icons/ui/open-menu.svg`} class="w-6 h-6" />
+        <img id="icon-close" src={`${BASE}icons/ui/close-menu.svg`} class="w-6 h-6 hidden" />
+      </button>
+    </div>
   </nav>
+
+  <div 
+    id="mobile-menu" 
+    class="md:hidden fixed left-0 right-0 z-40 flex flex-col gap-8 px-8 py-10 bg-[var(--bg-page)] border-t border-[var(--border-base)] transition-all duration-300 ease-in-out opacity-0 pointer-events-none translate-y-2"
+    style="top: 64px;"
+  >
+    <Link href="#projects" class="!text-base block">Proyectos</Link>
+    <Link href="#stack" class="!text-base block">Stack</Link>
+    <Link href="#about" class="!text-base block">Sobre mí</Link>
+    <Link href="#contact" class="!text-base block">Contacto</Link>
+  </div>
 </header>
+
+<script>
+  import "@/scripts/nav.ts";
+</script>
