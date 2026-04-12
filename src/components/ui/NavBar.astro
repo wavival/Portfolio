@@ -5,48 +5,64 @@ const BASE = import.meta.env.BASE_URL;
 ---
 
 <header class="fixed w-full top-0 z-50 backdrop-blur-md bg-[var(--nav-blur)] border-b border-[var(--border-base)]">
-  <nav class="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
-    <a href="/">
-      <img src={`${BASE}brand/logo-w.webp`} alt="wavival.dev" class="h-8 w-auto" />
+  <nav aria-label="Navegación principal" class="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
+    <a href="/" aria-label="Ir al inicio — wavival.dev">
+      <img src={`${BASE}brand/logo-w.webp`} alt="wavival.dev" width="72" height="40" />
     </a>
 
-    <ul class="hidden md:flex items-center gap-8">
-      <li><Link href="#projects" class="!text-xs">Proyectos</Link></li>
-      <li><Link href="#stack" class="!text-xs">Stack</Link></li>
-      <li><Link href="#about" class="!text-xs">Sobre mí</Link></li>
-      <li><Button href="mailto:wavival.dev@luminaw.co" icon="send-email-white">Contáctame</Button></li>
+    <ul class="hidden md:flex items-center gap-8" role="list">
+      <li><Link href="/#projects" class="!text-xs" aria-label="Ir a la sección de Proyectos">Proyectos</Link></li>
+      <li><Link href="/#stack" class="!text-xs" aria-label="Ir a la sección de Stack">Stack</Link></li>
+      <li><Link href="/#about" class="!text-xs" aria-label="Ir a la sección Sobre mí">Sobre mí</Link></li>
+      <li>
+        <Button
+          href="mailto:wavival.dev@luminaw.co"
+          icon="send-email-white"
+          aria-label="Enviar correo electrónico a Valentina Ramírez"
+        >
+          Contáctame
+        </Button>
+      </li>
       <li>
         <button id="theme-toggle-desktop" aria-label="Cambiar tema" class="p-2">
-          <img id="sun-desktop" src={`${BASE}icons/ui/sun.svg`} class="w-5 h-5 hidden" />
-          <img id="moon-desktop" src={`${BASE}icons/ui/moon.svg`} class="w-5 h-5" />
+          <img id="sun-desktop" src={`${BASE}icons/ui/sun.svg`} alt="" class="w-5 h-5 hidden" width="20" height="20" />
+          <img id="moon-desktop" src={`${BASE}icons/ui/moon.svg`} alt="" class="w-5 h-5" width="20" height="20" />
         </button>
       </li>
     </ul>
 
     <div class="flex md:hidden items-center gap-2">
       <button id="theme-toggle-mobile" aria-label="Cambiar tema" class="p-2">
-        <img id="sun-mobile" src={`${BASE}icons/ui/sun.svg`} class="w-5 h-5 hidden" alt="Cambiar tema a oscuro"/>
-        <img id="moon-mobile" src={`${BASE}icons/ui/moon.svg`} class="w-5 h-5" alt="Cambiar tema a claro" />
+        <img id="sun-mobile" src={`${BASE}icons/ui/sun.svg`} class="w-5 h-5 hidden" alt="" width="20" height="20" />
+        <img id="moon-mobile" src={`${BASE}icons/ui/moon.svg`} class="w-5 h-5" alt="" width="20" height="20" />
       </button>
-      <button id="menu-btn" class="p-2" aria-label="Abrir menú">
-        <img id="icon-open" src={`${BASE}icons/ui/open-menu.svg`} class="w-6 h-6" alt="Abrir menú" />
-        <img id="icon-close" src={`${BASE}icons/ui/close-menu.svg`} class="w-6 h-6 hidden" alt="Cerrar menú" />
+      <button
+        id="menu-btn"
+        class="p-2"
+        aria-label="Abrir menú de navegación"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+      >
+        <img id="icon-open" src={`${BASE}icons/ui/open-menu.svg`} class="w-6 h-6" alt="" width="24" height="24" />
+        <img id="icon-close" src={`${BASE}icons/ui/close-menu.svg`} class="w-6 h-6 hidden" alt="" width="24" height="24" />
       </button>
     </div>
   </nav>
 
-  <div 
-    id="mobile-menu" 
+  <nav
+    id="mobile-menu"
+    aria-label="Menú de navegación móvil"
     class="md:hidden fixed left-0 right-0 z-40 flex flex-col gap-8 px-8 py-10 bg-[var(--bg-page)] border-t border-[var(--border-base)] transition-all duration-300 ease-in-out opacity-0 pointer-events-none translate-y-2"
     style="top: 64px;"
   >
-    <Link href="#projects" class="!text-base block">Proyectos</Link>
-    <Link href="#stack" class="!text-base block">Stack</Link>
-    <Link href="#about" class="!text-base block">Sobre mí</Link>
-    <Link href="#contact" class="!text-base block">Contacto</Link>
-  </div>
+    <Link href="/#projects" class="!text-base block" aria-label="Ir a la sección de Proyectos">Proyectos</Link>
+    <Link href="/#stack" class="!text-base block" aria-label="Ir a la sección de Stack">Stack</Link>
+    <Link href="/#about" class="!text-base block" aria-label="Ir a la sección Sobre mí">Sobre mí</Link>
+    <Link href="/#contact" class="!text-base block" aria-label="Ir a la sección de Contacto">Contacto</Link>
+  </nav>
 </header>
 
 <script>
   import "@/scripts/nav.ts";
+  import "@/scripts/theme.ts";
 </script>

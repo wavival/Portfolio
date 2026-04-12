@@ -6,48 +6,46 @@ const year = new Date().getFullYear();
 
 <footer class="w-full border-t border-[var(--border-base)] mt-24">
   <div class="max-w-5xl mx-auto px-6 py-12">
-    
+
     <div class="flex flex-col md:flex-row justify-between gap-10 mb-10">
-      
+
       <div class="flex flex-col gap-3">
-        <a href="#">
-          <img src={`${import.meta.env.BASE_URL}brand/logo-w.webp`} alt="wavival.dev" class="h-10 w-auto" />
+        <a href="/" aria-label="Ir al inicio — wavival.dev">
+          <img src={`${import.meta.env.BASE_URL}brand/logo-w.webp`} alt="wavival.dev" class="h-10 w-auto" width="120" height="40" />
         </a>
-        <p class="text-xs text-[var(--text-muted)] max-w-[240px]">
+        <p class="text-xs text-[var(--text-primary)] max-w-[240px]">
           IA como herramienta. Seguridad como mentalidad. Software como resultado.
         </p>
         <div class="flex items-center gap-3 mt-2">
-          <Link href="https://linkedin.com/in/wavival" target="_blank" icon="linkedin" />
-          <Link href="https://github.com/wavival" target="_blank" icon="github" />
-          <Link href="https://instagram.com/wavival" target="_blank" icon="instagram" />
+          <Link href="https://linkedin.com/in/wavival" target="_blank" icon="linkedin" aria-label="LinkedIn de Valentina Ramírez" />
+          <Link href="https://github.com/wavival" target="_blank" icon="github" aria-label="GitHub de Valentina Ramírez" />
+          <Link href="https://instagram.com/wavival" target="_blank" icon="instagram" aria-label="Instagram de Valentina Ramírez" />
         </div>
       </div>
 
-      <nav class="flex flex-col gap-3">
-        <span class="text-xs font-display font-bold uppercase tracking-widest text-[var(--text-muted)]">Navegación</span>
-        <Link href="#projects" class="!text-xs">Proyectos</Link>
-        <Link href="#stack" class="!text-xs">Stack</Link>
-        <Link href="#about" class="!text-xs">Sobre mí</Link>
-        <Link href="#contact" class="!text-xs">Contacto</Link>
+      <nav aria-label="Navegación del sitio" class="flex flex-col gap-3">
+        <span class="text-xs font-display font-bold uppercase tracking-widest text-[var(--text-primary)]" aria-hidden="true">Navegación</span>
+        <Link href="/#projects" class="!text-xs" aria-label="Ir a la sección de Proyectos">Proyectos</Link>
+        <Link href="/#stack" class="!text-xs" aria-label="Ir a la sección de Stack">Stack</Link>
+        <Link href="/#about" class="!text-xs" aria-label="Ir a la sección Sobre mí">Sobre mí</Link>
+        <Link href="/#contact" class="!text-xs" aria-label="Ir a la sección de Contacto">Contacto</Link>
       </nav>
 
-      <nav class="flex flex-col gap-3">
-        <span class="text-xs font-display font-bold uppercase tracking-widest text-[var(--text-muted)]">Recursos</span>
-        <Link href="#" class="!text-xs">Bitácora</Link>
+      <nav aria-label="Recursos" class="flex flex-col gap-3">
+        <span class="text-xs font-display font-bold uppercase tracking-widest text-[var(--text-primary)]" aria-hidden="true">Recursos</span>
+        <Link href="https://blog.luminaw.co" target="_blank" class="!text-xs" aria-label="Leer la bitácora de Valentina Ramírez">Bitácora</Link>
       </nav>
-      
-      
 
     </div>
 
     <div class="border-t border-[var(--border-base)] pt-8 w-full flex flex-col items-center gap-3">
-      <p class="text-sm text-[var(--text-muted)]">¿Buscas servicios o productos de software?</p>
-      <Link href="https://luminaw.co" target="_blank" class="!text-xs">
+      <p class="text-sm text-[var(--text-primary)]">¿Buscas servicios o productos de software?</p>
+      <Link href="https://luminaw.co" target="_blank" class="!text-xs" aria-label="Conoce Lúmina W — servicios de software">
         Conoce Lúmina W
       </Link>
     </div>
 
-    <div class="pt-4 text-xs text-[var(--text-muted)] text-center">
+    <div class="pt-4 text-xs text-[var(--text-primary)] text-center">
       <span>© {year} Valentina Ramírez</span>
     </div>
 

@@ -1,9 +1,8 @@
 ---
 import Button from "@/components/ui/Button.astro";
-import Link from "@/components/ui/Link.astro";
 ---
 
-<section id="contact" class="section">
+<section id="contact" class="section" data-aos="fade-up">
   <p class="section-subtitle">A un clic</p>
 
   <div class="flex flex-col items-center text-center gap-8 mt-10 max-w-xl mx-auto">
@@ -16,9 +15,14 @@ import Link from "@/components/ui/Link.astro";
     <p class="text-[var(--text-muted)] leading-relaxed">
       No solo escribo código, construyo cosas que la gente usa.
     </p>
-      <Button href="mailto:wavival.dev@luminaw.co" icon="send-email-white">
-        Contáctame
-      </Button>
+
+    <Button
+      href="mailto:wavival.dev@luminaw.co"
+      icon="send-email-white"
+      aria-label="Enviar correo electrónico a Valentina Ramírez"
+    >
+      Contáctame
+    </Button>
 
   </div>
 </section>

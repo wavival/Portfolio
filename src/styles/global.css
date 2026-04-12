@@ -6,11 +6,33 @@
 @tailwind utilities;
 
 * {
-  scroll-behavior: smooth;
+  transition: border-color 0.3s ease;
+}
+
+html {
+  transition: color 0.3s ease;
 }
 
 body {
   font-family: 'Poppins', sans-serif;
   background-color: var(--bg-page);
   color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  [data-aos] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
 }

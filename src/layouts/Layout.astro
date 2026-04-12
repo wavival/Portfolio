@@ -6,12 +6,54 @@ import Footer from "@/components/ui/Footer.astro";
 interface Props {
   title?: string;
   description?: string;
+  image?: string;
+  noindex?: boolean;
 }
 
 const {
   title = "Valentina Ramírez | Backend Developer & Founder · Colombia",
   description = "Backend developer, fundadora de Lúmina W. Construyo software real con mentalidad de seguridad.",
+  image = "/images/profile.webp",
+  noindex = false,
 } = Astro.props;
+
+const site = "https://wavival.github.io";
+const canonicalURL = new URL(Astro.url.pathname, site);
+const ogImage = new URL(image, site);
+
+const jsonLd = JSON.stringify({
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": `${site}/#person`,
+      "name": "Valentina Ramírez",
+      "url": site,
+      "image": ogImage.toString(),
+      "jobTitle": "Backend Developer & Founder",
+      "description": description,
+      "worksFor": {
+        "@type": "Organization",
+        "name": "Lúmina W",
+        "url": "https://luminaw.co",
+      },
+      "sameAs": [
+        "https://linkedin.com/in/wavival",
+        "https://github.com/wavival",
+        "https://instagram.com/wavival",
+      ],
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${site}/#website`,
+      "url": site,
+      "name": title,
+      "description": description,
+      "inLanguage": "es-CO",
+      "author": { "@id": `${site}/#person` },
+    },
+  ],
+});
 ---
 
 <html lang="es" class="scroll-smooth">
@@ -20,19 +62,69 @@ const {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <meta name="author" content="Valentina Ramírez" />
+    {noindex
+      ? <meta name="robots" content="noindex, nofollow" />
+      : <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+    }
+    <link rel="canonical" href={canonicalURL} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:alt" content="Foto de perfil de Valentina Ramírez" />
+    <meta property="og:image:width" content="640" />
+    <meta property="og:image:height" content="640" />
+    <meta property="og:locale" content="es_CO" />
+    <meta property="og:site_name" content="Valentina Ramírez" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content="Foto de perfil de Valentina Ramírez" />
     <meta name="google-site-verification" content="GAJ3Vshl0xQlL_gd8Itjpn89-a6USC56CccXITSkLP0" />
+    <link rel="icon" href={`${import.meta.env.BASE_URL}brand/logo-w.ico`} />
+    <link rel="icon" type="image/webp" href={`${import.meta.env.BASE_URL}brand/logo-w.webp`} />
+    <link rel="apple-touch-icon" href={`${import.meta.env.BASE_URL}brand/logo-w.webp`} />
+    <meta name="theme-color" content="#f0f4ff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0f1117" media="(prefers-color-scheme: dark)" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Raleway:wght@600;700;800&display=swap"
       rel="stylesheet"
     />
-    <link rel="icon" href={`${import.meta.env.BASE_URL}brand/logo-w.ico`} />
-<link rel="icon" type="image/webp" href={`${import.meta.env.BASE_URL}brand/logo-w.webp`} />
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-BC0CS9P1BY"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BC0CS9P1BY');
+    </script>
+    <script>
+      import AOS from 'aos';
+      import 'aos/dist/aos.css';
+
+      AOS.init({
+        duration: 800,
+        easing: 'ease-in-out',
+        once: true,
+        offset: 100,
+        disable: window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+      });
+    </script>
+    <script type="application/ld+json" set:html={jsonLd} />
   </head>
   <body class="bg-[var(--bg-page)] text-[var(--text-primary)] antialiased">
+    <a
+      href="#main-content"
+      class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[var(--brand-blue)] focus:text-white focus:rounded-lg focus:font-semibold focus:outline-none"
+    >
+      Saltar al contenido principal
+    </a>
     <NavBar />
-    <main class="pt-16">
+    <main id="main-content" class="pt-16">
       <slot />
     </main>
     <Footer />

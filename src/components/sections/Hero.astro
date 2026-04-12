@@ -3,19 +3,24 @@ import Button from "@/components/ui/Button.astro";
 import Link from "@/components/ui/Link.astro";
 ---
 
-<section class="section min-h-[calc(100dvh-64px)] flex items-center">
+<section class="section min-h-[calc(100dvh-64px)] flex items-center" data-aos="fade-up">
   <div class="w-full flex flex-col md:flex-row-reverse items-center gap-12">
 
     <div class="w-full md:w-2/5 flex justify-center">
       <img
-src={`${import.meta.env.BASE_URL}images/profile.webp`}        alt="Foto de Valentina Ramírez" fetchpriority="high"
+        src={`${import.meta.env.BASE_URL}images/profile.webp`}
+        alt="Foto de perfil de Valentina Ramírez"
+        fetchpriority="high"
+        decoding="async"
+        width="320"
+        height="320"
         class="w-64 h-64 md:w-80 md:h-80 rounded-full object-cover border-4 border-[var(--brand-blue)] shadow-lg"
       />
     </div>
 
     <div class="w-full md:w-3/5 flex flex-col gap-6">
 
-      <div class="flex flex-wrap gap-2">
+      <div class="flex flex-wrap gap-2" aria-label="Especialidades">
         <span class="chip">Backend</span>
         <span class="chip">IA</span>
         <span class="chip">AppSec</span>
@@ -32,14 +37,19 @@ src={`${import.meta.env.BASE_URL}images/profile.webp`}        alt="Foto de Valen
       </p>
 
       <div class="flex items-center gap-5 flex-wrap">
-        <Button href={`${import.meta.env.BASE_URL}cv_valentina_ramirez_es.pdf`} target="_blank" icon="download-cv-white">
+        <Button
+          href={`${import.meta.env.BASE_URL}cv_valentina_ramirez_es.pdf`}
+          target="_blank"
+          icon="download-cv-white"
+          aria-label="Descargar CV de Valentina Ramírez en PDF"
+        >
           Descargar CV
         </Button>
         <div class="flex items-center gap-[16px]">
-    <Link href="https://linkedin.com/in/wavival" target="_blank" icon="linkedin" aria-label="Peril de Linkedin de Valentina Ramírez" />
-<Link href="https://github.com/wavival" target="_blank" icon="github" aria-label="Perfil de GitHub de Valentina Ramírez" />
-<Link href="https://platzi.com/p/wavival" target="_blank" icon="link" aria-label="Perfil de Platzi de Valentina Ramírez" />
-  </div>
+          <Link href="https://linkedin.com/in/wavival" target="_blank" icon="linkedin" aria-label="Perfil de LinkedIn de Valentina Ramírez" />
+          <Link href="https://github.com/wavival" target="_blank" icon="github" aria-label="Perfil de GitHub de Valentina Ramírez" />
+          <Link href="https://platzi.com/p/wavival" target="_blank" icon="link" aria-label="Perfil de Platzi de Valentina Ramírez" />
+        </div>
       </div>
 
     </div>

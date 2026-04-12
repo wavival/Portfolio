@@ -5,6 +5,7 @@ interface Props {
   type?: "button" | "submit" | "reset";
   class?: string;
   icon?: string;
+  "aria-label"?: string;
 }
 
 const ICONS_BASE = `${import.meta.env.BASE_URL}icons/ui`;
@@ -15,17 +16,20 @@ const {
   type = "button",
   class: extra = "",
   icon,
+  "aria-label": ariaLabel,
 } = Astro.props;
+
+const rel = href && target === "_blank" ? "noopener noreferrer" : undefined;
 ---
 
 {href ? (
-  <a href={href} target={target} class={`btn-primary ${extra}`}>
-    {icon && <img src={`${ICONS_BASE}/${icon}.svg`} alt="" class="w-[20px] h-[20px] shrink-0" />}
+  <a href={href} target={target} rel={rel} class={`btn-primary ${extra}`} aria-label={ariaLabel}>
+    {icon && <img src={`${ICONS_BASE}/${icon}.svg`} alt="" width="20" height="20" class="w-[20px] h-[20px] shrink-0" />}
     <slot />
   </a>
 ) : (
-  <button type={type} class={`btn-primary ${extra}`}>
-    {icon && <img src={`${ICONS_BASE}/${icon}.svg`} alt="" class="w-[20px] h-[20px] shrink-0" />}
+  <button type={type} class={`btn-primary ${extra}`} aria-label={ariaLabel}>
+    {icon && <img src={`${ICONS_BASE}/${icon}.svg`} alt="" width="20" height="20" class="w-[20px] h-[20px] shrink-0" />}
     <slot />
   </button>
 )}

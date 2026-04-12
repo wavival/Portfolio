@@ -24,19 +24,19 @@ const stack = [
 ];
 ---
 
-<section id="stack" class="section !pb-0">
+<section id="stack" class="section !pb-0" data-aos="fade-up">
   <p class="section-subtitle">Con qué trabajo</p>
   <h2 class="section-title">Stack favorito</h2>
 
   <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10">
-    {stack.map((s) => (
-      <article class="card-plain flex flex-col gap-4">
+    {stack.map((s, index) => (
+      <article class="card-plain flex flex-col gap-4" data-aos="fade-up" data-aos-delay={index * 100}>
         <div>
-          <h3 class="font-display font-bold text-lg text-[var(--text-primary)]">{s.category}</h3>
-          <p class="text-xs text-[var(--text-muted)] mt-1 italic">{s.description}</p>
+          <h3 class="font-display font-bold text-lg text-[var(--brand-blue)]">{s.category}</h3>
+          <p class="text-xs mt-1 italic">{s.description}</p>
         </div>
         <div class="flex flex-wrap gap-2">
-          {s.tools.map((t) => <span class="chip">{t}</span>)}
+          {s.tools.map((t) => <span class="chip !text-[var(--text-primary)]">{t}</span>)}
         </div>
       </article>
     ))}

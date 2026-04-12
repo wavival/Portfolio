@@ -1,0 +1,5 @@
+dist/
+node_modules/
+.astro/
+package-lock.json
+public/cv_valentina_ramirez_es.pdf

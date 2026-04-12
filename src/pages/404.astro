@@ -5,7 +5,7 @@ import Link from "@/components/ui/Link.astro";
 const base = import.meta.env.BASE_URL;
 ---
 
-<Layout title="404 — Página no encontrada">
+<Layout title="404 — Página no encontrada" noindex={true}>
   <div class="min-h-[calc(100vh-64px)] flex flex-col items-center justify-center text-center gap-6 px-6">
     
     <p class="text-8xl font-display font-bold text-[var(--brand-blue)] opacity-50">404</p>

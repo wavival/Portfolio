@@ -2,48 +2,26 @@
 import Link from "@/components/ui/Link.astro";
 
 const projects = [
- {
+  {
     title: "Lúmina W",
     tag: "Live",
     tagColor: "green",
     stack: ["Astro", "Tailwind", "Formspree"],
     problem: "Toda empresa necesita una presencia digital que comunique quién es y qué hace.",
-    solution: "Lúmina W es mi empresa. Diseñé la marca, construí la landing y la mantengo mientras desarrollo los productos que la sostienen.",
-    links: [{ href: "https://luminaw.co", text: "Ver sitio" }],
-},
-/*{
-    title: "TerraCore",
-    tag: "En desarrollo",
-    tagColor: "blue",
-    stack: ["React", "Django", "PostgreSQL"],
-    problem: "Las medianas empresas agroindustriales de Urabá no tienen software de gestión que se adapte a su realidad.",
-    solution: "SaaS B2B de gestión agroindustrial con multitenancy, inventario y dashboard. Primer cliente objetivo: agosto 2026.",
-    links: [{ href: "/", text: null }],
-},*/
-{
+    solution:
+      "Lúmina W es mi empresa. Diseñé la marca, construí la landing y la mantengo mientras desarrollo los productos que la sostienen.",
+    links: [{ href: "https://luminaw.co", text: "Ver sitio", ariaLabel: "Ver sitio de Lúmina W" }],
+  },
+  {
     title: "Forgotten Portal",
     tag: "Laboratorio",
     tagColor: "orange",
     stack: ["Nmap", "Metasploit", "PTES", "MITRE ATT&CK"],
     problem: "¿Qué tan vulnerable es un sistema mal configurado ante un atacante con acceso inicial mínimo?",
-    solution: "Ejercicio completo de pentesting: reconocimiento, explotación de PHP upload, reverse shell, escalada de privilegios a root. Documentado con metodología PTES y TTPs mapeados a MITRE ATT&CK.",
-    links: [
-        { href: "/", text: null },
-        { href: "/", text: null },
-    ],
-},
-/*{
-    title: "NullBreach",
-    tag: "Próximamente",
-    tagColor: "gray",
-    stack: ["React", "Django", "Claude API", "JWT", "OWASP"],
-    problem: "Analizar código en busca de vulnerabilidades requiere conocimiento especializado que no todos tienen.",
-    solution: "App web con IA para análisis de vulnerabilidades OWASP, asistente de ciberseguridad y autenticación segura con JWT.",
-    links: [
-        { href: "#", text: null },
-        { href: "#", text: null },
-    ],
-},*/
+    solution:
+      "Ejercicio completo de pentesting: reconocimiento, explotación de PHP upload, reverse shell, escalada de privilegios a root. Documentado con metodología PTES y TTPs mapeados a MITRE ATT&CK.",
+    links: [],
+  },
 ];
 
 const tagStyles: Record<string, string> = {
@@ -54,14 +32,13 @@ const tagStyles: Record<string, string> = {
 };
 ---
 
-<section id="projects" class="section !pb-0">
+<section id="projects" class="section !pb-0" data-aos="fade-up">
   <p class="section-subtitle">En qué estoy trabajando</p>
   <h2 class="section-title">Proyectos & Laboratorio</h2>
 
   <div class="flex flex-col gap-8 mt-10">
-    {projects.map((p) => (
-      <article class="card flex flex-col gap-4">
-        
+    {projects.map((p, index) => (
+      <article class="card flex flex-col gap-4" data-aos="fade-up" data-aos-delay={index * 100}>
         <div class="flex items-center justify-between flex-wrap gap-3">
           <div class="flex items-center gap-3">
             <h3 class="font-display font-bold text-xl text-[var(--text-primary)]">{p.title}</h3>
@@ -70,7 +47,7 @@ const tagStyles: Record<string, string> = {
             </span>
           </div>
           <div class="flex flex-wrap gap-2">
-            {p.stack.map((s) => <span class="chip">{s}</span>)}
+            {p.stack.map((s) => <span class="chip !text-[var(--text-primary)]">{s}</span>)}
           </div>
         </div>
 
@@ -85,14 +62,15 @@ const tagStyles: Record<string, string> = {
           </div>
         </div>
 
-        {p.links && p.links.length > 0 && (
-  <div class="flex gap-4">
-    {p.links.map((l) => (
-      <Link href={l.href} class="!text-xs" target="_blank">{l.text}</Link>
-    ))}
-  </div>
-)}
-
+        {p.links.length > 0 && (
+          <div class="flex gap-4">
+            {p.links.map((l) => (
+              <Link href={l.href} class="!text-xs" target="_blank" aria-label={l.ariaLabel}>
+                {l.text}
+              </Link>
+            ))}
+          </div>
+        )}
       </article>
     ))}
   </div>
