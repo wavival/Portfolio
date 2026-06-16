@@ -11,7 +11,7 @@ interface Props {
 }
 
 const {
-  title = "Valentina Ramírez | Full Stack Developer · React & Django · Colombia",
+  title = "Valentina Ramírez | Full Stack Developer · Django + React · Colombia",
   description = "Full Stack Developer especializada en Django y React. Construyo productos completos: backend sólido, frontend funcional, integración de IA y seguridad desde el diseño.",
   image = "/images/profile.webp",
   noindex = false,
@@ -77,6 +77,10 @@ const jsonLd = JSON.stringify({
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="author" content="Valentina Ramírez" />
+    <meta
+      name="keywords"
+      content="full stack developer Colombia, Django developer, React developer, Django REST Framework, PostgreSQL, desarrollo web Medellín, seguridad aplicaciones, OWASP, Claude API"
+    />
     {
       noindex ? (
         <meta name="robots" content="noindex, nofollow" />
