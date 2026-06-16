@@ -27,12 +27,12 @@ Related: [README.md](./README.md) · [DESIGN.md](./DESIGN.md) · [CLAUDE.md](./C
 
 Path: `src/layouts/Layout.astro`. Wraps every page. Owns the full `<head>`, skip link, NavBar, Footer.
 
-| Prop          | Type      | Default                                                                  |
-| ------------- | --------- | ------------------------------------------------------------------------ |
-| `title`       | `string`  | `"Valentina Ramírez \| Full Stack Developer · React & Django · Colombia"` |
+| Prop          | Type      | Default                                                                                    |
+| ------------- | --------- | ------------------------------------------------------------------------------------------ |
+| `title`       | `string`  | `"Valentina Ramírez \| Full Stack Developer · React & Django · Colombia"`                  |
 | `description` | `string`  | `"Full Stack Developer especializada en Django y React. Construyo productos completos..."` |
-| `image`       | `string`  | `"/images/profile.webp"`                                                 |
-| `noindex`     | `boolean` | `false`                                                                  |
+| `image`       | `string`  | `"/images/profile.webp"`                                                                   |
+| `noindex`     | `boolean` | `false`                                                                                    |
 
 What it injects in `<head>` (in order):
 

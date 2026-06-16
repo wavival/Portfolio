@@ -1,0 +1,142 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Link from "@/components/ui/Link.astro";
+import Button from "@/components/ui/Button.astro";
+
+const base = import.meta.env.BASE_URL;
+---
+
+<Layout
+  title="Sobre mí | Valentina Ramírez"
+  description="Desarrolladora Full Stack autodidacta, fundadora de Lúmina W. Foco en Django y React, productos propios y aprendizaje continuo. Más allá del código: fotografía y batería."
+>
+  <section class="section" data-aos="fade-up">
+    <p class="section-subtitle">Quién está detrás del código</p>
+    <h2 class="section-title">Sobre mí</h2>
+
+    <div class="mt-10 flex flex-col md:flex-row-reverse items-center md:items-start gap-10">
+      <div class="w-full md:w-2/5 flex justify-center shrink-0">
+        <img
+          src={`${base}images/profile.webp`}
+          alt="Foto de perfil de Valentina Ramírez"
+          decoding="async"
+          width="320"
+          height="320"
+          class="w-64 h-64 md:w-80 md:h-80 rounded-full object-cover border-4 border-[var(--brand-blue)] shadow-lg"
+        />
+      </div>
+
+      <div class="w-full md:w-3/5 flex flex-col gap-5">
+        <p class="text-[var(--text-primary)] text-lg md:text-xl font-display font-semibold leading-snug">
+          Soy Valentina Ramírez. Construyo productos de principio a fin —del modelo de datos a la
+          interfaz que la gente usa— y fundé Lúmina W para hacerlo con criterio propio.
+        </p>
+        <div class="flex flex-wrap gap-2" aria-label="Áreas de foco">
+          <span class="chip">Django · DRF</span>
+          <span class="chip">React · TypeScript</span>
+          <span class="chip">PostgreSQL</span>
+          <span class="chip">IA aplicada</span>
+          <span class="chip">Seguridad</span>
+        </div>
+        <p class="text-[var(--text-muted)] leading-relaxed">
+          Llegué al código sin un camino trazado y lo aprendí a fuerza de construir. Esa ruta
+          autodidacta me dejó una forma de trabajar concreta: no me conformo con que algo funcione,
+          necesito entender por qué funciona. Es la diferencia entre copiar una solución y poder
+          sostenerla cuando se rompe a las dos de la mañana.
+        </p>
+      </div>
+    </div>
+
+    <div class="mt-12 max-w-3xl flex flex-col gap-8">
+      <div class="flex flex-col gap-3">
+        <h3 class="font-display font-bold text-xl text-[var(--text-primary)]">Cómo trabajo</h3>
+        <p class="text-[var(--text-muted)] leading-relaxed">
+          Empiezo por el problema, no por el framework. Antes de abrir el editor quiero saber quién
+          usará esto, qué decisión necesita tomar y qué pasa cuando los datos no llegan. Después
+          elijo herramientas: Django y DRF para una base sólida, React y TypeScript para interfaces
+          que no se sienten frágiles, PostgreSQL cuando el modelo relacional importa. La IA y la
+          seguridad no son adornos al final —entran en el diseño desde el primer endpoint.
+        </p>
+      </div>
+
+      <div class="flex flex-col gap-3">
+        <h3 class="font-display font-bold text-xl text-[var(--text-primary)]">Qué construyo</h3>
+        <p class="text-[var(--text-muted)] leading-relaxed">
+          Aplicaciones reales, no demos: sistemas multiusuario con lógica de negocio compleja, APIs
+          propias y productos que viven en producción. Desde un SaaS agroindustrial offline-first
+          hasta análisis de código con criterio OWASP, me interesa el software que resuelve un
+          problema medible para alguien concreto. Bajo Lúmina W llevo esa misma idea a clientes:
+          producto a medida, pensado para durar y no para impresionar en una captura.
+        </p>
+      </div>
+
+      <div class="flex flex-col gap-3">
+        <h3 class="font-display font-bold text-xl text-[var(--text-primary)]">Formación en paralelo</h3>
+        <p class="text-[var(--text-muted)] leading-relaxed">
+          Estudio Análisis y Desarrollo de Software en el SENA y Lengua Inglesa en la Universidad de
+          San Buenaventura, dos frentes a la vez porque no sé aprender de otra forma. El inglés no es
+          un extra en mi perfil: es lo que me deja leer la documentación de primera mano, trabajar
+          con equipos fuera de Colombia y no quedarme en la versión traducida —y a veces
+          desactualizada— de las cosas.
+        </p>
+      </div>
+
+      <blockquote class="border-l-4 border-[var(--brand-blue)] pl-5 my-2">
+        <p class="italic font-display font-semibold text-[var(--text-primary)] leading-snug">
+          "No escribo código para impresionar máquinas. Lo escribo para resolver problemas de
+          personas."
+        </p>
+      </blockquote>
+
+      <div class="flex flex-col gap-3">
+        <h3 class="font-display font-bold text-xl text-[var(--text-primary)]">Fuera del código</h3>
+        <p class="text-[var(--text-muted)] leading-relaxed">
+          Cuando cierro el editor aparecen la fotografía, la batería y una playlist que no respeta
+          géneros. No son pausas decorativas: el ritmo enseña estructura y la fotografía enseña a
+          mirar el detalle que los demás pasan por alto —dos cosas que también uso programando.
+        </p>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-5 mt-2">
+        <Button
+          href={`${base}cv_valentina_ramirez.pdf`}
+          download="cv_valentina_ramirez.pdf"
+          icon="download-cv-white"
+          aria-label="Descargar CV de Valentina Ramírez en PDF"
+        >
+          Descargar CV
+        </Button>
+        <Link
+          href="https://linkedin.com/in/wavival"
+          target="_blank"
+          icon="linkedin"
+          aria-label="LinkedIn de Valentina Ramírez"
+        />
+        <Link
+          href="https://github.com/wavival"
+          target="_blank"
+          icon="github"
+          aria-label="GitHub de Valentina Ramírez"
+        />
+        <Link
+          href="https://instagram.com/wavival"
+          target="_blank"
+          icon="instagram"
+          aria-label="Instagram de Valentina Ramírez"
+        />
+        <Link
+          href="https://wa.me/573116865766"
+          target="_blank"
+          icon="whatsapp"
+          aria-label="WhatsApp de Valentina Ramírez"
+        />
+      </div>
+
+      <div class="pt-2">
+        <Link href={`${base}contact`} aria-label="Ir a la página de contacto">
+          ¿Hablamos de tu producto? →
+        </Link>
+      </div>
+    </div>
+  </section>
+</Layout>

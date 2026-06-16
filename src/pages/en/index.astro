@@ -1,0 +1,206 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Link from "@/components/ui/Link.astro";
+import Button from "@/components/ui/Button.astro";
+
+const base = import.meta.env.BASE_URL;
+
+const title = "Valentina Ramírez | Full Stack Developer · Django + React · AI & Security";
+const description =
+  "Full Stack Developer specialized in Django and React. I build complete products: solid backend, functional frontend, applied AI, and security by design.";
+
+const projects = [
+  {
+    title: "TerraCore",
+    tag: "Live",
+    tagColor: "green",
+    stack: ["Django", "DRF", "PostgreSQL", "JWT", "React", "TypeScript", "Tailwind CSS"],
+    summary:
+      "Multitenancy platform that digitizes full agricultural operations — inventory with automatic rotation, livestock health, cost control, and real-time dashboards. Tackles the 15–30% over-cost of emergency-purchase decisions in Colombian agriculture.",
+    href: "https://terracoreapp.co",
+    hrefLabel: "Visit site",
+  },
+  {
+    title: "Root",
+    tag: "In development",
+    tagColor: "orange",
+    stack: ["Django", "DRF", "PostgreSQL", "React", "TypeScript", "Claude API", "PWA"],
+    summary:
+      "Offline-first PWA with an AI-powered food-label scanner. Claude API checks ingredients against a persistent health profile (celiac, type-2 diabetes, lactose intolerance — combinable) plus curated recipes under strict rules.",
+    href: "https://wavival.dev/root/",
+    hrefLabel: "View demo",
+  },
+  {
+    title: "NullBreach",
+    tag: "Live",
+    tagColor: "green",
+    stack: ["Django", "DRF", "PostgreSQL", "JWT", "Claude API", "React", "TypeScript", "Astro"],
+    summary:
+      "Full stack app pairing OWASP Top 10 static code analysis with an AI chat that keeps persistent context per user. Detects SQL injection, XSS, hardcoded secrets, and more.",
+    href: "https://wavival.dev/nullbreach/",
+    hrefLabel: "View demo",
+  },
+];
+
+const stack = [
+  {
+    category: "Backend",
+    tools: ["Python", "Django", "Django REST Framework", "PostgreSQL", "JWT"],
+  },
+  { category: "Frontend", tools: ["React", "TypeScript", "Astro", "Tailwind CSS", "JavaScript"] },
+  { category: "Security", tools: ["OWASP", "MITRE ATT&CK", "PTES", "Linux", "AppSec"] },
+  {
+    category: "AI Integrations",
+    tools: ["Claude API", "LLM Workflows", "Prompt Engineering", "n8n"],
+  },
+];
+
+const tagStyles: Record<string, string> = {
+  green: "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400",
+  orange: "bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400",
+};
+---
+
+<Layout
+  title={title}
+  description={description}
+  lang="en"
+  alternates={[
+    { hreflang: "es", href: "https://wavival.dev/" },
+    { hreflang: "en", href: "https://wavival.dev/en" },
+    { hreflang: "x-default", href: "https://wavival.dev/" },
+  ]}
+>
+  <section id="hero" class="section pt-10">
+    <div class="flex justify-end">
+      <Link href={base} aria-label="Ver el sitio en español" class="!text-xs">Español</Link>
+    </div>
+
+    <div class="flex flex-col gap-6 mt-6" data-aos="fade-up">
+      <div class="flex flex-wrap gap-2" aria-label="Specialties">
+        <span class="chip">React</span>
+        <span class="chip">Django</span>
+        <span class="chip">PostgreSQL</span>
+      </div>
+      <h1
+        class="font-display font-bold text-[var(--text-primary)] text-4xl md:text-5xl leading-tight"
+      >
+        I build complete products.<br />
+        <span class="text-[var(--brand-blue)]">From the database to the browser.</span>
+      </h1>
+      <p class="text-[var(--text-muted)] text-base md:text-lg leading-relaxed max-w-2xl">
+        Full Stack Developer focused on Django and React. I ship real applications: multi-user,
+        complex business logic, my own APIs, and frontends people actually use — with applied AI and
+        security by design.
+      </p>
+      <div class="flex items-center gap-5 flex-wrap">
+        <Button
+          href={`${base}cv_valentina_ramirez_en.pdf`}
+          download="cv_valentina_ramirez_en.pdf"
+          icon="download-cv-white"
+          aria-label="Download Valentina Ramírez's CV in PDF"
+        >
+          Download CV
+        </Button>
+        <div class="flex items-center gap-[16px]">
+          <Link
+            href="https://linkedin.com/in/wavival"
+            target="_blank"
+            icon="linkedin"
+            aria-label="Valentina Ramírez on LinkedIn"
+          />
+          <Link
+            href="https://github.com/wavival"
+            target="_blank"
+            icon="github"
+            aria-label="Valentina Ramírez on GitHub"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects" class="section !pt-0" data-aos="fade-up">
+    <p class="section-subtitle">What I've built</p>
+    <h2 class="section-title">Selected projects</h2>
+    <div class="flex flex-col gap-8 mt-10">
+      {
+        projects.map((p) => (
+          <article class="card flex flex-col gap-4">
+            <div class="flex items-center justify-between flex-wrap gap-3">
+              <div class="flex items-center gap-3">
+                <h3 class="font-display font-bold text-xl text-[var(--text-primary)]">{p.title}</h3>
+                <span
+                  class={`text-xs font-semibold px-3 py-1 rounded-full ${tagStyles[p.tagColor]}`}
+                >
+                  {p.tag}
+                </span>
+              </div>
+              <div class="flex flex-wrap gap-2">
+                {p.stack.map((s) => (
+                  <span class="chip !text-[var(--text-primary)]">{s}</span>
+                ))}
+              </div>
+            </div>
+            <p class="text-sm text-[var(--text-muted)] leading-relaxed">{p.summary}</p>
+            <div class="flex gap-4">
+              <Link
+                href={p.href}
+                class="!text-xs"
+                target="_blank"
+                aria-label={`${p.hrefLabel} — ${p.title}`}
+              >
+                {p.hrefLabel}
+              </Link>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+    <div class="mt-12 flex justify-center" data-aos="fade-up">
+      <Button href={`${base}projects`} aria-label="See all projects and the lab">
+        See all projects
+      </Button>
+    </div>
+  </section>
+
+  <section id="stack" class="section" data-aos="fade-up">
+    <p class="section-subtitle">What I work with</p>
+    <h2 class="section-title">Stack</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10">
+      {
+        stack.map((s) => (
+          <article class="card-plain flex flex-col gap-4">
+            <h3 class="font-display font-bold text-lg text-[var(--brand-blue)]">{s.category}</h3>
+            <div class="flex flex-wrap gap-2">
+              {s.tools.map((t) => (
+                <span class="chip !text-[var(--text-primary)]">{t}</span>
+              ))}
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <section id="contact" class="section" data-aos="fade-up">
+    <div class="flex flex-col items-center text-center gap-8 max-w-xl mx-auto">
+      <h2
+        class="font-display font-bold text-2xl md:text-3xl text-[var(--text-primary)] leading-tight"
+      >
+        Your next idea deserves<br />
+        <span class="text-[var(--brand-blue)]">code that can carry it.</span>
+      </h2>
+      <p class="text-[var(--text-muted)] leading-relaxed">
+        I design and build complete products: from the backend to the interface your users love.
+      </p>
+      <Button
+        href="mailto:wavival.dev@luminaw.co"
+        icon="send-email-white"
+        aria-label="Send an email to Valentina Ramírez"
+      >
+        Let's talk
+      </Button>
+    </div>
+  </section>
+</Layout>

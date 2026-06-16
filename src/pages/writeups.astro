@@ -1,0 +1,113 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Link from "@/components/ui/Link.astro";
+import Button from "@/components/ui/Button.astro";
+import { writeups } from "@/data/writeups";
+
+const base = import.meta.env.BASE_URL;
+const site = "https://wavival.dev";
+
+const pageTitle = "Writeups de seguridad y pentesting | Valentina Ramírez";
+const pageDescription =
+  "Writeups de pentesting y ejercicios de seguridad ofensiva documentados con metodología PTES y MITRE ATT&CK. Reconocimiento, explotación y escalada de privilegios paso a paso.";
+
+const collectionLd = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  name: "Writeups de seguridad y pentesting",
+  description: pageDescription,
+  url: `${site}${base}writeups`,
+  author: { "@id": `${site}/#person` },
+});
+---
+
+<Layout title={pageTitle} description={pageDescription}>
+  <section class="section">
+    <p class="section-subtitle">Seguridad ofensiva</p>
+    <h1 class="section-title">Writeups de pentesting</h1>
+    <p class="text-[var(--text-muted)] leading-relaxed max-w-3xl mt-4">
+      Mentalidad ofensiva para escribir código defensivo. Aquí documento ejercicios de seguridad —
+      reconocimiento, explotación y escalada de privilegios — con metodología PTES y TTPs mapeados a
+      MITRE ATT&CK. La colección completa vive en el blog.
+    </p>
+
+    <div class="flex flex-col gap-8 mt-10">
+      {
+        writeups.map((w) => (
+          <article class="card flex flex-col gap-4">
+            <div class="flex items-center justify-between flex-wrap gap-3">
+              <div class="flex items-center gap-3">
+                <h2 class="font-display font-bold text-xl text-[var(--text-primary)]">{w.title}</h2>
+                <span class="text-xs font-semibold px-3 py-1 rounded-full bg-[var(--bg-blur)] text-[var(--text-muted)]">
+                  {w.lab} · {w.difficulty}
+                </span>
+              </div>
+              <div class="flex flex-wrap gap-2">
+                {w.tools.map((t) => (
+                  <span class="chip !text-[var(--text-primary)]">{t}</span>
+                ))}
+              </div>
+            </div>
+
+            <p class="text-sm text-[var(--text-muted)] leading-relaxed">{w.summary}</p>
+
+            <div class="text-sm text-[var(--text-muted)]">
+              <span class="text-xs font-bold uppercase tracking-widest text-[var(--brand-blue)]">
+                Metodología
+              </span>
+              <p class="mt-1">{w.methodology}</p>
+            </div>
+
+            <div class="text-sm text-[var(--text-muted)]">
+              <span class="text-xs font-bold uppercase tracking-widest text-[var(--brand-blue)]">
+                Vulnerabilidades
+              </span>
+              <div class="flex flex-wrap gap-2 mt-2">
+                {w.vulns.map((v) => (
+                  <span class="chip !text-[var(--text-primary)]">{v}</span>
+                ))}
+              </div>
+            </div>
+
+            <div class="flex gap-4 flex-wrap">
+              <Link href={w.href} class="!text-xs" target="_blank" aria-label={w.hrefLabel}>
+                {w.hrefLabel}
+              </Link>
+              {w.repo && (
+                <Link
+                  href={w.repo}
+                  class="!text-xs"
+                  target="_blank"
+                  aria-label={`Repositorio del writeup ${w.title}`}
+                >
+                  Ver repositorio
+                </Link>
+              )}
+            </div>
+          </article>
+        ))
+      }
+    </div>
+
+    <div
+      class="mt-16 pt-10 border-t border-[var(--border-base)] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6"
+    >
+      <p class="text-[var(--text-muted)] max-w-md">
+        Más writeups, build notes y escritura técnica en el blog de Lúmina W.
+      </p>
+      <div class="flex items-center gap-5 flex-wrap">
+        <Button
+          href="https://blog.luminaw.co"
+          target="_blank"
+          icon="read-more-white"
+          aria-label="Ir al blog de Lúmina W"
+        >
+          Ver el blog
+        </Button>
+        <Link href={`${base}#projects`} aria-label="Volver a los proyectos">Ver proyectos</Link>
+      </div>
+    </div>
+  </section>
+
+  <script is:inline type="application/ld+json" set:html={collectionLd} />
+</Layout>

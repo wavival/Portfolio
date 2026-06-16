@@ -1,6 +1,11 @@
 ---
 import Link from "@/components/ui/Link.astro";
+import { getLangFromUrl, useTranslations, homeHref } from "@/i18n/utils";
 
+const BASE = import.meta.env.BASE_URL;
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const home = homeHref(lang);
 const year = new Date().getFullYear();
 ---
 
@@ -8,80 +13,89 @@ const year = new Date().getFullYear();
   <div class="max-w-5xl mx-auto px-6 py-12">
     <div class="flex flex-col md:flex-row justify-between gap-10 mb-10">
       <div class="flex flex-col gap-3">
-        <a href="/" aria-label="Ir al inicio — wavival.dev">
+        <a href={home} aria-label={t("nav.homeAria")}>
           <img
-            src={`${import.meta.env.BASE_URL}brand/logo-w.webp`}
+            src={`${BASE}brand/logo-w.webp`}
             alt="wavival.dev"
             class="h-10 w-auto"
             width="120"
             height="40"
           />
         </a>
-        <p class="text-xs text-[var(--text-primary)] max-w-[240px]">
-          Full Stack Developer. Seguridad integrada. IA aplicada. Productos que escalan.
-        </p>
+        <p class="text-xs text-[var(--text-primary)] max-w-[240px]">{t("footer.tagline")}</p>
         <div class="flex items-center gap-3 mt-2">
           <Link
             href="https://linkedin.com/in/wavival"
             target="_blank"
             icon="linkedin"
-            aria-label="LinkedIn de Valentina Ramírez"
+            aria-label={t("footer.linkedinAria")}
           />
           <Link
             href="https://github.com/wavival"
             target="_blank"
             icon="github"
-            aria-label="GitHub de Valentina Ramírez"
+            aria-label={t("footer.githubAria")}
           />
           <Link
             href="https://instagram.com/wavival"
             target="_blank"
             icon="instagram"
-            aria-label="Instagram de Valentina Ramírez"
+            aria-label={t("footer.instagramAria")}
           />
         </div>
       </div>
 
-      <nav aria-label="Navegación del sitio" class="flex flex-col gap-3">
+      <nav aria-label={t("footer.siteNavAria")} class="flex flex-col gap-3">
         <span
           class="text-xs font-display font-bold uppercase tracking-widest text-[var(--text-primary)]"
-          aria-hidden="true">Navegación</span
+          aria-hidden="true">{t("footer.navHeading")}</span
         >
-        <Link href="/#projects" class="!text-xs" aria-label="Ir a la sección de Proyectos"
-          >Proyectos</Link
+        <Link href={`${BASE}projects`} class="!text-xs" aria-label={t("nav.projects")}
+          >{t("nav.projects")}</Link
         >
-        <Link href="/#stack" class="!text-xs" aria-label="Ir a la sección de Stack">Stack</Link>
-        <Link href="/#about" class="!text-xs" aria-label="Ir a la sección Sobre mí">Sobre mí</Link>
-        <Link href="/#contact" class="!text-xs" aria-label="Ir a la sección de Contacto"
-          >Contacto</Link
+        <Link href={`${BASE}services`} class="!text-xs" aria-label={t("nav.services")}
+          >{t("nav.services")}</Link
+        >
+        <Link href={`${BASE}stack`} class="!text-xs" aria-label={t("nav.stack")}
+          >{t("nav.stack")}</Link
+        >
+        <Link href={`${BASE}about`} class="!text-xs" aria-label={t("nav.about")}
+          >{t("nav.about")}</Link
+        >
+        <Link href={`${BASE}contact`} class="!text-xs" aria-label={t("nav.contact")}
+          >{t("nav.contact")}</Link
         >
       </nav>
 
-      <nav aria-label="Recursos" class="flex flex-col gap-3">
+      <nav aria-label={t("footer.resourcesAria")} class="flex flex-col gap-3">
         <span
           class="text-xs font-display font-bold uppercase tracking-widest text-[var(--text-primary)]"
-          aria-hidden="true">Recursos</span
+          aria-hidden="true">{t("footer.resourcesHeading")}</span
+        >
+        <Link href={`${BASE}writeups`} class="!text-xs" aria-label={t("footer.writeupsAria")}
+          >{t("footer.writeups")}</Link
+        >
+        <Link href={`${BASE}uses`} class="!text-xs" aria-label={t("footer.usesAria")}
+          >{t("footer.uses")}</Link
         >
         <Link
           href="https://blog.luminaw.co"
           target="_blank"
           class="!text-xs"
-          aria-label="Blog de Lúmina W creado por Valentina Ramírez">Blog W</Link
+          aria-label={t("footer.blogAria")}>{t("nav.blog")}</Link
         >
       </nav>
     </div>
 
     <div class="border-t border-[var(--border-base)] pt-8 w-full flex flex-col items-center gap-3">
-      <p class="text-sm text-[var(--text-primary)]">
-        Software a medida y productos propios, construidos para durar.
-      </p>
+      <p class="text-sm text-[var(--text-primary)]">{t("footer.cta")}</p>
       <Link
         href="https://luminaw.co"
         target="_blank"
         class="!text-xs"
-        aria-label="Descubre Lúmina W — servicios de software"
+        aria-label={t("footer.luminaAria")}
       >
-        Descubre Lúmina W
+        {t("footer.discover")}
       </Link>
     </div>
 

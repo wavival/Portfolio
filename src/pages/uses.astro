@@ -1,0 +1,51 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Link from "@/components/ui/Link.astro";
+import { stack } from "@/data/stack";
+
+const base = import.meta.env.BASE_URL;
+
+const pageTitle = "Uses — Herramientas y stack | Valentina Ramírez";
+const pageDescription =
+  "El stack y las herramientas que uso como Full Stack Developer — Django, DRF, PostgreSQL, React, TypeScript, Astro, IA y seguridad — y por qué elijo cada una.";
+---
+
+<Layout title={pageTitle} description={pageDescription}>
+  <section class="section">
+    <p class="section-subtitle">/uses</p>
+    <h1 class="section-title">Con qué construyo</h1>
+    <p class="text-[var(--text-muted)] leading-relaxed max-w-3xl mt-4">
+      El stack que uso a diario y la razón detrás de cada elección. No es una lista de modas: son
+      las herramientas con las que entrego productos reales — backend sólido, frontend funcional, IA
+      aplicada y seguridad desde el diseño.
+    </p>
+
+    <div class="flex flex-col gap-10 mt-12 max-w-3xl">
+      {
+        stack.map((s) => (
+          <section data-aos="fade-up">
+            <div class="flex items-baseline gap-3 flex-wrap">
+              <h2 class="font-display font-bold text-xl text-[var(--brand-blue)]">{s.category}</h2>
+              <span class="text-xs italic text-[var(--text-muted)]">{s.description}</span>
+            </div>
+            {s.why && <p class="text-[var(--text-muted)] leading-relaxed mt-2">{s.why}</p>}
+            <div class="flex flex-wrap gap-2 mt-4">
+              {s.tools.map((t) => (
+                <span class="chip !text-[var(--text-primary)]">{t}</span>
+              ))}
+            </div>
+          </section>
+        ))
+      }
+    </div>
+
+    <div class="mt-16 pt-10 border-t border-[var(--border-base)] flex flex-wrap gap-5">
+      <Link href={`${base}#projects`} aria-label="Ver proyectos donde uso este stack">
+        Ver proyectos
+      </Link>
+      <Link href={`${base}services`} aria-label="Ver en qué puedo ayudarte">
+        En qué te puedo ayudar
+      </Link>
+    </div>
+  </section>
+</Layout>

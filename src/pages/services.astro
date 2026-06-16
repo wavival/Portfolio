@@ -1,0 +1,138 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Link from "@/components/ui/Link.astro";
+import Button from "@/components/ui/Button.astro";
+
+const base = import.meta.env.BASE_URL;
+const site = "https://wavival.dev";
+
+const pageTitle = "Servicios — Desarrollo Full Stack a medida | Valentina Ramírez";
+const pageDescription =
+  "Desarrolladora Full Stack freelance: aplicaciones web a medida con Django y React, APIs REST, integraciones de IA y seguridad desde el diseño. Del problema al producto en producción.";
+
+const services = [
+  {
+    title: "Aplicaciones web a medida",
+    body: "Producto completo de extremo a extremo: backend en Django + DRF, frontend en React + TypeScript, base de datos PostgreSQL y despliegue. Para fundadores que necesitan algo real, no un demo.",
+    tools: ["Django", "DRF", "React", "TypeScript", "PostgreSQL"],
+  },
+  {
+    title: "APIs REST y backend",
+    body: "Diseño e implemento APIs limpias, autenticadas y documentadas. Modelado relacional, control de acceso por rol, multitenancy y lógica de negocio compleja que aguanta el crecimiento.",
+    tools: ["Django REST Framework", "JWT", "PostgreSQL", "Multitenancy"],
+  },
+  {
+    title: "Integraciones de IA",
+    body: "Conecto Claude API y flujos con LLM donde aportan valor medible: análisis, asistencia con contexto, automatización con n8n. IA como copiloto del producto, no como adorno.",
+    tools: ["Claude API", "LLM Workflows", "n8n", "Prompt Engineering"],
+  },
+  {
+    title: "Seguridad y AppSec",
+    body: "Reviso aplicaciones con criterio OWASP Top 10 y mentalidad de pentester. Seguridad integrada desde el diseño: autenticación, manejo de secretos, validación y endpoints protegidos.",
+    tools: ["OWASP", "AppSec", "PTES", "MITRE ATT&CK"],
+  },
+];
+
+const process = [
+  {
+    step: "01",
+    title: "Conversación",
+    body: "Entiendo el problema de negocio antes de hablar de tecnología. Qué necesitas, para quién y por qué.",
+  },
+  {
+    step: "02",
+    title: "Propuesta",
+    body: "Defino alcance, arquitectura y entregables. Sin sorpresas: sabes qué se construye y en qué orden.",
+  },
+  {
+    step: "03",
+    title: "Build iterativo",
+    body: "Construyo en entregas visibles. Ves avances reales, no un silencio de semanas seguido de un big bang.",
+  },
+  {
+    step: "04",
+    title: "Entrega",
+    body: "Producto en producción, documentado y mantenible. Pensado para durar más allá del primer release.",
+  },
+];
+
+const serviceLd = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  name: "Valentina Ramírez — Desarrollo Full Stack",
+  description: pageDescription,
+  url: `${site}${base}services`,
+  provider: { "@id": `${site}/#person` },
+  areaServed: "Worldwide",
+  serviceType: services.map((s) => s.title),
+});
+---
+
+<Layout title={pageTitle} description={pageDescription}>
+  <section class="section">
+    <p class="section-subtitle">En qué te puedo ayudar</p>
+    <h1 class="section-title">Construyo el producto que tu negocio necesita</h1>
+    <p class="text-[var(--text-muted)] leading-relaxed max-w-3xl mt-4">
+      Soy Full Stack Developer: tomo un problema de negocio y lo entrego como software real en
+      producción. Backend sólido, frontend funcional, IA aplicada y seguridad desde el diseño — sin
+      depender de tres proveedores distintos.
+    </p>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12">
+      {
+        services.map((s) => (
+          <article class="card flex flex-col gap-3" data-aos="fade-up">
+            <h2 class="font-display font-bold text-xl text-[var(--text-primary)]">{s.title}</h2>
+            <p class="text-sm text-[var(--text-muted)] leading-relaxed">{s.body}</p>
+            <div class="flex flex-wrap gap-2 mt-1">
+              {s.tools.map((t) => (
+                <span class="chip !text-[var(--text-primary)]">{t}</span>
+              ))}
+            </div>
+          </article>
+        ))
+      }
+    </div>
+
+    <h2 class="section-title mt-20">Cómo trabajo</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+      {
+        process.map((p) => (
+          <article class="card-plain flex flex-col gap-2" data-aos="fade-up">
+            <span class="font-display font-bold text-2xl text-[var(--brand-blue)]">{p.step}</span>
+            <h3 class="font-display font-bold text-lg text-[var(--text-primary)]">{p.title}</h3>
+            <p class="text-sm text-[var(--text-muted)] leading-relaxed">{p.body}</p>
+          </article>
+        ))
+      }
+    </div>
+
+    <div
+      class="mt-20 pt-10 border-t border-[var(--border-base)] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6"
+    >
+      <div class="flex flex-col gap-1">
+        <p class="font-display font-bold text-lg text-[var(--text-primary)]">
+          ¿Tienes un proyecto en mente?
+        </p>
+        <p class="text-[var(--text-muted)]">Cuéntame qué necesitas. Respondo rápido.</p>
+      </div>
+      <div class="flex items-center gap-5 flex-wrap">
+        <Button
+          href="mailto:wavival.dev@luminaw.co"
+          icon="send-email-white"
+          aria-label="Enviar correo electrónico a Valentina Ramírez"
+        >
+          Contáctame
+        </Button>
+        <Link
+          href={`${base}cv_valentina_ramirez.pdf`}
+          aria-label="Descargar CV de Valentina Ramírez en PDF"
+        >
+          Descargar CV
+        </Link>
+      </div>
+    </div>
+  </section>
+
+  <script is:inline type="application/ld+json" set:html={serviceLd} />
+</Layout>

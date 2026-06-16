@@ -1,43 +1,8 @@
 ---
-const stack = [
-  {
-    category: "Backend",
-    description: "La columna vertebral de cada producto.",
-    tools: ["Python", "Django", "Django REST Framework", "PostgreSQL", "JWT"],
-  },
-  {
-    category: "Frontend",
-    description: "Interfaces que completan el producto.",
-    tools: ["React", "TypeScript", "Astro", "Tailwind CSS", "JavaScript"],
-  },
-  {
-    category: "Design & UX",
-    description: "Productos que se ven bien y cualquiera puede usar.",
-    tools: ["UX/UI", "Figma", "Accesibilidad (a11y)", "SEO técnico", "Web Performance"],
-  },
-  {
-    category: "Product Engineering",
-    description: "Arquitectura que escala desde el primer commit.",
-    tools: [
-      "Arquitectura de software",
-      "PWAs",
-      "Offline-first",
-      "APIs REST",
-      "Multitenancy",
-      "Modelado relacional",
-    ],
-  },
-  {
-    category: "Security",
-    description: "Mentalidad ofensiva para escribir código defensivo.",
-    tools: ["OWASP", "MITRE ATT&CK", "PTES", "Linux", "AppSec"],
-  },
-  {
-    category: "AI Integrations",
-    description: "IA como copiloto real, no como atajo.",
-    tools: ["Claude API", "LLM Workflows", "Prompt Engineering", "n8n"],
-  },
-];
+import Link from "@/components/ui/Link.astro";
+import { stack } from "@/data/stack";
+
+const base = import.meta.env.BASE_URL;
 ---
 
 <section id="stack" class="section !pb-0" data-aos="fade-up">
@@ -64,5 +29,11 @@ const stack = [
         </article>
       ))
     }
+  </div>
+
+  <div class="mt-8">
+    <Link href={`${base}uses`} aria-label="Ver el detalle de herramientas y por qué las uso">
+      Por qué uso cada herramienta
+    </Link>
   </div>
 </section>
