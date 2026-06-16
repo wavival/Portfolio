@@ -11,19 +11,20 @@ const projects = [
       "Dashboard de TerraCore: métricas en tiempo real, gráficas de producción y distribución de ganado",
     imageWidth: 1280,
     imageHeight: 846,
-    stack: ["Django", "DRF", "PostgreSQL", "JWT", "React"],
+    stack: ["Django", "DRF", "PostgreSQL", "JWT", "React", "TypeScript", "Tailwind CSS"],
     problem:
-      "El agro colombiano decide por experiencia, no por datos, y paga sobreprecio del 15–30% en compras de urgencia, pierde insumos por falta de rotación y no sabe qué lote es rentable.",
+      "El agro colombiano toma decisiones por experiencia, no por datos. Las operaciones en Excel generan sobreprecio del 15–30% en compras de urgencia, pérdida de insumos por falta de rotación y cero visibilidad sobre qué lote es rentable.",
     solution:
-      "TerraCore digitaliza la operación agropecuaria en una sola plataforma: inventario, producción, salud animal y dashboard en tiempo real.",
+      "TerraCore digitaliza la operación agropecuaria completa en una sola plataforma multitenancy.",
     architecture: [
-      "API REST desacoplada: Django REST Framework con autenticación JWT; el frontend React consume la API de forma independiente.",
-      "Multiusuario y multirol: permisos granulares por rol dentro de cada organización.",
-      "Offline-first: el frontend opera sin conexión y sincroniza al recuperar la red.",
-      "Módulos integrados: inventario, producción, salud animal y reportes en una sola plataforma.",
+      "Arquitectura multitenancy: cada organización opera en su propio espacio de datos aislado sobre una sola instancia del backend.",
+      "API REST con Django REST Framework, autenticación JWT y control de acceso por rol (admin, operador, colaborador).",
+      "Módulos MVP: inventario de insumos con rotación automática, registro de producción por lote, salud animal, control básico de costos y dashboard en tiempo real.",
+      "Modelado relacional complejo en PostgreSQL: organizaciones, usuarios, animales, lotes, insumos y registros de producción.",
+      "Frontend en React + TypeScript consumiendo la API propia; diseño responsivo con Tailwind CSS.",
     ],
     links: [
-      { href: "https://terracoreapp.co/", text: "Ver sitio", ariaLabel: "Ver sitio de TerraCore" },
+      { href: "https://terracoreapp.co", text: "Ver sitio", ariaLabel: "Ver sitio de TerraCore" },
       {
         href: "https://app.terracoreapp.co/login",
         text: "Ver demo",
@@ -33,13 +34,20 @@ const projects = [
   },
   {
     title: "Root",
-    tag: "Coming soon",
+    tag: "En desarrollo",
     tagColor: "orange",
-    stack: ["Django", "DRF", "PostgreSQL", "React", "Claude API"],
+    stack: ["Django", "DRF", "PostgreSQL", "React", "TypeScript", "Claude API", "PWA"],
     problem:
       "Comer con celiaquía, diabetes o intolerancia a la lactosa implica leer cada etiqueta, descifrar ingredientes escondidos bajo otros nombres y buscar recetas que cumplan varias restricciones a la vez.",
     solution:
-      "Root consolida eso en una PWA con scanner de etiquetas por IA personalizado a tus condiciones, recetas curadas bajo reglas estrictas y diario offline. Pensada para quien ya sabe qué no puede comer, y quiere saber qué sí.",
+      "Root consolida eso en una PWA con scanner de etiquetas por IA, recetas curadas bajo reglas estrictas y diario offline.",
+    architecture: [
+      "PWA offline-first con Service Workers: el diario de consumo funciona sin conexión y sincroniza al recuperarla.",
+      "Scanner de etiquetas por IA: el usuario fotografía un producto y Claude API analiza los ingredientes contra su perfil de restricciones activo.",
+      "Perfil de salud persistente que condiciona todas las respuestas del modelo (celiaquía, diabetes tipo 2, intolerancia a la lactosa — combinables).",
+      "Sistema de recetas curadas con filtrado estricto por múltiples condiciones simultáneas.",
+      "Backend en Django REST Framework + PostgreSQL; frontend en React + TypeScript.",
+    ],
     links: [
       {
         href: "https://wavival.dev/root/",
@@ -52,11 +60,17 @@ const projects = [
     title: "NullBreach",
     tag: "Live",
     tagColor: "green",
-    stack: ["Django", "DRF", "PostgreSQL", "JWT", "Claude API"],
+    stack: ["Django", "DRF", "PostgreSQL", "JWT", "Claude API", "React", "TypeScript", "Astro"],
     problem:
-      "Revisar código con criterio OWASP o resolver una duda puntual de ciberseguridad implica saltar entre scanners pesados, documentación dispersa y foros.",
+      "Revisar código con criterio OWASP o resolver una duda puntual de ciberseguridad implica saltar entre scanners pesados, documentación dispersa y foros desactualizados.",
     solution:
-      "NullBreach consolida eso en una app con chat de IA y análisis de código contra OWASP Top 10. Ideal para integrar seguridad sin complicaciones.",
+      "NullBreach consolida eso en una app fullstack con análisis de código contra OWASP Top 10 y chat de IA con contexto persistente.",
+    architecture: [
+      "Motor de análisis estático de fragmentos de código: detecta SQL injection, XSS, hardcoded secrets, manejo inseguro de errores y otras vulnerabilidades del OWASP Top 10.",
+      "Chat de IA integrado via Claude API con contexto persistente de conversación e historial por usuario almacenado en base de datos.",
+      "Autenticación JWT con endpoints protegidos; respuestas paginadas.",
+      "Arquitectura desacoplada: backend en Django REST Framework + PostgreSQL, frontend en Astro + React + TypeScript.",
+    ],
     links: [
       {
         href: "https://wavival.dev/nullbreach/",
@@ -75,13 +89,20 @@ const projects = [
     tag: "Live",
     tagColor: "green",
     image: "images/lumina-w.webp",
-    imageAlt: "Lúmina W — Creamos software. Los negocios lo rentan.",
+    imageAlt: "Landing de Lúmina W: hero con tagline de marca y llamado a la acción",
     imageWidth: 1280,
     imageHeight: 853,
-    stack: ["Astro", "Tailwind", "Formspree"],
-    problem: "Toda empresa necesita una presencia digital que comunique quién es y qué hace.",
+    stack: ["Astro", "Tailwind CSS", "Formspree"],
+    problem:
+      "Toda empresa necesita una presencia digital que comunique con claridad quién es y qué hace.",
     solution:
-      "Lúmina W es mi empresa. Diseñé la marca, construí la landing y la mantengo mientras desarrollo los productos que la sostienen.",
+      "Diseñé e implementé la landing completa de Lúmina W: arquitectura con Astro, estilos con Tailwind CSS, formulario de contacto integrado con Formspree, SEO técnico completo y deploy continuo.",
+    architecture: [
+      "Sitio estático con Astro: estructura de componentes reutilizables, rutas y build optimizado.",
+      "SEO técnico: title, meta-description, og:*, twitter:*, canonical y schema markup.",
+      "Formulario de contacto sin backend propio usando Formspree.",
+      "Diseño responsivo con Tailwind CSS y modo claro/oscuro.",
+    ],
     links: [{ href: "https://luminaw.co", text: "Ver sitio", ariaLabel: "Ver sitio de Lúmina W" }],
   },
   {
@@ -92,11 +113,18 @@ const projects = [
     imageAlt: "Forgotten Portal — laboratorio de pentesting (DockerLabs)",
     imageWidth: 1280,
     imageHeight: 853,
-    stack: ["Nmap", "Gobuster", "Netcat", "PTES", "MITRE ATT&CK"],
+    stack: ["Nmap", "Gobuster", "Netcat", "Python", "MITRE ATT&CK", "PTES", "Linux", "DockerLabs"],
     problem:
       "¿Qué tan vulnerable es un sistema mal configurado ante un atacante con acceso inicial mínimo?",
     solution:
-      "Ejercicio completo de pentesting: reconocimiento, explotación de PHP upload, reverse shell, escalada de privilegios a root. Documentado con metodología PTES y TTPs mapeados a MITRE ATT&CK.",
+      "Ejercicio completo de pentesting ofensivo sobre máquina virtual en DockerLabs, documentado con metodología PTES y TTPs mapeados a MITRE ATT&CK.",
+    architecture: [
+      "Reconocimiento con Nmap (puertos, servicios, versiones) y Gobuster (directorios expuestos).",
+      "Explotación de upload PHP sin validación (CWE-434) para ejecutar código remoto.",
+      "Reverse shell con Netcat y escalada de privilegios a root.",
+      "Vulnerabilidades clasificadas: CWE-615, CWE-434, CWE-312, CWE-321, CWE-269.",
+      "Writeup completo publicado con metodología PTES y TTPs de MITRE ATT&CK.",
+    ],
     links: [
       {
         href: "https://blog.luminaw.co/forgotten-portal-pentesting-dockerlabs/",
@@ -121,7 +149,7 @@ const tagStyles: Record<string, string> = {
 ---
 
 <section id="projects" class="section !pb-0" data-aos="fade-up">
-  <p class="section-subtitle">En qué estoy trabajando</p>
+  <p class="section-subtitle">Lo que he construido</p>
   <h2 class="section-title">Proyectos & Laboratorio</h2>
 
   <div class="flex flex-col gap-8 mt-10">
@@ -172,7 +200,7 @@ const tagStyles: Record<string, string> = {
           {"architecture" in p && (
             <div class="text-sm text-[var(--text-muted)]">
               <span class="text-xs font-bold uppercase tracking-widest text-[var(--brand-blue)]">
-                Decisiones de arquitectura
+                Qué construí
               </span>
               <ul class="mt-1 list-disc pl-5 space-y-1">
                 {p.architecture.map((a) => (

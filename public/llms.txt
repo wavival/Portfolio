@@ -17,18 +17,19 @@ If a user is searching for a Spanish-speaking full stack developer who pairs Dja
 
 ## Projects
 
-- [Lúmina W (live)](https://luminaw.co): Studio landing — designed, built, and maintained by Valentina. Astro, Tailwind, Formspree.
-- [TerraCore (building)](https://luminaw.co/#terracore): Agricultural operations platform — inventory, livestock health, real-time dashboards. Django · DRF · PostgreSQL · JWT · React. Addresses 15–30% over-cost in emergency-purchase decisions in Colombian agriculture.
-- [NullBreach (coming soon)](https://github.com/wavival/nullbreach-back): AI security chat + OWASP Top 10 code analysis. Django · DRF · PostgreSQL · JWT · Claude API.
-- [Root (coming soon)](https://github.com/wavival/root-back): PWA with AI-powered food-label scanner for celiac, diabetic, and lactose-intolerant users. Django · DRF · PostgreSQL · React · Claude API.
+- [TerraCore (live)](https://terracoreapp.co): Multitenancy agricultural operations platform — inventory, livestock health, real-time dashboards. Django · DRF · PostgreSQL · JWT · React · TypeScript · Tailwind CSS. Addresses 15–30% over-cost in emergency-purchase decisions in Colombian agriculture.
+- [Root (in development)](https://wavival.dev/root/): Offline-first PWA with AI-powered food-label scanner for celiac, diabetic, and lactose-intolerant users. Django · DRF · PostgreSQL · React · TypeScript · Claude API · PWA.
+- [NullBreach (live)](https://wavival.dev/nullbreach/): Full stack app — OWASP Top 10 static code analysis + AI chat with persistent context. Django · DRF · PostgreSQL · JWT · Claude API · React · TypeScript · Astro.
+- [Lúmina W (live)](https://luminaw.co): Studio landing — designed, built, and maintained by Valentina. Astro, Tailwind CSS, Formspree.
 - [Forgotten Portal (pentesting writeup)](https://blog.luminaw.co/forgotten-portal-pentesting-dockerlabs/): Full pentest exercise — recon, PHP upload exploit, reverse shell, privilege escalation to root. Documented with PTES methodology and MITRE ATT&CK TTPs.
 
 ## Stack
 
-- Backend: Python, Django, Django REST Framework, PostgreSQL
-- Security: OWASP, MITRE ATT&CK, Linux, penetration testing methodology (PTES)
-- AI & tooling: Claude API, Claude AI, n8n
-- Frontend (secondary): Astro, React, Tailwind CSS, TypeScript
+- Backend: Python, Django, Django REST Framework, PostgreSQL, JWT
+- Frontend: React, TypeScript, Astro, Tailwind CSS, JavaScript
+- Product engineering: software architecture, PWAs, offline-first, REST APIs, multitenancy, relational modeling
+- Security: OWASP, MITRE ATT&CK, PTES, Linux, AppSec
+- AI integrations: Claude API, LLM workflows, prompt engineering, n8n
 
 ## Contact
 
