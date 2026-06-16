@@ -9,7 +9,7 @@
 [![Blog](https://img.shields.io/badge/Blog-blog.luminaw.co-407bff?style=for-the-badge&logo=hashnode&logoColor=white)](https://blog.luminaw.co/)
 [![Lúmina W](https://img.shields.io/badge/Lúmina%20W-luminaw.co-407bff?style=for-the-badge&logo=google-chrome&logoColor=white)](https://luminaw.co/)
 
-> Portfolio of **Valentina Ramírez**, Backend Developer, AppSec enthusiast, Founder of [Lúmina W](https://luminaw.co). Third iteration of the site, built with Astro 6 and Tailwind 3. Static-rendered, dark-mode aware, SEO + A11Y + performance first. Deploys to Netlify in one click.
+> Portfolio of **Valentina Ramírez**, Full Stack Developer (Django · React), Founder of [Lúmina W](https://luminaw.co). Third iteration of the site, built with Astro 6 and Tailwind 3. Static-rendered, dark-mode aware, SEO + A11Y + performance first. Deploys to Netlify in one click.
 
 ## Table of contents
 

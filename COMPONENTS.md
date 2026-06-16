@@ -29,8 +29,8 @@ Path: `src/layouts/Layout.astro`. Wraps every page. Owns the full `<head>`, skip
 
 | Prop          | Type      | Default                                                                  |
 | ------------- | --------- | ------------------------------------------------------------------------ |
-| `title`       | `string`  | `"Valentina Ramírez \| Backend Developer & Founder · Colombia"`          |
-| `description` | `string`  | `"Backend developer, fundadora de Lúmina W. Construyo software real..."` |
+| `title`       | `string`  | `"Valentina Ramírez \| Full Stack Developer · React & Django · Colombia"` |
+| `description` | `string`  | `"Full Stack Developer especializada en Django y React. Construyo productos completos..."` |
 | `image`       | `string`  | `"/images/profile.webp"`                                                 |
 | `noindex`     | `boolean` | `false`                                                                  |
 
@@ -134,7 +134,7 @@ All sections render inside `.section` and use `data-aos="fade-up"` for entry ani
 Path: `src/components/sections/Hero.astro`. `id="hero"`. `min-h-[calc(100dvh-64px)]`.
 
 - Profile image (`fetchpriority="high"`, `decoding="async"`, 320×320, circular, brand-blue border)
-- Specialty chips: Backend / IA / AppSec
+- Specialty chips: React / Django / PostgreSQL
 - Single `<h1>` headline with brand-blue accent line
 - Body copy
 - CV download button (`#btn-download-cv`) — fires `gtag("event", "file_download", ...)` on click

@@ -3,30 +3,48 @@ import Link from "@/components/ui/Link.astro";
 
 const projects = [
   {
-    title: "Lúmina W",
-    tag: "Live",
-    tagColor: "green",
-    stack: ["Astro", "Tailwind", "Formspree"],
-    problem: "Toda empresa necesita una presencia digital que comunique quién es y qué hace.",
-    solution:
-      "Lúmina W es mi empresa. Diseñé la marca, construí la landing y la mantengo mientras desarrollo los productos que la sostienen.",
-    links: [{ href: "https://luminaw.co", text: "Ver sitio", ariaLabel: "Ver sitio de Lúmina W" }],
-  },
-  {
     title: "TerraCore",
     tag: "Live",
     tagColor: "green",
+    image: "images/terracore-dashboard.webp",
+    imageAlt:
+      "Dashboard de TerraCore: métricas en tiempo real, gráficas de producción y distribución de ganado",
+    imageWidth: 1280,
+    imageHeight: 846,
     stack: ["Django", "DRF", "PostgreSQL", "JWT", "React"],
     problem:
       "El agro colombiano decide por experiencia, no por datos, y paga sobreprecio del 15–30% en compras de urgencia, pierde insumos por falta de rotación y no sabe qué lote es rentable.",
     solution:
       "TerraCore digitaliza la operación agropecuaria en una sola plataforma: inventario, producción, salud animal y dashboard en tiempo real.",
+    architecture: [
+      "API REST desacoplada: Django REST Framework con autenticación JWT; el frontend React consume la API de forma independiente.",
+      "Multiusuario y multirol: permisos granulares por rol dentro de cada organización.",
+      "Offline-first: el frontend opera sin conexión y sincroniza al recuperar la red.",
+      "Módulos integrados: inventario, producción, salud animal y reportes en una sola plataforma.",
+    ],
     links: [
       { href: "https://terracoreapp.co/", text: "Ver sitio", ariaLabel: "Ver sitio de TerraCore" },
       {
         href: "https://app.terracoreapp.co/login",
         text: "Ver demo",
         ariaLabel: "Ver demo de TerraCore",
+      },
+    ],
+  },
+  {
+    title: "Root",
+    tag: "Coming soon",
+    tagColor: "orange",
+    stack: ["Django", "DRF", "PostgreSQL", "React", "Claude API"],
+    problem:
+      "Comer con celiaquía, diabetes o intolerancia a la lactosa implica leer cada etiqueta, descifrar ingredientes escondidos bajo otros nombres y buscar recetas que cumplan varias restricciones a la vez.",
+    solution:
+      "Root consolida eso en una PWA con scanner de etiquetas por IA personalizado a tus condiciones, recetas curadas bajo reglas estrictas y diario offline. Pensada para quien ya sabe qué no puede comer, y quiere saber qué sí.",
+    links: [
+      {
+        href: "https://wavival.dev/root/",
+        text: "Ver demo",
+        ariaLabel: "Ver demo de Root",
       },
     ],
   },
@@ -53,26 +71,27 @@ const projects = [
     ],
   },
   {
-    title: "Root",
-    tag: "Coming soon",
-    tagColor: "orange",
-    stack: ["Django", "DRF", "PostgreSQL", "React", "Claude API"],
-    problem:
-      "Comer con celiaquía, diabetes o intolerancia a la lactosa implica leer cada etiqueta, descifrar ingredientes escondidos bajo otros nombres y buscar recetas que cumplan varias restricciones a la vez.",
+    title: "Lúmina W",
+    tag: "Live",
+    tagColor: "green",
+    image: "images/lumina-w.webp",
+    imageAlt: "Lúmina W — Creamos software. Los negocios lo rentan.",
+    imageWidth: 1280,
+    imageHeight: 853,
+    stack: ["Astro", "Tailwind", "Formspree"],
+    problem: "Toda empresa necesita una presencia digital que comunique quién es y qué hace.",
     solution:
-      "Root consolida eso en una PWA con scanner de etiquetas por IA personalizado a tus condiciones, recetas curadas bajo reglas estrictas y diario offline. Pensada para quien ya sabe qué no puede comer, y quiere saber qué sí.",
-    links: [
-      {
-        href: "https://wavival.dev/root/",
-        text: "Ver demo",
-        ariaLabel: "Ver demo de Root",
-      },
-    ],
+      "Lúmina W es mi empresa. Diseñé la marca, construí la landing y la mantengo mientras desarrollo los productos que la sostienen.",
+    links: [{ href: "https://luminaw.co", text: "Ver sitio", ariaLabel: "Ver sitio de Lúmina W" }],
   },
   {
     title: "Forgotten Portal",
     tag: "Laboratorio",
     tagColor: "gray",
+    image: "images/forgotten-portal.webp",
+    imageAlt: "Forgotten Portal — laboratorio de pentesting (DockerLabs)",
+    imageWidth: 1280,
+    imageHeight: 853,
     stack: ["Nmap", "Gobuster", "Netcat", "PTES", "MITRE ATT&CK"],
     problem:
       "¿Qué tan vulnerable es un sistema mal configurado ante un atacante con acceso inicial mínimo?",
@@ -109,6 +128,18 @@ const tagStyles: Record<string, string> = {
     {
       projects.map((p, index) => (
         <article class="card flex flex-col gap-4" data-aos="fade-up" data-aos-delay={index * 100}>
+          {"image" in p && (
+            <img
+              src={`${import.meta.env.BASE_URL}${p.image}`}
+              alt={p.imageAlt}
+              width={p.imageWidth}
+              height={p.imageHeight}
+              loading="lazy"
+              decoding="async"
+              class="w-full h-auto rounded-[var(--radius-md)] border border-[var(--border-base)]"
+            />
+          )}
+
           <div class="flex items-center justify-between flex-wrap gap-3">
             <div class="flex items-center gap-3">
               <h3 class="font-display font-bold text-xl text-[var(--text-primary)]">{p.title}</h3>
@@ -137,6 +168,19 @@ const tagStyles: Record<string, string> = {
               <p class="mt-1">{p.solution}</p>
             </div>
           </div>
+
+          {"architecture" in p && (
+            <div class="text-sm text-[var(--text-muted)]">
+              <span class="text-xs font-bold uppercase tracking-widest text-[var(--brand-blue)]">
+                Decisiones de arquitectura
+              </span>
+              <ul class="mt-1 list-disc pl-5 space-y-1">
+                {p.architecture.map((a) => (
+                  <li>{a}</li>
+                ))}
+              </ul>
+            </div>
+          )}
 
           {p.links.length > 0 && (
             <div class="flex gap-4">

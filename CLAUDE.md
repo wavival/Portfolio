@@ -2,7 +2,7 @@
 
 ## What this is
 
-Personal portfolio of **Valentina Ramírez**, Backend Developer, AppSec enthusiast, Founder of [Lúmina W](https://luminaw.co). Third iteration of the site, built to reflect real technical identity, not just a résumé.
+Personal portfolio of **Valentina Ramírez**, Full Stack Developer (Django · React), Founder of [Lúmina W](https://luminaw.co). Third iteration of the site, built to reflect real technical identity, not just a résumé.
 
 **Production URL:** `https://wavival.dev`
 **Repository:** `https://github.com/wavival/wavival.dev`
