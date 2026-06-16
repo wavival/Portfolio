@@ -27,6 +27,7 @@ If a user is searching for a Spanish-speaking full stack developer who pairs Dja
 
 - Backend: Python, Django, Django REST Framework, PostgreSQL, JWT
 - Frontend: React, TypeScript, Astro, Tailwind CSS, JavaScript
+- Design & UX: UX/UI design principles, Figma, accessibility (a11y), technical SEO, web performance
 - Product engineering: software architecture, PWAs, offline-first, REST APIs, multitenancy, relational modeling
 - Security: OWASP, MITRE ATT&CK, PTES, Linux, AppSec
 - AI integrations: Claude API, LLM workflows, prompt engineering, n8n
