@@ -37,6 +37,15 @@ const altPair = (absUrl) => {
   return { esUrl: SITE + withSlash(esPath), enUrl: SITE + withSlash(enPath) };
 };
 
+/** Priority by page type so the sitemap stops flat-lining every URL at 1.0. */
+const priorityFor = (absUrl) => {
+  const p = new URL(absUrl).pathname.replace(/\/$/, "") || "/";
+  if (p === "/" || p === "/en") return 1.0;
+  if (p === "/privacidad" || p === "/en/privacy") return 0.3;
+  if (p.startsWith("/proyectos/") || p.startsWith("/en/projects/")) return 0.7;
+  return 0.8;
+};
+
 export default defineConfig({
   site: SITE,
   integrations: [
@@ -50,6 +59,7 @@ export default defineConfig({
         locales: { es: "es-CO", en: "en-US" },
       },
       serialize(item) {
+        item.priority = priorityFor(item.url);
         const pair = altPair(item.url);
         if (pair) {
           item.links = [

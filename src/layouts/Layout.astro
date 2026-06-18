@@ -13,6 +13,8 @@ interface Props {
   noindex?: boolean;
   lang?: string;
   alternates?: { hreflang: string; href: string }[];
+  /** Preload /images/profile.webp as the LCP image. Only set on pages that render it (home, about). */
+  preloadHero?: boolean;
 }
 
 const {
@@ -23,6 +25,7 @@ const {
   noindex = false,
   lang = "es",
   alternates = [],
+  preloadHero = false,
 } = Astro.props;
 
 const ogLocale = lang === "en" ? "en_US" : "es_CO";
@@ -86,9 +89,9 @@ const jsonLd = JSON.stringify({
       ],
       worksFor: { "@id": `${site}/#organization` },
       sameAs: [
-        "https://linkedin.com/in/wavival",
+        "https://www.linkedin.com/in/wavival/",
         "https://github.com/wavival",
-        "https://instagram.com/wavival",
+        "https://www.instagram.com/wavival/",
         "https://platzi.com/p/wavival",
       ],
     },
@@ -104,7 +107,13 @@ const jsonLd = JSON.stringify({
         width: 619,
         height: 464,
       },
-      sameAs: ["https://luminaw.co", "https://blog.luminaw.co"],
+      contactPoint: {
+        "@type": "ContactPoint",
+        email: "wavival.dev@luminaw.co",
+        contactType: "customer support",
+        availableLanguage: ["es", "en"],
+      },
+      sameAs: ["https://blog.luminaw.co"],
     },
     {
       "@type": "WebSite",
@@ -181,12 +190,16 @@ const jsonLd = JSON.stringify({
     <meta name="theme-color" content="#0f1117" media="(prefers-color-scheme: dark)" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      rel="preload"
-      as="image"
-      href={`${import.meta.env.BASE_URL}images/profile.webp`}
-      fetchpriority="high"
-    />
+    {
+      preloadHero && (
+        <link
+          rel="preload"
+          as="image"
+          href={`${import.meta.env.BASE_URL}images/profile.webp`}
+          fetchpriority="high"
+        />
+      )
+    }
     <link
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Raleway:wght@600;700;800&display=swap"
       rel="stylesheet"
