@@ -19,7 +19,7 @@ interface Props {
 
 const {
   title = "Valentina Ramírez | Full Stack Developer Django + React",
-  description = "Full Stack Developer especializada en Django y React. Construyo productos completos: backend sólido, frontend funcional, integración de IA y seguridad desde el diseño.",
+  description = "Full Stack Developer especializada en Django y React. Construyo productos completos: backend sólido, frontend funcional, IA y seguridad desde el diseño.",
   image = "/images/profile.webp",
   ogImage,
   noindex = false,
@@ -91,6 +91,7 @@ const jsonLd = JSON.stringify({
       sameAs: [
         "https://www.linkedin.com/in/wavival/",
         "https://github.com/wavival",
+        "https://x.com/wavival0",
         "https://www.instagram.com/wavival/",
         "https://platzi.com/p/wavival",
       ],
@@ -172,6 +173,8 @@ const jsonLd = JSON.stringify({
     <meta property="og:locale:alternate" content={ogLocale === "en_US" ? "es_CO" : "en_US"} />
     <meta property="og:site_name" content="Valentina Ramírez" />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@wavival0" />
+    <meta name="twitter:creator" content="@wavival0" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={socialCard} />

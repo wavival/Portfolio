@@ -107,7 +107,7 @@ export const projects: Project[] = [
     caseStudy: true,
     schemaType: "SoftwareApplication",
     metaDescription:
-      "Caso de estudio de TerraCore: plataforma SaaS de gestión agroindustrial para fincas medianas en Colombia. Django, DRF, PostgreSQL y React. PWA offline-first, multitenancy y módulos integrados.",
+      "Caso de estudio de TerraCore: SaaS de gestión agroindustrial para fincas medianas en Colombia. Django, DRF, PostgreSQL y React. PWA offline-first, multitenancy.",
     results: [
       "Reducción de -42% en tiempo de tareas administrativas medida en fincas piloto.",
       "Operación agropecuaria completa centralizada en una plataforma, reemplazando el flujo en Excel, cuadernos y WhatsApp.",
@@ -221,7 +221,7 @@ export const projects: Project[] = [
         { href: "https://app.terracoreapp.co", text: "View app", ariaLabel: "View TerraCore app" },
       ],
       metaDescription:
-        "TerraCore case study: agro-industrial SaaS management platform for mid-sized farms in Colombia. Django, DRF, PostgreSQL, and React. Offline-first PWA, multitenancy, and integrated modules.",
+        "TerraCore case study: agro-industrial SaaS for mid-sized farms in Colombia. Django, DRF, PostgreSQL, React. Offline-first PWA with multitenancy.",
       architecture: [
         "Multitenancy architecture: each organization operates in its own isolated data space on a single backend instance.",
         "REST API with Django REST Framework, JWT authentication, and role-based access control across three roles: Administrator, Operator, and Collaborator.",
@@ -590,7 +590,7 @@ export const projects: Project[] = [
     caseStudy: true,
     schemaType: "SoftwareApplication",
     metaDescription:
-      "Caso de estudio de Root: PWA offline-first con scanner de etiquetas por IA (Claude API) para celíacos, diabéticos e intolerantes a la lactosa. Arquitectura y decisiones.",
+      "Caso de estudio de Root: PWA offline-first con scanner de etiquetas por IA (Claude API) para celíacos, diabéticos e intolerantes a la lactosa.",
     results: [
       "Scanner de etiquetas funcional: el usuario fotografía un producto y Claude API analiza los ingredientes contra su perfil de restricciones activo, incluso cuando varias condiciones aplican a la vez.",
       "Diario de consumo operativo sin conexión gracias al diseño offline-first; los registros se persisten en local y sincronizan al recuperar la red.",
@@ -1159,7 +1159,7 @@ export const projects: Project[] = [
     caseStudy: true,
     schemaType: "CreativeWork",
     metaDescription:
-      "Caso de estudio de Forgotten Portal: pentesting ofensivo sobre DockerLabs con metodologia PTES, vulnerabilidades CWE clasificadas y TTPs mapeados a MITRE ATT&CK.",
+      "Caso de estudio de Forgotten Portal: pentesting ofensivo sobre DockerLabs con metodología PTES, vulnerabilidades CWE y TTPs mapeados a MITRE ATT&CK.",
     en: {
       imageAlt: "Forgotten Portal: pentesting lab (DockerLabs)",
       tag: "Lab",
