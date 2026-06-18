@@ -1,0 +1,178 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Link from "@/components/ui/Link.astro";
+import { stack } from "@/data/stack";
+
+const base = import.meta.env.BASE_URL;
+
+const pageTitle = "Uses: Herramientas y stack | Valentina Ramírez";
+const pageDescription =
+  "El stack y las herramientas que uso como Full Stack Developer (Django, DRF, PostgreSQL, React, TypeScript, Astro, IA y seguridad) y por qué elijo cada una.";
+
+const breadcrumbLd = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Inicio", item: "https://wavival.dev/" },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "Herramientas",
+      item: "https://wavival.dev/herramientas/",
+    },
+  ],
+});
+---
+
+<Layout
+  title={pageTitle}
+  description={pageDescription}
+  alternates={[
+    { hreflang: "es", href: "https://wavival.dev/herramientas/" },
+    { hreflang: "en", href: "https://wavival.dev/en/uses/" },
+    { hreflang: "x-default", href: "https://wavival.dev/herramientas/" },
+  ]}
+>
+  <section class="section">
+    <p class="section-subtitle">Herramientas</p>
+    <h1 class="section-title">Con qué construyo</h1>
+    <p class="text-[var(--text-muted)] leading-relaxed max-w-3xl mt-4">
+      Todo lo que uso para construir: el stack, la máquina y las apps del día a día. No es una lista
+      de modas, son las herramientas con las que entrego productos reales.
+    </p>
+
+    <div class="mt-16 pt-10 border-t border-[var(--border-base)]">
+      <p class="section-subtitle">Stack</p>
+      <h2 class="font-display font-bold text-2xl text-[var(--text-primary)]">Con qué desarrollo</h2>
+      <p class="text-[var(--text-muted)] leading-relaxed max-w-3xl mt-3">
+        El stack que uso a diario y la razón detrás de cada elección: backend sólido, frontend
+        funcional, IA aplicada y seguridad desde el diseño.
+      </p>
+
+      <div class="flex flex-col gap-10 mt-10 max-w-3xl">
+        {
+          stack.map((s) => (
+            <section data-aos="fade-up">
+              <div class="flex items-baseline gap-3 flex-wrap">
+                <h3 class="font-display font-bold text-xl text-[var(--brand-blue)]">
+                  {s.category}
+                </h3>
+                <span class="text-xs italic text-[var(--text-muted)]">{s.description}</span>
+              </div>
+              {s.why && <p class="text-[var(--text-muted)] leading-relaxed mt-2">{s.why}</p>}
+              <div class="flex flex-wrap gap-2 mt-4">
+                {s.tools.map((t) => (
+                  <span class="chip !text-[var(--text-primary)]">{t}</span>
+                ))}
+              </div>
+            </section>
+          ))
+        }
+      </div>
+    </div>
+
+    <div class="mt-16 pt-10 border-t border-[var(--border-base)]">
+      <p class="section-subtitle">Hardware</p>
+      <h2 class="font-display font-bold text-2xl text-[var(--text-primary)]">Dónde lo construyo</h2>
+      <p class="text-[var(--text-muted)] leading-relaxed max-w-3xl mt-3">
+        Equipo modesto a propósito. Si una app corre fluida acá, corre en cualquier lado: me obliga
+        a optimizar de verdad, no a tapar con hardware.
+      </p>
+
+      <div class="flex flex-col gap-10 mt-10 max-w-3xl">
+        <section data-aos="fade-up">
+          <div class="flex items-baseline gap-3 flex-wrap">
+            <h3 class="font-display font-bold text-xl text-[var(--brand-blue)]">Equipo</h3>
+            <span class="text-xs italic text-[var(--text-muted)]">Mi máquina del día a día</span>
+          </div>
+          <div class="flex flex-wrap gap-2 mt-4">
+            <span class="chip !text-[var(--text-primary)]">AMD Ryzen 5 3400G</span>
+            <span class="chip !text-[var(--text-primary)]">Radeon RX Vega 11</span>
+            <span class="chip !text-[var(--text-primary)]">16 GB RAM</span>
+            <span class="chip !text-[var(--text-primary)]">224 GB</span>
+            <span class="chip !text-[var(--text-primary)]">Windows 11 Pro (25H2)</span>
+            <span class="chip !text-[var(--text-primary)]">WSL2 · Ubuntu</span>
+          </div>
+        </section>
+
+        <section data-aos="fade-up">
+          <div class="flex items-baseline gap-3 flex-wrap">
+            <h3 class="font-display font-bold text-xl text-[var(--brand-blue)]">Periféricos</h3>
+            <span class="text-xs italic text-[var(--text-muted)]">Lo que toco a diario</span>
+          </div>
+          <div class="flex flex-wrap gap-2 mt-4">
+            <span class="chip !text-[var(--text-primary)]"
+              >Monitor LG 27″ ultrawide (audio integrado)</span
+            >
+            <span class="chip !text-[var(--text-primary)]">Teclado Genius</span>
+            <span class="chip !text-[var(--text-primary)]">Mouse ergonómico alámbrico</span>
+            <span class="chip !text-[var(--text-primary)]">Cámara HP 1080p (mic integrado)</span>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <div class="mt-16 pt-10 border-t border-[var(--border-base)]">
+      <p class="section-subtitle">Software</p>
+      <h2 class="font-display font-bold text-2xl text-[var(--text-primary)]">
+        Mis herramientas del día a día
+      </h2>
+      <p class="text-[var(--text-muted)] leading-relaxed max-w-3xl mt-3">
+        Las apps donde vivo mientras construyo: edición, IA, terminal y el flujo de productividad
+        que me mantiene enfocada.
+      </p>
+
+      <div class="flex flex-col gap-10 mt-10 max-w-3xl">
+        <section data-aos="fade-up">
+          <div class="flex items-baseline gap-3 flex-wrap">
+            <h3 class="font-display font-bold text-xl text-[var(--brand-blue)]">Código e IA</h3>
+            <span class="text-xs italic text-[var(--text-muted)]">Donde escribo y razono</span>
+          </div>
+          <div class="flex flex-wrap gap-2 mt-4">
+            <span class="chip !text-[var(--text-primary)]">VS Code</span>
+            <span class="chip !text-[var(--text-primary)]">Cursor</span>
+            <span class="chip !text-[var(--text-primary)]">Claude (app · chat · Code · Design)</span
+            >
+            <span class="chip !text-[var(--text-primary)]">ChatGPT</span>
+            <span class="chip !text-[var(--text-primary)]">Codex</span>
+          </div>
+        </section>
+
+        <section data-aos="fade-up">
+          <div class="flex items-baseline gap-3 flex-wrap">
+            <h3 class="font-display font-bold text-xl text-[var(--brand-blue)]">Terminal y APIs</h3>
+            <span class="text-xs italic text-[var(--text-muted)]">El backend del día</span>
+          </div>
+          <div class="flex flex-wrap gap-2 mt-4">
+            <span class="chip !text-[var(--text-primary)]">Warp</span>
+            <span class="chip !text-[var(--text-primary)]">WSL (Ubuntu)</span>
+            <span class="chip !text-[var(--text-primary)]">Postman</span>
+          </div>
+        </section>
+
+        <section data-aos="fade-up">
+          <div class="flex items-baseline gap-3 flex-wrap">
+            <h3 class="font-display font-bold text-xl text-[var(--brand-blue)]">
+              Productividad y navegación
+            </h3>
+            <span class="text-xs italic text-[var(--text-muted)]">Para no perder el hilo</span>
+          </div>
+          <div class="flex flex-wrap gap-2 mt-4">
+            <span class="chip !text-[var(--text-primary)]">Todoist</span>
+            <span class="chip !text-[var(--text-primary)]">Focus To-Do</span>
+            <span class="chip !text-[var(--text-primary)]">Bloc de notas</span>
+            <span class="chip !text-[var(--text-primary)]">Brave</span>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <div class="mt-16 pt-10 border-t border-[var(--border-base)] flex flex-wrap gap-5">
+      <Link href={`${base}proyectos`} aria-label="Ver proyectos donde uso este stack">
+        Ver proyectos
+      </Link>
+      <Link href={`${base}servicios`} aria-label="Ver servicios"> Ver servicios </Link>
+    </div>
+  </section>
+  <script is:inline type="application/ld+json" set:html={breadcrumbLd} />
+</Layout>

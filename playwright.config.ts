@@ -4,11 +4,11 @@ export default defineConfig({
   testDir: "./tests",
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 0,
+  retries: process.env.CI ? 2 : 1,
   workers: process.env.CI ? 1 : undefined,
   reporter: process.env.CI ? "github" : "list",
   use: {
-    baseURL: "http://localhost:4321",
+    baseURL: "http://localhost:4329",
     trace: "on-first-retry",
   },
   projects: [
@@ -22,9 +22,9 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: "npm run preview",
-    url: "http://localhost:4321",
-    reuseExistingServer: !process.env.CI,
+    command: "npm run preview -- --port 4329",
+    url: "http://localhost:4329",
+    reuseExistingServer: false,
     timeout: 120_000,
   },
 });

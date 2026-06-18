@@ -1,0 +1,30 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Hero from "@/components/sections/Hero.astro";
+import Projects from "@/components/sections/Projects.astro";
+import Stack from "@/components/sections/Stack.astro";
+import About from "@/components/sections/About.astro";
+import Contact from "@/components/sections/Contact.astro";
+
+const title = "Valentina Ramírez | Full Stack Developer Django + React";
+const description =
+  "Full Stack Developer specialized in Django and React. I build complete products: solid backend, functional frontend, applied AI, and security by design.";
+---
+
+<Layout
+  title={title}
+  description={description}
+  lang="en"
+  preloadHero
+  alternates={[
+    { hreflang: "es", href: "https://wavival.dev/" },
+    { hreflang: "en", href: "https://wavival.dev/en/" },
+    { hreflang: "x-default", href: "https://wavival.dev/" },
+  ]}
+>
+  <Hero lang="en" />
+  <Projects featured lang="en" />
+  <Stack lang="en" />
+  <About lang="en" />
+  <Contact lang="en" />
+</Layout>

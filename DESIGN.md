@@ -1,4 +1,4 @@
-# DESIGN.md — Design System
+# DESIGN.md: Design System
 
 Design tokens, typography, color, and utility classes for `wavival.dev`. Everything documented here lives in `src/styles/` and `tailwind.config.mjs`.
 
@@ -61,10 +61,10 @@ WCAG AA verified: muted on `--bg-page` ≈ 5.9:1 (light) and ≈ 7.4:1 (dark).
 
 ### Accent / interactive
 
-| Token            | Value     | Usage                     |
-| ---------------- | --------- | ------------------------- |
-| `--accent-link`  | `#1e90ff` | Links, focus rings        |
-| `--accent-hover` | `#1a7fe0` | Link / button hover state |
+| Token            | Value     | Usage                                         |
+| ---------------- | --------- | --------------------------------------------- |
+| `--accent-link`  | `#1e90ff` | Links, focus rings, `.btn-primary` background |
+| `--accent-hover` | `#1a7fe0` | Link / button hover state                     |
 
 ### Borders, shadows, radii
 
@@ -86,13 +86,14 @@ Most layout spacing is Tailwind-driven (`gap-`, `py-`, `px-`). The token exists 
 
 ### Dark mode overrides
 
-Only the subset of tokens that need to invert live under `.dark` in `tokens.css`:
+Only the subset of tokens that need to invert live under `.dark` in `tokens.css`: `--bg-page`, `--bg-card`, `--bg-blur`, `--nav-blur`, `--text-primary`, `--text-muted`, `--border-base`, `--shadow-base`. The shape is a normal selector block:
 
 ```css
 .dark {
-  --bg-page, --bg-card, --bg-blur, --nav-blur,
-  --text-primary, --text-muted,
-  --border-base, --shadow-base
+  --bg-page: #0f1117;
+  --bg-card: #1a1f2e;
+  --text-primary: #e8eaf6;
+  /* ...remaining inverted tokens */
 }
 ```
 
@@ -120,20 +121,20 @@ Loaded via Google Fonts in `Layout.astro` with `media="print"` + `onload="this.m
 
 All inside `@layer utilities` in `src/styles/utilities.css`, 2-space indentation.
 
-| Class               | Purpose                                                        |
-| ------------------- | -------------------------------------------------------------- |
-| `.section`          | Section container: `max-w-5xl mx-auto px-6 py-24`              |
-| `.section-title`    | `h2` heading (3xl, display, bold)                              |
-| `.section-subtitle` | Uppercase blue label above title (xs, tracked widest)          |
-| `.btn-primary`      | Solid blue button. Hover: shifts `translateX(4px)`             |
-| `.btn-ghost`        | Outline button. Hover: fills accent + inverts text             |
-| `.chip`             | Pill badge for tech tags (rounded-full, border, xs)            |
-| `.card`             | Surface with 4px bottom border. Hover: `scale(1.01)` + bg fill |
-| `.card-plain`       | Borderless card. Hover: `translateX(6px)`                      |
-| `.nav-link`         | Muted uppercase link, hover → `--accent-link`                  |
-| `.link`             | Inline text link. Hover: `translateX(4px)`                     |
-| `.icon`             | Base icon utility: `shrink-0`, transition                      |
-| `.icon-sm/md/lg/xl` | `w-4/5/6/8` paired sizing                                      |
+| Class               | Purpose                                                                                                                                         |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| `.section`          | Section container: `max-w-5xl mx-auto px-6 py-24`                                                                                               |
+| `.section-title`    | `h2` heading (3xl, display, bold)                                                                                                               |
+| `.section-subtitle` | Uppercase blue label above title (xs, tracked widest)                                                                                           |
+| `.btn-primary`      | Solid button, `px-[14px] py-[12px]`, `background-color: var(--accent-link)`. Hover: `background-color: var(--accent-hover)` + `translateX(4px)` |
+| `.btn-ghost`        | Outline button. Hover: fills `--accent-link` + inverts text                                                                                     |
+| `.chip`             | Pill badge for tech tags (rounded-full, border, xs)                                                                                             |
+| `.card`             | Surface with 4px bottom border. Hover: `scale(1.02)` + `--bg-card` fill                                                                         |
+| `.card-plain`       | Borderless card. Hover: `translateX(6px)`                                                                                                       |
+| `.nav-link`         | Muted uppercase link, hover to `--accent-link`                                                                                                  |
+| `.link`             | Inline text link. Hover: `translateX(4px)`                                                                                                      |
+| `.icon`             | Base icon utility: `shrink-0`, transition                                                                                                       |
+| `.icon-sm/md/lg/xl` | `w-4/5/6/8` paired sizing                                                                                                                       |
 
 ### Component coverage by class
 
@@ -148,19 +149,20 @@ All inside `@layer utilities` in `src/styles/utilities.css`, 2-space indentation
 
 ## Dark mode strategy
 
-- `tailwind.config.mjs` → `darkMode: 'class'`
-- **Initial state applied pre-paint.** A synchronous `<script is:inline>` at the top of `<head>` (in `Layout.astro`) reads `localStorage["theme"]` — falling back to `prefers-color-scheme: dark` — and adds `.dark` to `<html>` before stylesheets load. This eliminates FOUC.
+- `tailwind.config.mjs` to `darkMode: 'class'`
+- **Initial state applied pre-paint.** A synchronous `<script is:inline>` at the top of `<head>` (in `Layout.astro`) reads `localStorage["theme"]` (falling back to `prefers-color-scheme: dark`) and adds `.dark` to `<html>` before stylesheets load. This eliminates FOUC.
 - **Post-paint behavior** is owned by `src/scripts/theme.ts`: it syncs the sun/moon icons to the already-applied state, then handles toggle clicks. Each click flips `.dark` on `<html>`, writes `localStorage["theme"]`, and re-syncs icons.
-- Toggle swaps two icon `<img>` elements (sun/moon) via `.hidden` class — no JS-rendered SVG.
-- Never use `@media (prefers-color-scheme)` in CSS for styling — the `.dark` class is the single source of truth.
+- Toggle swaps two icon `<img>` elements (sun/moon) via `.hidden` class, no JS-rendered SVG.
+- Never use `@media (prefers-color-scheme)` in CSS for styling; the `.dark` class is the single source of truth.
 
 ## Motion
 
-| Source                   | Behavior                                                                       |
-| ------------------------ | ------------------------------------------------------------------------------ |
-| `global.css`             | 0.3s transitions on `border-color`, `color`, `background-color`                |
-| AOS (`Layout.astro`)     | `fade-up` on sections, `duration: 800`, `once: true`                           |
-| `prefers-reduced-motion` | All animations/transitions clamped to `0.01ms`. AOS `duration: 0`, `offset: 0` |
+| Source                       | Behavior                                                                                                                                                              |
+| ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `global.css`                 | Universal `*` selector transitions `border-color` (0.3s ease) only. `html` transitions `color` (0.3s); `body` transitions `background-color` and `color` (0.3s each). |
+| `.card` (utilities + global) | Hover lift via `transform: scale(1.02)` on a bouncy `cubic-bezier(0.34, 1.56, 0.64, 1)` curve, plus `background-color`, `box-shadow`, and `opacity` transitions       |
+| AOS (`Layout.astro`)         | `fade-*` on sections, `duration: 800`, `easing: "ease-in-out"`, `once: true`, `offset: 100`                                                                           |
+| `prefers-reduced-motion`     | All animations/transitions clamped to `0.01ms`. AOS `duration: 0`, `offset: 0`                                                                                        |
 
 The reduce-motion override lives in `global.css`:
 

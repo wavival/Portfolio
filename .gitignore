@@ -36,6 +36,7 @@ ehthumbs.db
 # editor / IDE
 .vscode/settings.json
 .idea/
+.editorconfig
 
 # Claude Code local config
 .claude/
@@ -60,3 +61,11 @@ playwright/.cache/
 *.swo
 *.orig
 *.bak
+
+# Lighthouse CI reports
+.lighthouseci/
+
+# Lighthouse Chrome user-data dirs (broken WSL path resolution can drop these in repo root)
+lighthouse.*
+*wsl.localhost*
+undefined*

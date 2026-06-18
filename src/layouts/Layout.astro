@@ -2,26 +2,51 @@
 import "@/styles/global.css";
 import NavBar from "@/components/ui/NavBar.astro";
 import Footer from "@/components/ui/Footer.astro";
+import Loader from "@/components/ui/Loader.astro";
+import { useTranslations, type Lang } from "@/i18n/utils";
 
 interface Props {
   title?: string;
   description?: string;
   image?: string;
+  ogImage?: string;
   noindex?: boolean;
+  lang?: string;
+  alternates?: { hreflang: string; href: string }[];
+  /** Preload /images/profile.webp as the LCP image. Only set on pages that render it (home, about). */
+  preloadHero?: boolean;
 }
 
 const {
-  title = "Valentina Ramírez | Full Stack Developer · React & Django · Colombia",
-  description = "Full Stack Developer especializada en Django y React. Construyo productos completos: backend sólido, frontend funcional, integración de IA y seguridad desde el diseño.",
+  title = "Valentina Ramírez | Full Stack Developer Django + React",
+  description = "Full Stack Developer especializada en Django y React. Construyo productos completos: backend sólido, frontend funcional, IA y seguridad desde el diseño.",
   image = "/images/profile.webp",
+  ogImage,
   noindex = false,
+  lang = "es",
+  alternates = [],
+  preloadHero = false,
 } = Astro.props;
+
+const ogLocale = lang === "en" ? "en_US" : "es_CO";
+const t = useTranslations(lang as Lang);
+const personDescription =
+  "Full Stack Developer especializada en Django y React. Fundadora de Lúmina W. Construyo productos completos con IA integrada y seguridad desde el diseño.";
 
 const site = "https://wavival.dev";
 const canonicalURL = new URL(Astro.url.pathname, site);
-const ogImage = new URL(image, site);
+const personImage = new URL(image, site);
+const socialCard = ogImage ? new URL(ogImage, site) : new URL("/images/og-card.png", site);
+const socialCardType = (ogImage ?? "/images/og-card.png").endsWith(".webp")
+  ? "image/webp"
+  : "image/png";
+const socialCardAlt =
+  lang === "en"
+    ? "Valentina Ramírez: Full Stack Developer · Django + React · AI & Security"
+    : "Valentina Ramírez: Full Stack Developer · Django + React · IA & Seguridad";
 
-const GA_ID = import.meta.env.PUBLIC_GA_ID;
+const UMAMI_SRC = import.meta.env.PUBLIC_UMAMI_SRC;
+const UMAMI_ID = import.meta.env.PUBLIC_UMAMI_ID;
 const GSV = import.meta.env.PUBLIC_GSV;
 
 const jsonLd = JSON.stringify({
@@ -32,46 +57,93 @@ const jsonLd = JSON.stringify({
       "@id": `${site}/#person`,
       name: "Valentina Ramírez",
       url: site,
-      image: ogImage.toString(),
-      jobTitle: "Full Stack Developer",
-      description: description,
-      worksFor: {
-        "@type": "Organization",
-        name: "Lúmina W",
-        url: "https://luminaw.co",
+      image: {
+        "@type": "ImageObject",
+        "@id": `${site}/#personimage`,
+        url: personImage.toString(),
+        width: 640,
+        height: 640,
+        caption: "Valentina Ramírez",
       },
-      sameAs: [
-        "https://linkedin.com/in/wavival",
-        "https://github.com/wavival",
-        "https://instagram.com/wavival",
+      jobTitle: "Full Stack Developer",
+      description: personDescription,
+      knowsAbout: [
+        "Full Stack Development",
+        "Django",
+        "Django REST Framework",
+        "React",
+        "TypeScript",
+        "PostgreSQL",
+        "REST APIs",
+        "AI integration",
+        "LLM workflows",
+        "Application Security",
+        "OWASP",
       ],
+      knowsLanguage: ["es", "en"],
+      nationality: { "@type": "Country", name: "Colombia" },
+      alumniOf: [
+        { "@type": "EducationalOrganization", name: "SENA" },
+        { "@type": "EducationalOrganization", name: "Universidad de San Buenaventura" },
+        { "@type": "EducationalOrganization", name: "Platzi", url: "https://platzi.com" },
+      ],
+      worksFor: { "@id": `${site}/#organization` },
+      sameAs: [
+        "https://www.linkedin.com/in/wavival/",
+        "https://github.com/wavival",
+        "https://x.com/wavival0",
+        "https://www.instagram.com/wavival/",
+        "https://platzi.com/p/wavival",
+      ],
+    },
+    {
+      "@type": "Organization",
+      "@id": `${site}/#organization`,
+      name: "Lúmina W",
+      url: "https://luminaw.co",
+      foundingDate: "2025-11",
+      founder: { "@id": `${site}/#person` },
+      logo: {
+        "@type": "ImageObject",
+        url: `${site}/brand/logo-w.webp`,
+        width: 619,
+        height: 464,
+      },
+      contactPoint: {
+        "@type": "ContactPoint",
+        email: "wavival.dev@luminaw.co",
+        contactType: "customer support",
+        availableLanguage: ["es", "en"],
+      },
+      sameAs: ["https://blog.luminaw.co"],
     },
     {
       "@type": "WebSite",
       "@id": `${site}/#website`,
       url: site,
-      name: title,
+      name: "Valentina Ramírez",
       description: description,
-      inLanguage: "es-CO",
       author: { "@id": `${site}/#person` },
     },
   ],
 });
 ---
 
-<html lang="es" class="scroll-smooth">
+<html lang={lang} class="scroll-smooth">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script is:inline>
       (function () {
         try {
-          var t = localStorage.getItem("theme");
-          var prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+          const t = localStorage.getItem("theme");
+          const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
           if (t === "dark" || (t === null && prefersDark)) {
             document.documentElement.classList.add("dark");
           }
-        } catch (e) {}
+        } catch {
+          /* localStorage unavailable: keep default theme */
+        }
       })();
     </script>
     <title>{title}</title>
@@ -88,35 +160,50 @@ const jsonLd = JSON.stringify({
       )
     }
     <link rel="canonical" href={canonicalURL} />
+    {alternates.map((a) => <link rel="alternate" hreflang={a.hreflang} href={a.href} />)}
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={ogImage} />
-    <meta property="og:image:alt" content="Foto de perfil de Valentina Ramírez" />
-    <meta property="og:image:width" content="640" />
-    <meta property="og:image:height" content="640" />
-    <meta property="og:locale" content="es_CO" />
+    <meta property="og:image" content={socialCard} />
+    <meta property="og:image:type" content={socialCardType} />
+    <meta property="og:image:alt" content={socialCardAlt} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content={ogLocale} />
+    <meta property="og:locale:alternate" content={ogLocale === "en_US" ? "es_CO" : "en_US"} />
     <meta property="og:site_name" content="Valentina Ramírez" />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@wavival0" />
+    <meta name="twitter:creator" content="@wavival0" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={ogImage} />
-    <meta name="twitter:image:alt" content="Foto de perfil de Valentina Ramírez" />
+    <meta name="twitter:image" content={socialCard} />
+    <meta name="twitter:image:alt" content={socialCardAlt} />
     {GSV && <meta name="google-site-verification" content={GSV} />}
-    <link rel="icon" href={`${import.meta.env.BASE_URL}brand/logo-w.ico`} />
-    <link rel="icon" type="image/webp" href={`${import.meta.env.BASE_URL}brand/logo-w.webp`} />
-    <link rel="apple-touch-icon" href={`${import.meta.env.BASE_URL}brand/logo-w.webp`} />
+    <link rel="icon" href={`${import.meta.env.BASE_URL}favicon.ico`} sizes="any" />
+    <link
+      rel="icon"
+      type="image/png"
+      href={`${import.meta.env.BASE_URL}icon-192.png`}
+      sizes="192x192"
+    />
+    <link rel="apple-touch-icon" href={`${import.meta.env.BASE_URL}apple-touch-icon.png`} />
+    <link rel="manifest" href={`${import.meta.env.BASE_URL}site.webmanifest`} />
     <meta name="theme-color" content="#f0f4ff" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#0f1117" media="(prefers-color-scheme: dark)" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      rel="preload"
-      as="image"
-      href={`${import.meta.env.BASE_URL}images/profile.webp`}
-      fetchpriority="high"
-    />
+    {
+      preloadHero && (
+        <link
+          rel="preload"
+          as="image"
+          href={`${import.meta.env.BASE_URL}images/profile.webp`}
+          fetchpriority="high"
+        />
+      )
+    }
     <link
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Raleway:wght@600;700;800&display=swap"
       rel="stylesheet"
@@ -129,17 +216,8 @@ const jsonLd = JSON.stringify({
         rel="stylesheet"
       />
     </noscript>
-    {
-      GA_ID && (
-        <>
-          <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`} />
-          <script
-            is:inline
-            set:html={`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date());gtag("config","${GA_ID}");`}
-          />
-        </>
-      )
-    }
+    {UMAMI_SRC && UMAMI_ID && <script is:inline defer src={UMAMI_SRC} data-website-id={UMAMI_ID} />}
+    {UMAMI_SRC && UMAMI_ID && <script>import "@/scripts/vitals";</script>}
     <script>
       import AOS from "aos";
       import "aos/dist/aos.css";
@@ -156,16 +234,17 @@ const jsonLd = JSON.stringify({
     <script is:inline type="application/ld+json" set:html={jsonLd} />
   </head>
   <body class="bg-[var(--bg-page)] text-[var(--text-primary)] antialiased">
+    <Loader />
     <a
       href="#main-content"
       class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[var(--brand-blue)] focus:text-white focus:rounded-lg focus:font-semibold focus:outline-none"
     >
-      Saltar al contenido principal
+      {t("common.skip")}
     </a>
-    <NavBar />
+    <NavBar lang={lang as Lang} />
     <main id="main-content" class="pt-16">
       <slot />
     </main>
-    <Footer />
+    <Footer lang={lang as Lang} />
   </body>
 </html>

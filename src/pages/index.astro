@@ -7,9 +7,16 @@ import About from "@/components/sections/About.astro";
 import Contact from "@/components/sections/Contact.astro";
 ---
 
-<Layout>
+<Layout
+  preloadHero
+  alternates={[
+    { hreflang: "es", href: "https://wavival.dev/" },
+    { hreflang: "en", href: "https://wavival.dev/en/" },
+    { hreflang: "x-default", href: "https://wavival.dev/" },
+  ]}
+>
   <Hero />
-  <Projects />
+  <Projects featured />
   <Stack />
   <About />
   <Contact />

@@ -1,31 +1,19 @@
 ---
-const stack = [
-  {
-    category: "Backend",
-    description: "El núcleo de todo lo que construyo.",
-    tools: ["Python", "Django", "Django REST Framework", "PostgreSQL"],
-  },
-  {
-    category: "Seguridad",
-    description: "Mentalidad ofensiva para escribir código defensivo.",
-    tools: ["OWASP", "MITRE ATT&CK", "Linux"],
-  },
-  {
-    category: "IA & Herramientas",
-    description: "IA como copiloto real, no como atajo.",
-    tools: ["Claude API", "Claude AI", "n8n"],
-  },
-  {
-    category: "Frontend",
-    description: "Interfaces limpias que comunican sin estorbar.",
-    tools: ["Astro", "React", "Tailwind CSS", "TypeScript"],
-  },
-];
+import Link from "@/components/ui/Link.astro";
+import { stack } from "@/data/stack";
+
+interface Props {
+  lang?: "es" | "en";
+}
+const { lang = "es" } = Astro.props;
+const isEn = lang === "en";
+
+const base = import.meta.env.BASE_URL;
 ---
 
 <section id="stack" class="section !pb-0" data-aos="fade-up">
-  <p class="section-subtitle">Con qué trabajo</p>
-  <h2 class="section-title">Stack favorito</h2>
+  <p class="section-subtitle">{isEn ? "What I work with" : "Con qué trabajo"}</p>
+  <h2 class="section-title">{isEn ? "Go-to stack" : "Stack favorito"}</h2>
 
   <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10">
     {
@@ -36,8 +24,12 @@ const stack = [
           data-aos-delay={index * 100}
         >
           <div>
-            <h3 class="font-display font-bold text-lg text-[var(--brand-blue)]">{s.category}</h3>
-            <p class="text-xs mt-1 italic">{s.description}</p>
+            <h3 class="font-display font-bold text-lg text-[var(--brand-blue-text)]">
+              {s.category}
+            </h3>
+            <p class="text-xs mt-1 italic">
+              {isEn ? (s.descriptionEn ?? s.description) : s.description}
+            </p>
           </div>
           <div class="flex flex-wrap gap-2">
             {s.tools.map((t) => (
@@ -47,5 +39,16 @@ const stack = [
         </article>
       ))
     }
+  </div>
+
+  <div class="mt-8 flex justify-center">
+    <Link
+      href={isEn ? `${base}en/uses` : `${base}herramientas`}
+      aria-label={isEn
+        ? "Technical criteria: tools breakdown and why I use them"
+        : "Criterio técnico: detalle de herramientas y por qué las uso"}
+    >
+      {isEn ? "Technical criteria" : "Criterio técnico"}
+    </Link>
   </div>
 </section>

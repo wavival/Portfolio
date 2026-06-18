@@ -1,0 +1,258 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Link from "@/components/ui/Link.astro";
+import Button from "@/components/ui/Button.astro";
+import Contact from "@/components/sections/Contact.astro";
+import { cvHref } from "@/i18n/utils";
+
+const base = import.meta.env.BASE_URL;
+const lang = "es";
+const cv = cvHref(lang, base);
+const cvFile = cv.slice(base.length);
+
+const breadcrumbLd = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Inicio", item: "https://wavival.dev/" },
+    { "@type": "ListItem", position: 2, name: "Sobre mi", item: "https://wavival.dev/sobre-mi/" },
+  ],
+});
+---
+
+<Layout
+  title="Sobre mí | Valentina Ramírez"
+  description="Desarrolladora Full Stack autodidacta, fundadora de Lúmina W. Foco en Django y React y productos propios. Más allá del código: fotografía y batería."
+  preloadHero
+  alternates={[
+    { hreflang: "es", href: "https://wavival.dev/sobre-mi/" },
+    { hreflang: "en", href: "https://wavival.dev/en/about/" },
+    { hreflang: "x-default", href: "https://wavival.dev/sobre-mi/" },
+  ]}
+>
+  <section class="section" data-aos="fade-up">
+    <p class="section-subtitle">Quién está detrás del código</p>
+    <h1 class="section-title">Sobre mí</h1>
+
+    <div class="mt-10 flex flex-col md:flex-row-reverse items-center md:items-start gap-10">
+      <div class="w-full md:w-2/5 flex justify-center shrink-0">
+        <img
+          src={`${base}images/profile.webp`}
+          alt="Foto de perfil de Valentina Ramírez"
+          decoding="async"
+          width="320"
+          height="320"
+          class="w-64 h-64 md:w-80 md:h-80 rounded-full object-cover border-4 border-[var(--brand-blue)] shadow-lg"
+        />
+      </div>
+
+      <div class="w-full md:w-3/5 flex flex-col gap-5">
+        <p
+          class="text-[var(--text-primary)] text-lg md:text-xl font-display font-semibold leading-snug"
+        >
+          Soy Valentina Ramírez. Construyo productos de principio a fin, del modelo de datos a la
+          interfaz que la gente usa, y fundé Lúmina W para hacerlo con criterio propio.
+        </p>
+        <div class="flex flex-wrap gap-2" aria-label="Áreas de foco">
+          <span class="chip">Django · DRF</span>
+          <span class="chip">React · TypeScript</span>
+          <span class="chip">PostgreSQL</span>
+          <span class="chip">IA</span>
+          <span class="chip">Seguridad</span>
+        </div>
+        <p class="text-[var(--text-muted)] leading-relaxed">
+          Llegué al código sin un camino trazado y lo aprendí a fuerza de construir. Esa ruta
+          autodidacta me dejó una forma de trabajar concreta: no me conformo con que algo funcione,
+          necesito entender por qué funciona. Es la diferencia entre copiar una solución y poder
+          sostenerla cuando se rompe a las dos de la mañana.
+        </p>
+      </div>
+    </div>
+
+    <div
+      class="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-4"
+      aria-label="En resumen"
+      data-aos="fade-up"
+    >
+      <div
+        class="rounded-2xl border border-[var(--border-base)] border-b-[4px] p-5 text-center sm:text-left"
+      >
+        <p class="font-display font-bold text-3xl text-[var(--brand-blue)]">Full Stack</p>
+        <p class="text-sm text-[var(--text-muted)] mt-1">Django · React, en producción</p>
+      </div>
+      <div
+        class="rounded-2xl border border-[var(--border-base)] border-b-[4px] p-5 text-center sm:text-left"
+      >
+        <p class="font-display font-bold text-3xl text-[var(--brand-blue)]">Lúmina W</p>
+        <p class="text-sm text-[var(--text-muted)] mt-1">Fundadora, producto a medida</p>
+      </div>
+      <div
+        class="rounded-2xl border border-[var(--border-base)] border-b-[4px] p-5 text-center sm:text-left"
+      >
+        <p class="font-display font-bold text-3xl text-[var(--brand-blue)]">Autodidacta</p>
+        <p class="text-sm text-[var(--text-muted)] mt-1">Aprendizaje continuo, sin atajos</p>
+      </div>
+    </div>
+
+    <div class="mt-12 flex flex-col gap-4">
+      <h3 class="font-display font-bold text-xl text-[var(--text-primary)]">Cómo trabajo</h3>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5" data-aos="fade-up">
+        <div class="card">
+          <h4 class="font-display font-semibold text-lg text-[var(--text-primary)]">
+            El problema primero
+          </h4>
+          <p class="text-[var(--text-muted)] leading-relaxed mt-2">
+            Antes de abrir el editor quiero saber quién usará esto, qué decisión necesita tomar y
+            qué pasa cuando los datos no llegan. El framework viene después.
+          </p>
+        </div>
+        <div class="card">
+          <h4 class="font-display font-semibold text-lg text-[var(--text-primary)]">
+            Entender el porqué
+          </h4>
+          <p class="text-[var(--text-muted)] leading-relaxed mt-2">
+            Django y DRF para una base sólida, React y TypeScript para interfaces que no se sienten
+            frágiles, PostgreSQL cuando el modelo relacional importa. Cada elección con un motivo.
+          </p>
+        </div>
+        <div class="card">
+          <h4 class="font-display font-semibold text-lg text-[var(--text-primary)]">
+            Seguridad e IA desde el diseño
+          </h4>
+          <p class="text-[var(--text-muted)] leading-relaxed mt-2">
+            No son adornos que se pegan al final: entran en el diseño desde el primer endpoint, no
+            cuando algo ya se rompió en producción.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="mt-12 rounded-2xl border border-[var(--border-base)] border-l-[4px] border-l-[var(--brand-blue)] bg-[var(--bg-card)] p-8 flex flex-col gap-4"
+      data-aos="fade-up"
+    >
+      <h3 class="font-display font-bold text-xl text-[var(--text-primary)]">Qué construyo</h3>
+      <p class="text-[var(--text-muted)] leading-relaxed">
+        Aplicaciones reales, no demos: sistemas multiusuario con lógica de negocio compleja, APIs
+        propias y productos que viven en producción. Desde un SaaS agroindustrial offline-first
+        hasta análisis de código con criterio OWASP, me interesa el software que resuelve un
+        problema medible para alguien concreto. Bajo Lúmina W llevo esa misma idea a clientes:
+        producto a medida, pensado para durar y no para impresionar en una captura.
+      </p>
+      <Link href={`${base}proyectos`} aria-label="Ver proyectos de Valentina Ramírez">
+        Ver proyectos
+      </Link>
+    </div>
+
+    <div class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-5" data-aos="fade-up">
+      <div class="card flex flex-col gap-4">
+        <h3 class="font-display font-bold text-xl text-[var(--text-primary)]">
+          Formación en paralelo
+        </h3>
+        <div class="flex flex-col gap-3">
+          <div class="border-l-4 border-[var(--brand-blue)] pl-4">
+            <p class="font-display font-semibold text-[var(--text-primary)]">SENA</p>
+            <p class="text-sm text-[var(--text-muted)]">Análisis y Desarrollo de Software</p>
+          </div>
+          <div class="border-l-4 border-[var(--brand-blue)] pl-4">
+            <p class="font-display font-semibold text-[var(--text-primary)]">
+              U. de San Buenaventura
+            </p>
+            <p class="text-sm text-[var(--text-muted)]">Lengua Inglesa</p>
+          </div>
+          <div class="border-l-4 border-[var(--brand-blue)] pl-4">
+            <p class="font-display font-semibold text-[var(--text-primary)]">Platzi</p>
+            <p class="text-sm text-[var(--text-muted)]">
+              Formación autodidacta en Desarrollo Web, Inteligencia Artificial y Seguridad
+              Informática
+            </p>
+            <Link
+              href="https://platzi.com/p/wavival"
+              target="_blank"
+              class="!text-xs"
+              aria-label="Perfil de Valentina Ramírez en Platzi"
+            >
+              Mi perfil en Platzi
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      <div class="card flex flex-col gap-4">
+        <h3 class="font-display font-bold text-xl text-[var(--text-primary)]">Fuera del código</h3>
+        <p class="text-[var(--text-muted)] leading-relaxed">
+          Lo que más disfruto también me enseña a trabajar: la batería me dio estructura y ritmo, la
+          cocina me enseñó a seguir un proceso y a improvisar cuando hace falta, y la música y la
+          lectura me mantienen la curiosidad encendida. Aprender no se apaga cuando cierro el
+          portátil: es la forma en que vivo dentro y fuera del código.
+        </p>
+        <div class="flex flex-wrap gap-2 mt-auto" aria-label="Intereses fuera del código">
+          <span class="chip">Batería</span>
+          <span class="chip">Cocina</span>
+          <span class="chip">Música</span>
+          <span class="chip">Lectura</span>
+        </div>
+      </div>
+    </div>
+
+    <blockquote class="mt-14 max-w-3xl mx-auto text-center" data-aos="fade-up">
+      <p
+        class="italic font-display font-semibold text-lg md:text-xl text-[var(--text-primary)] leading-snug"
+      >
+        "Aprender no es una etapa que se termina: es la forma en que trabajo. Cada proyecto me deja
+        sabiendo algo que no sabía al empezarlo."
+      </p>
+      <footer class="mt-4 text-[var(--text-muted)]">
+        Autora del <Link
+          href="https://blog.luminaw.co/"
+          target="_blank"
+          class="inline !text-xs"
+          aria-label="Blog de Lúmina W escrito por Valentina Ramírez"
+        >
+          Blog W
+        </Link>, donde escribo lo que aprendo.
+      </footer>
+    </blockquote>
+
+    <div
+      class="mt-14 flex flex-wrap items-center justify-center gap-5 border-t border-[var(--border-base)] pt-10"
+      data-aos="fade-up"
+    >
+      <Button
+        href={cv}
+        download={cvFile}
+        icon="download-cv-white"
+        aria-label="Descargar CV de Valentina Ramírez en PDF"
+      >
+        Descargar CV
+      </Button>
+      <Link
+        href="https://linkedin.com/in/wavival"
+        target="_blank"
+        icon="linkedin"
+        aria-label="LinkedIn de Valentina Ramírez"
+      />
+      <Link
+        href="https://github.com/wavival"
+        target="_blank"
+        icon="github"
+        aria-label="GitHub de Valentina Ramírez"
+      />
+      <Link
+        href="https://instagram.com/wavival"
+        target="_blank"
+        icon="instagram"
+        aria-label="Instagram de Valentina Ramírez"
+      />
+      <Link
+        href="https://wa.me/573116865766"
+        target="_blank"
+        icon="whatsapp"
+        aria-label="WhatsApp de Valentina Ramírez"
+      />
+    </div>
+  </section>
+
+  <Contact />
+  <script is:inline type="application/ld+json" set:html={breadcrumbLd} />
+</Layout>
