@@ -66,26 +66,45 @@ const breadcrumbLd = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
   itemListElement: [
-    { "@type": "ListItem", position: 1, name: "Home", item: site },
+    { "@type": "ListItem", position: 1, name: "Home", item: `${site}/en/` },
     { "@type": "ListItem", position: 2, name: "Projects", item: `${site}/en/projects/` },
     { "@type": "ListItem", position: 3, name: project.title, item: pageURL },
   ],
 });
 
+const schemaType = project.schemaType ?? "SoftwareApplication";
+const buildDate = new Date().toISOString().slice(0, 10);
+const datePublished = project.datePublished ?? buildDate;
+const dateModified = project.dateModified ?? datePublished;
+const fmtDate = (iso: string) =>
+  new Date(`${iso}T12:00:00`).toLocaleDateString("en-US", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+const dateLabel =
+  datePublished !== dateModified
+    ? `Published: ${fmtDate(datePublished)} · Updated: ${fmtDate(dateModified)}`
+    : `Updated: ${fmtDate(dateModified)}`;
+
 const projectLd = JSON.stringify({
   "@context": "https://schema.org",
-  "@type": project.schemaType ?? "SoftwareApplication",
+  "@type": schemaType,
+  "@id": `${pageURL}#project`,
   name: project.title,
   description: metaDesc,
   url: pageURL,
   author: { "@id": `${site}/#person` },
-  datePublished: "2026-06-18",
-  dateModified: "2026-06-18",
-  ...((project.schemaType ?? "SoftwareApplication") === "SoftwareApplication"
+  datePublished,
+  dateModified,
+  ...(schemaType === "SoftwareApplication"
     ? {
-        applicationCategory: "BusinessApplication",
+        applicationCategory: project.appCategory ?? "WebApplication",
         operatingSystem: "Web",
-        programmingLanguage: project.stack,
+        ...(project.programmingLanguage
+          ? { programmingLanguage: project.programmingLanguage }
+          : {}),
+        softwareRequirements: project.stack.join(", "),
       }
     : {}),
 });
@@ -144,7 +163,7 @@ const nextProject = idx < caseStudies.length - 1 ? caseStudies[idx + 1] : null;
         {solution}
       </p>
 
-      <p class="text-xs text-[var(--text-muted)]">Updated: June 18, 2026</p>
+      <p class="text-xs text-[var(--text-muted)]">{dateLabel}</p>
 
       {
         (siteLink || otherLinks.length > 0) && (

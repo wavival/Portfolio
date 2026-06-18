@@ -61,6 +61,14 @@ export interface Project {
   metrics?: { metric: string; label: string; note: string }[];
   /** Schema.org type for the case-study page JSON-LD. */
   schemaType?: "SoftwareApplication" | "WebSite" | "CreativeWork";
+  /** schema.org applicationCategory (SoftwareApplication only). */
+  appCategory?: string;
+  /** Real programming languages (SoftwareApplication only). Frameworks/tools stay in `stack` (mapped to softwareRequirements). */
+  programmingLanguage?: string[];
+  /** ISO 8601 (YYYY-MM-DD) first-publish date for the case-study JSON-LD. Falls back to the build date. */
+  datePublished?: string;
+  /** ISO 8601 (YYYY-MM-DD) last substantive content update. Falls back to datePublished, then build date. */
+  dateModified?: string;
   en?: ProjectEn;
 }
 
@@ -76,6 +84,8 @@ export const projects: Project[] = [
     imageWidth: 1200,
     imageHeight: 630,
     stack: ["Django", "DRF", "PostgreSQL", "JWT", "React", "TypeScript", "Tailwind CSS"],
+    appCategory: "BusinessApplication",
+    programmingLanguage: ["Python", "TypeScript", "SQL"],
     filters: ["full-stack", "pwa"],
     problem:
       "Los productores agropecuarios en Colombia no contaban con software diseñado para ellos: los ERPs existentes eran demasiado complejos, y Excel con login no alcanzaba para gestionar animales, sanidad y producción al mismo tiempo. La operación terminaba repartida entre cuadernos, hojas de cálculo y grupos de WhatsApp.",
@@ -556,6 +566,8 @@ export const projects: Project[] = [
     imageWidth: 1200,
     imageHeight: 630,
     stack: ["Django", "DRF", "PostgreSQL", "React", "TypeScript", "Claude API", "PWA"],
+    appCategory: "HealthApplication",
+    programmingLanguage: ["Python", "TypeScript", "SQL"],
     filters: ["full-stack", "ia", "pwa"],
     problem:
       "Comer con celiaquía, diabetes o intolerancia a la lactosa implica leer cada etiqueta, descifrar ingredientes escondidos bajo otros nombres y buscar recetas que cumplan varias restricciones a la vez, todo de forma manual y dispersa.",
@@ -789,6 +801,8 @@ export const projects: Project[] = [
     imageWidth: 1200,
     imageHeight: 630,
     stack: ["Django", "DRF", "PostgreSQL", "JWT", "Claude API", "React", "TypeScript", "Astro"],
+    appCategory: "SecurityApplication",
+    programmingLanguage: ["Python", "TypeScript", "SQL"],
     filters: ["full-stack", "ia"],
     problem:
       "Revisar código con criterio OWASP o resolver una duda puntual de ciberseguridad implica saltar entre scanners pesados, documentación dispersa y foros desactualizados.",
