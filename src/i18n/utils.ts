@@ -20,7 +20,7 @@ export function useTranslations(lang: Lang) {
  * ES paths that have an EN equivalent.
  * Add entries here as more pages get translated.
  */
-const EN_PAGE_MAP: Record<string, string> = {
+export const EN_PAGE_MAP: Record<string, string> = {
   "/": "/en",
   "/proyectos": "/en/projects",
   "/sobre-mi": "/en/about",
