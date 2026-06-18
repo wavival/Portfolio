@@ -9,6 +9,8 @@ export interface ProjectEn {
   tag?: string;
   problem: string;
   solution: string;
+  /** Short TL;DR shown above the numbered sections. Falls back to the first sentence of `solution`. */
+  summary?: string;
   links: ProjectLink[];
   metaDescription?: string;
   architecture?: string[];
@@ -35,6 +37,8 @@ export interface Project {
   filters?: string[];
   problem: string;
   solution: string;
+  /** Short TL;DR shown above the numbered sections on the case study. Falls back to the first sentence of `solution`. */
+  summary?: string;
   architecture?: string[];
   links: ProjectLink[];
   /** When true, this project gets its own /projects/<slug> case-study page. */
@@ -86,6 +90,8 @@ export const projects: Project[] = [
     stack: ["Django", "DRF", "PostgreSQL", "JWT", "React", "TypeScript", "Tailwind CSS"],
     appCategory: "BusinessApplication",
     programmingLanguage: ["Python", "TypeScript", "SQL"],
+    summary:
+      "PWA multitenancy para fincas medianas en Colombia. Centraliza animales, inventario, producción, salud y costos en una plataforma offline-first; redujo el tiempo administrativo 42% en fincas piloto. Django, DRF, PostgreSQL, React.",
     filters: ["full-stack", "pwa"],
     problem:
       "Los productores agropecuarios en Colombia no contaban con software diseñado para ellos: los ERPs existentes eran demasiado complejos, y Excel con login no alcanzaba para gestionar animales, sanidad y producción al mismo tiempo. La operación terminaba repartida entre cuadernos, hojas de cálculo y grupos de WhatsApp.",
@@ -211,6 +217,8 @@ export const projects: Project[] = [
       { metric: "6 módulos", label: "integrados", note: "en una sola plataforma" },
     ],
     en: {
+      summary:
+        "Multitenancy PWA for mid-sized farms in Colombia. Centralizes livestock, inventory, production, health, and costs in one offline-first platform; cut administrative time by 42% in pilot farms. Django, DRF, PostgreSQL, React.",
       imageAlt:
         "TerraCore dashboard: real-time metrics, production charts, and livestock distribution",
       problem:
@@ -568,6 +576,8 @@ export const projects: Project[] = [
     stack: ["Django", "DRF", "PostgreSQL", "React", "TypeScript", "Claude API", "PWA"],
     appCategory: "HealthApplication",
     programmingLanguage: ["Python", "TypeScript", "SQL"],
+    summary:
+      "PWA offline-first que escanea etiquetas de alimentos con IA (Claude API) y dice al instante si puedes comer un producto según tus restricciones (celíaco, diabético, intolerante a la lactosa). Django, DRF, PostgreSQL, React.",
     filters: ["full-stack", "ia", "pwa"],
     problem:
       "Comer con celiaquía, diabetes o intolerancia a la lactosa implica leer cada etiqueta, descifrar ingredientes escondidos bajo otros nombres y buscar recetas que cumplan varias restricciones a la vez, todo de forma manual y dispersa.",
@@ -643,6 +653,8 @@ export const projects: Project[] = [
       },
     ],
     en: {
+      summary:
+        "Offline-first PWA that scans food labels with AI (Claude API) and instantly tells you whether you can eat a product based on your active restrictions (celiac, diabetes, lactose intolerance). Django, DRF, PostgreSQL, React.",
       imageAlt: "Root: PWA with AI food-label scanner and dietary restriction profile",
       problem:
         "Eating with celiac disease, diabetes, or lactose intolerance means reading every label, deciphering hidden ingredients listed under other names, and finding recipes that comply with multiple restrictions at the same time, all manually and scattered across sources.",
@@ -803,6 +815,8 @@ export const projects: Project[] = [
     stack: ["Django", "DRF", "PostgreSQL", "JWT", "Claude API", "React", "TypeScript", "Astro"],
     appCategory: "SecurityApplication",
     programmingLanguage: ["Python", "TypeScript", "SQL"],
+    summary:
+      "App full stack: pegas un fragmento de código y recibes un diagnóstico OWASP Top 10 inmediato, con chat de IA de contexto persistente (Claude API). Django, DRF, PostgreSQL, React, Astro.",
     filters: ["full-stack", "ia"],
     problem:
       "Revisar código con criterio OWASP o resolver una duda puntual de ciberseguridad implica saltar entre scanners pesados, documentación dispersa y foros desactualizados.",
@@ -840,6 +854,8 @@ export const projects: Project[] = [
       "Desacoplar el backend de Django del frontend en Astro impuso un contrato de API explícito desde el inicio; esa frontera obligó a pensar paginación, autenticación JWT y persistencia del historial como parte del diseño, no como añadidos posteriores.",
     ],
     en: {
+      summary:
+        "Full stack app: paste a code snippet and get an immediate OWASP Top 10 diagnosis, with a persistent-context AI chat (Claude API). Django, DRF, PostgreSQL, React, Astro.",
       imageAlt: "NullBreach: static code analysis against OWASP Top 10 and AI security chat",
       problem:
         "Reviewing code with OWASP criteria or resolving a specific cybersecurity question means jumping between heavy scanners, scattered documentation, and outdated forums.",

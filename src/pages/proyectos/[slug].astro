@@ -65,6 +65,12 @@ const dateLabel =
     ? `Publicado: ${fmtDate(datePublished)} · Actualizado: ${fmtDate(dateModified)}`
     : `Actualizado: ${fmtDate(dateModified)}`;
 
+const firstSentence = (s: string) => {
+  const i = s.indexOf(". ");
+  return i === -1 ? s : s.slice(0, i + 1);
+};
+const summary = project.summary ?? firstSentence(project.solution);
+
 const projectLd = JSON.stringify({
   "@context": "https://schema.org",
   "@type": schemaType,
@@ -141,7 +147,13 @@ const nextProject = idx < caseStudies.length - 1 ? caseStudies[idx + 1] : null;
         {project.solution}
       </p>
 
-      <p class="text-xs text-[var(--text-muted)]">{dateLabel}</p>
+      <p class="text-xs text-[var(--text-muted)]">
+        Por <a
+          href={`${base}sobre-mi`}
+          class="underline hover:text-[var(--brand-blue-text)] transition-colors"
+          >Valentina Ramírez</a
+        > · {dateLabel}
+      </p>
 
       {
         (siteLink || otherLinks.length > 0) && (
@@ -164,6 +176,18 @@ const nextProject = idx < caseStudies.length - 1 ? caseStudies[idx + 1] : null;
 
   <!-- CONTENT -->
   <div class="w-full max-w-5xl mx-auto px-6 pt-16 pb-24 flex flex-col gap-20">
+    <!-- Resumen (TL;DR) -->
+    <div
+      class="rounded-[var(--radius-md)] border border-[var(--border-base)] bg-[var(--bg-blur)] p-6"
+      aria-label="Resumen del proyecto"
+      data-aos="fade-up"
+    >
+      <p class="text-xs font-bold uppercase tracking-widest text-[var(--brand-blue-text)] mb-2">
+        Resumen
+      </p>
+      <p class="text-[var(--text-muted)] leading-relaxed text-sm">{summary}</p>
+    </div>
+
     <!-- Stack -->
     <div class="flex flex-col gap-2 items-center" data-aos="fade-up">
       <span class="text-xs font-bold uppercase tracking-widest text-[var(--brand-blue-text)]"
