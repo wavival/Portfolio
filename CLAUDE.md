@@ -23,7 +23,7 @@ Personal portfolio of **Valentina Ramírez**, Full Stack Developer (Django · Re
 - **Dependabot** (`.github/dependabot.yml`): weekly npm + github-actions update PRs
 - **Node >= 22.12** (repo pins `.nvmrc` → `22`; all CI jobs read it via `node-version-file: ".nvmrc"`)
 
-Auto-deploy to **Netlify** on every push to `main`. CI (`.github/workflows/ci.yml`) has four jobs: `quality` (format check → type check (`astro check`) → build) gates the rest, then `e2e` (Playwright), `lighthouse` (Lighthouse CI), and `links` (linkinator) run after it before Netlify publishes.
+Auto-deploy to **Netlify** on every push to `main`. CI (`.github/workflows/ci.yml`) has four jobs: `quality` (dependency audit (`npm audit --audit-level=high --omit=dev`) → format check → type check (`astro check`) → build) gates the rest, then `e2e` (Playwright), `lighthouse` (Lighthouse CI), and `links` (linkinator) run after it before Netlify publishes.
 
 `.npmrc` sets `legacy-peer-deps=true` because `@astrojs/tailwind@6` declares an Astro 3/4/5 peer range while we run Astro 6.
 
@@ -39,7 +39,7 @@ Multi-page static site with a bilingual (ES default, EN) routing scheme. The hom
   - `/` (home), `/proyectos`, `/proyectos/[slug]`, `/servicios`, `/sobre-mi`, `/contacto`, `/herramientas`, `/privacidad`, `/404`
 - **English** mirrors it under `/en/` with English slugs:
   - `/en`, `/en/projects`, `/en/projects/[slug]`, `/en/services`, `/en/about`, `/en/contact`, `/en/uses`, `/en/privacy`, `/en/404`
-- The ES↔EN slug mapping (e.g. `/proyectos` ↔ `/en/projects`) is the single source of truth in `src/i18n/utils.ts` (`EN_PAGE_MAP`, its reverse `ES_PAGE_MAP`, and the `/proyectos/<slug>` ↔ `/en/projects/<slug>` special-case in `getAltLangUrl`). The language toggle reads from here, so any new page or slug rename MUST update this map.
+- The ES↔EN slug mapping (e.g. `/proyectos` ↔ `/en/projects`) is the single source of truth in `src/i18n/utils.ts` (`EN_PAGE_MAP`, its reverse `ES_PAGE_MAP`, and the `/proyectos/<slug>` ↔ `/en/projects/<slug>` special-case in `getAltLangUrl`). The language toggle reads from here, so any new page or slug rename MUST update this map. `getAltLangUrl` also special-cases `/404` and `/en/404`: both redirect to the opposite locale's home instead of trying to find a translated 404 page.
 - Shared section components (`Hero`, `Projects`, `Stack`, `Contact`, `About`) take a `lang` prop and pick targets with a ternary (`isEn ? "/en/..." : "/<es-slug>"`). NavBar/Footer do the same. Never hardcode a route that ignores `lang`.
 - Per-locale assets resolve through helpers in `src/i18n/utils.ts`: `cvHref(lang)` returns `cv_valentina_ramirez_<es|en>.pdf`. UI strings come from `src/i18n/ui.ts` via `useTranslations(lang)`.
 - Legacy English-word ES routes (`/projects`, `/services`, `/about`, `/contact`, `/uses`) are 301-redirected to the Spanish slugs in `netlify.toml`. Content stays Spanish; only the URL changed.
@@ -89,11 +89,14 @@ public/
   cv_valentina_ramirez_en.pdf   # English CV (served on EN pages)
   llms.txt            # llmstxt.org descriptor for AI assistants
   robots.txt          # Allows indexing, references /sitemap-index.xml
+  .well-known/
+    security.txt      # RFC 9116 security contact (Contact, Expires, Canonical)
 tests/                # Playwright E2E smoke tests + pure-unit specs (redirects, i18n-utils)
 lighthouserc.json     # Lighthouse CI config (staticDistDir + category assertions)
 .nvmrc                # Node version pin (22)
 .github/dependabot.yml    # Weekly npm + github-actions update PRs
 .github/workflows/ci.yml  # quality gate → e2e + lighthouse + links jobs
+CHANGELOG.md          # Keep a Changelog format, SemVer; update on every release
 ```
 
 The favicon/manifest icon set in `public/` is generated from `public/brand/logo-w.webp` (square canvas, contained logo; maskable variant gets a dark `#0f1117` safe-zone background). Regenerate with `sharp` if the logo changes. The visible brand logo (`brand/logo-w.*`) is separate and unchanged.
@@ -110,7 +113,8 @@ All color, spacing, and shadow values live as CSS custom properties in `:root` a
 
 Key tokens:
 
-- `--brand-blue: #407bff`: primary brand color
+- `--brand-blue: #407bff`: primary brand color (use for fills, borders, and large/display text only; at ~3.4:1 on `--bg-page` it fails AA for small text)
+- `--brand-blue-text: #1d4ed8` light / `#5b8cff` dark: accessible blue for small text (>=4.5:1). Use this token, never `--brand-blue`, for `text-xs`/`text-sm` and other sub-large blue text (section subtitles, chips, card labels, filter buttons)
 - `--bg-page` / `--bg-card` / `--bg-blur`: backgrounds
 - `--text-primary` / `--text-muted`: typography
 - `--accent-link` / `--accent-hover`: interactive elements
@@ -169,10 +173,11 @@ Three columns: logo + social links, site navigation, resources. Year generated w
 - Meta title, description, author, robots with extended directives
 - Canonical URL generated from `Astro.url.pathname` + site base
 - Reciprocal `hreflang` (es / en / x-default) on every page via the `alternates` prop passed to `Layout`: the ES and EN pair point at each other, `x-default` points at the Spanish slug
-- Full OpenGraph (og:image with dimensions, alt, `og:locale` plus `og:locale:alternate` for the other locale)
+- Full OpenGraph (og:image with dimensions, alt, `og:locale` plus `og:locale:alternate` for the other locale); `og:image:type` is derived from the OG image file extension (`.webp` yields `image/webp`, otherwise `image/png`)
 - Twitter Card (`summary_large_image`)
-- JSON-LD `@graph` in `Layout.astro`: `Person` (with `knowsAbout`, `knowsLanguage`, `nationality`, `alumniOf`, `worksFor` referencing the Organization by `@id`, and a `sameAs` of identity profiles only), `Organization` (Lúmina W, own `@id`), and `WebSite` (fixed `name`)
-- Per-page JSON-LD: `BreadcrumbList` on section/index pages and `proyectos/[slug]`; `Service` + `FAQPage` on `/servicios` (+ `/en/services`); `ContactPage` on `/contacto` (+ `/en/contact`); case studies emit `SoftwareApplication` | `WebSite` | `CreativeWork` per `project.schemaType` with `datePublished`/`dateModified`
+- JSON-LD `@graph` in `Layout.astro`: `Person` (with `knowsAbout`, `knowsLanguage`, `nationality`, `alumniOf`, `worksFor` referencing the Organization by `@id`, a `sameAs` of identity profiles only, `image` as an `ImageObject` with `@id`/`url`/`width`/`height`/`caption`, and a stable `description` constant independent of the page meta description), `Organization` (Lúmina W, own `@id`, `logo` as an `ImageObject`), and `WebSite` (fixed `name`; no `inLanguage` to avoid per-locale mutation under the shared `@id`)
+- Per-page JSON-LD: `BreadcrumbList` on section/index pages, `/proyectos/[slug]`, `/contacto`, and `/en/contact`; `Service` (with `@id` and `priceRange`) + `FAQPage` on `/servicios` and `/en/services`; `ContactPage` on `/contacto` and `/en/contact`; case studies emit `SoftwareApplication` | `WebSite` | `CreativeWork` per `project.schemaType` with `datePublished`/`dateModified`
+- All hreflang `href` values and BreadcrumbList/Service `item`/`url` values use trailing slashes to match canonical URLs
 - `lang` on `<html>` driven by the `lang` prop (`es` default, `en` on `/en/` pages)
 - Google Site Verification: env-driven via `PUBLIC_GSV` (meta tag only emitted when set)
 - Analytics: Umami, env-driven via `PUBLIC_UMAMI_SRC` + `PUBLIC_UMAMI_ID` (cookieless; script only emitted when both are set; no Google Analytics)

@@ -8,6 +8,7 @@
 [![Portfolio](https://img.shields.io/badge/Portfolio-wavival.dev-407bff?style=for-the-badge&logo=vercel&logoColor=white)](https://wavival.dev)
 [![Blog](https://img.shields.io/badge/Blog-blog.luminaw.co-407bff?style=for-the-badge&logo=hashnode&logoColor=white)](https://blog.luminaw.co/)
 [![Lúmina W](https://img.shields.io/badge/Lúmina%20W-luminaw.co-407bff?style=for-the-badge&logo=google-chrome&logoColor=white)](https://luminaw.co/)
+[![CI](https://github.com/wavival/wavival.dev/actions/workflows/ci.yml/badge.svg)](https://github.com/wavival/wavival.dev/actions/workflows/ci.yml)
 
 > Portfolio of **Valentina Ramírez**, Full Stack Developer (Django · React), Founder of [Lúmina W](https://luminaw.co). Third iteration of the site, built with Astro 6 and Tailwind 3. Static-rendered, bilingual (ES default, EN), dark-mode aware, SEO + A11Y + performance first. Auto-deploys to Netlify on every push to `main`.
 
