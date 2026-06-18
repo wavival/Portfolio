@@ -42,6 +42,10 @@ const ES_PAGE_MAP: Record<string, string> = Object.fromEntries(
  */
 export function getAltLangUrl(url: URL): { href: string; lang: Lang } {
   const path = url.pathname;
+  const normalizedPath = path.replace(/\/$/, "") || "/";
+  if (normalizedPath === "/404" || normalizedPath === "/en/404") {
+    return getLangFromUrl(url) === "en" ? { href: "/", lang: "es" } : { href: "/en", lang: "en" };
+  }
   if (getLangFromUrl(url) === "en") {
     const normalized = path.replace(/\/$/, "") || "/";
     if (ES_PAGE_MAP[normalized]) {

@@ -28,11 +28,16 @@ const {
 const ogLocale = lang === "en" ? "en_US" : "es_CO";
 const inLanguage = lang === "en" ? "en-US" : "es-CO";
 const t = useTranslations(lang as Lang);
+const personDescription =
+  "Full Stack Developer especializada en Django y React. Fundadora de Lúmina W. Construyo productos completos con IA integrada y seguridad desde el diseño.";
 
 const site = "https://wavival.dev";
 const canonicalURL = new URL(Astro.url.pathname, site);
 const personImage = new URL(image, site);
 const socialCard = ogImage ? new URL(ogImage, site) : new URL("/images/og-card.png", site);
+const socialCardType = (ogImage ?? "/images/og-card.png").endsWith(".webp")
+  ? "image/webp"
+  : "image/png";
 const socialCardAlt =
   lang === "en"
     ? "Valentina Ramírez: Full Stack Developer · Django + React · AI & Security"
@@ -50,9 +55,16 @@ const jsonLd = JSON.stringify({
       "@id": `${site}/#person`,
       name: "Valentina Ramírez",
       url: site,
-      image: personImage.toString(),
+      image: {
+        "@type": "ImageObject",
+        "@id": `${site}/#personimage`,
+        url: personImage.toString(),
+        width: 640,
+        height: 640,
+        caption: "Valentina Ramírez",
+      },
       jobTitle: "Full Stack Developer",
-      description: description,
+      description: personDescription,
       knowsAbout: [
         "Full Stack Development",
         "Django",
@@ -87,6 +99,12 @@ const jsonLd = JSON.stringify({
       name: "Lúmina W",
       url: "https://luminaw.co",
       founder: { "@id": `${site}/#person` },
+      logo: {
+        "@type": "ImageObject",
+        url: `${site}/brand/logo-w.webp`,
+        width: 619,
+        height: 464,
+      },
       sameAs: ["https://luminaw.co", "https://blog.luminaw.co"],
     },
     {
@@ -95,7 +113,6 @@ const jsonLd = JSON.stringify({
       url: site,
       name: "Valentina Ramírez",
       description: description,
-      inLanguage: inLanguage,
       author: { "@id": `${site}/#person` },
     },
   ],
@@ -137,7 +154,7 @@ const jsonLd = JSON.stringify({
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={socialCard} />
-    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:type" content={socialCardType} />
     <meta property="og:image:alt" content={socialCardAlt} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />

@@ -69,7 +69,7 @@ src/
     privacidad.astro  # ES privacy
     en/               # EN mirror: index, 404, projects/, services, about, contact, uses, privacy
   scripts/
-    nav.ts            # Mobile menu + Escape key handler
+    nav.ts            # Mobile menu: inert/focus management, Escape, focus trap
     theme.ts          # Dark/light toggle + localStorage (post-paint sync)
   styles/
     global.css        # Imports, body base, prefers-reduced-motion
@@ -187,15 +187,19 @@ Three columns: logo + social links, site navigation, resources. Year generated w
 ### A11Y
 
 - Skip link to `#main-content` (visible on focus)
-- Heading hierarchy: single h1 in Hero, h2 in each section, h3 in cards
-- `aria-label` on all interactive elements
+- Heading hierarchy: single h1 in Hero, h2 in each section, h3 in cards. Footer group titles ("Navegación"/"Recursos") are real `<h2>` elements (not `aria-hidden` spans)
+- `aria-label` on all interactive elements, respecting Label-in-Name (WCAG 2.5.3): when a control has visible text, its `aria-label` must contain that text verbatim (e.g. nav email CTA, blog link, Stack "Criterio técnico"/"Technical criteria")
 - `aria-expanded` + `aria-controls` on mobile menu button
-- Escape key handler closes mobile menu
-- All decorative icon `<img>` elements have `alt=""`
+- Mobile menu focus management (`src/scripts/nav.ts`): the menu carries `inert` while closed (set in markup + JS, so closed links are never tabbable, also correct without JS); opening moves focus to the first link, Escape and link-clicks close it, Escape restores focus to the hamburger, and Tab is trapped within the open menu
+- `aria-current="page"` on the active NavBar + Footer link (computed via `isCurrent()` from `Astro.url.pathname`, hash-only links excluded); styled with an underline (not color alone) via `.link[aria-current="page"]`
+- Theme toggle exposes the current state: `theme.ts` sets a dynamic `aria-label` ("Cambiar a tema claro/oscuro" per locale) on each toggle in `syncIcons`
+- All decorative icon `<img>` elements have `alt=""` (including the NavBar/Footer brand logo, whose link is named by `aria-label`)
+- Icon-only links get a >=44x44 px hit target via `.link:has(> img:only-child)` (WCAG 2.5.8)
 - `role="list"` on desktop nav `<ul>`
-- `prefers-reduced-motion` respected in AOS init and `global.css`
+- `prefers-reduced-motion` respected in AOS init, `global.css`, the `proyectos/[slug]` accordion, project filters, and the Loader. The accordion cancels any in-flight animation on re-click (no dropped Enter presses)
+- The `Loader` overlay is hidden via `<noscript>` so a no-JS / failed-JS load never blocks the page (plus a 1200ms JS safety-net `hide()`)
 - Theme toggle and hamburger buttons have `focus-visible:ring-2`
-- WCAG AA contrast guaranteed: `--text-muted` light `#4b5563` (~5.9:1 on `#f0f4ff`), dark `#9ca3af` (~7.4:1 on `#0f1117`)
+- WCAG AA contrast: `--text-muted` light `#4b5563` (~5.9:1 on `#f0f4ff`), dark `#9ca3af` (~7.4:1 on `#0f1117`). Small blue text uses `--brand-blue-text` (>=4.5:1); `--brand-blue` is reserved for fills, borders, and large/display text (>=3:1). Project tag chips use `text-blue-900` (light) / `text-blue-300` (dark) for the `blue` variant
 
 ### Performance
 

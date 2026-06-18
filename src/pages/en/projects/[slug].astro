@@ -21,7 +21,7 @@ const site = "https://wavival.dev";
 
 const tagStyles: Record<string, string> = {
   green: "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400",
-  blue: "bg-blue-100 text-[var(--brand-blue)] dark:bg-blue-900/30",
+  blue: "bg-blue-100 text-blue-900 dark:bg-blue-900/30 dark:text-blue-300",
   orange: "bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400",
   gray: "bg-[var(--bg-blur)] text-[var(--text-muted)]",
 };
@@ -43,7 +43,7 @@ const imageAlt = en?.imageAlt ?? project.imageAlt ?? "";
 const metaDesc = en?.metaDescription ?? project.metaDescription ?? solution;
 
 const pageTitle = `${project.title}: Case study | Valentina Ramirez`;
-const pageURL = `${site}/en/projects/${project.slug}`;
+const pageURL = `${site}/en/projects/${project.slug}/`;
 
 const siteLink = links.find(
   (l) =>
@@ -68,7 +68,7 @@ const breadcrumbLd = JSON.stringify({
   "@type": "BreadcrumbList",
   itemListElement: [
     { "@type": "ListItem", position: 1, name: "Home", item: site },
-    { "@type": "ListItem", position: 2, name: "Projects", item: `${site}/en/projects` },
+    { "@type": "ListItem", position: 2, name: "Projects", item: `${site}/en/projects/` },
     { "@type": "ListItem", position: 3, name: project.title, item: pageURL },
   ],
 });
@@ -107,9 +107,9 @@ const nextProject = idx < caseStudies.length - 1 ? caseStudies[idx + 1] : null;
   lang="en"
   ogImage={project.image ? `/${project.image}` : undefined}
   alternates={[
-    { hreflang: "es", href: `https://wavival.dev/proyectos/${project.slug}` },
-    { hreflang: "en", href: `https://wavival.dev/en/projects/${project.slug}` },
-    { hreflang: "x-default", href: `https://wavival.dev/proyectos/${project.slug}` },
+    { hreflang: "es", href: `https://wavival.dev/proyectos/${project.slug}/` },
+    { hreflang: "en", href: `https://wavival.dev/en/projects/${project.slug}/` },
+    { hreflang: "x-default", href: `https://wavival.dev/proyectos/${project.slug}/` },
   ]}
 >
   <section
@@ -168,7 +168,8 @@ const nextProject = idx < caseStudies.length - 1 ? caseStudies[idx + 1] : null;
 
   <div class="w-full max-w-5xl mx-auto px-6 pt-16 pb-24 flex flex-col gap-20">
     <div class="flex flex-col gap-2 items-center" data-aos="fade-up">
-      <span class="text-xs font-bold uppercase tracking-widest text-[var(--brand-blue)]">Stack</span
+      <span class="text-xs font-bold uppercase tracking-widest text-[var(--brand-blue-text)]"
+        >Stack</span
       >
       <div class="flex flex-wrap gap-1.5 justify-center">
         {project.stack.map((s) => <span class="chip !text-[var(--text-primary)]">{s}</span>)}
@@ -215,7 +216,7 @@ const nextProject = idx < caseStudies.length - 1 ? caseStudies[idx + 1] : null;
           <ol class="grid sm:grid-cols-2 gap-x-8 gap-y-5">
             {architecture.map((a, i) => (
               <li class="flex gap-4 items-start">
-                <span class="font-display font-bold text-lg text-[var(--brand-blue)] w-7 shrink-0 leading-none mt-1 tabular-nums">
+                <span class="font-display font-bold text-lg text-[var(--brand-blue-text)] w-7 shrink-0 leading-none mt-1 tabular-nums">
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <p class="text-[var(--text-muted)] leading-relaxed text-sm">{a}</p>
@@ -288,19 +289,19 @@ const nextProject = idx < caseStudies.length - 1 ? caseStudies[idx + 1] : null;
                 <div data-acc-body class="overflow-hidden">
                   <dl class="mt-4 flex flex-col gap-3 text-sm leading-relaxed">
                     <div>
-                      <dt class="text-xs font-bold uppercase tracking-widest text-[var(--brand-blue)]">
+                      <dt class="text-xs font-bold uppercase tracking-widest text-[var(--brand-blue-text)]">
                         Context
                       </dt>
                       <dd class="text-[var(--text-muted)] mt-1">{d.context}</dd>
                     </div>
                     <div>
-                      <dt class="text-xs font-bold uppercase tracking-widest text-[var(--brand-blue)]">
+                      <dt class="text-xs font-bold uppercase tracking-widest text-[var(--brand-blue-text)]">
                         Trade-off
                       </dt>
                       <dd class="text-[var(--text-muted)] mt-1">{d.tradeoff}</dd>
                     </div>
                     <div>
-                      <dt class="text-xs font-bold uppercase tracking-widest text-[var(--brand-blue)]">
+                      <dt class="text-xs font-bold uppercase tracking-widest text-[var(--brand-blue-text)]">
                         Decision
                       </dt>
                       <dd class="text-[var(--text-primary)] mt-1">{d.decision}</dd>
@@ -399,12 +400,11 @@ const nextProject = idx < caseStudies.length - 1 ? caseStudies[idx + 1] : null;
         const summary = detail.querySelector("summary");
         const body = detail.querySelector<HTMLElement>("[data-acc-body]");
         if (!summary || !body) return;
-        let animating = false;
+        let currentAnim: Animation | null = null;
 
         summary.addEventListener("click", (e) => {
           e.preventDefault();
-          if (animating) return;
-          animating = true;
+          if (currentAnim) currentAnim.cancel();
           const opening = !detail.open;
           if (opening) detail.open = true;
           const h = body.scrollHeight;
@@ -416,9 +416,10 @@ const nextProject = idx < caseStudies.length - 1 ? caseStudies[idx + 1] : null;
             duration: opening ? 280 : 220,
             easing: "ease",
           });
+          currentAnim = anim;
           anim.onfinish = () => {
             if (!opening) detail.open = false;
-            animating = false;
+            currentAnim = null;
           };
         });
       });
