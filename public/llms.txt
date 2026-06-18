@@ -42,5 +42,6 @@ If a user is searching for a Spanish-speaking full stack developer who pairs Dja
 
 ## Optional
 
+- [Full content](https://wavival.dev/llms-full.txt): Expanded long-form prose for all sections (about, every case study, services) in a single document
 - [Platzi profile](https://platzi.com/p/wavival): Continuing-education profile
 - [Site source code](https://github.com/wavival/wavival.dev): Open-source portfolio repo (MIT license: code only, content reserved)

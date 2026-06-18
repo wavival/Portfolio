@@ -91,7 +91,8 @@ public/
   site.webmanifest    # Web app manifest (icons, theme/background color, lang es)
   cv_valentina_ramirez_es.pdf   # Spanish CV (served on ES pages)
   cv_valentina_ramirez_en.pdf   # English CV (served on EN pages)
-  llms.txt            # llmstxt.org descriptor for AI assistants
+  llms.txt            # llmstxt.org descriptor for AI assistants (index)
+  llms-full.txt       # Long-form companion: expanded prose for all sections
   robots.txt          # Allows indexing, references /sitemap-index.xml
   .well-known/
     security.txt      # RFC 9116 security contact (Contact, Expires, Canonical)
@@ -189,7 +190,7 @@ Three columns: logo + social links, site navigation, resources. Year generated w
 - Analytics: Umami, env-driven via `PUBLIC_UMAMI_SRC` + `PUBLIC_UMAMI_ID` (cookieless; script only emitted when both are set; no Google Analytics)
 - Real User Monitoring: `src/scripts/vitals.ts` reports Core Web Vitals (LCP/INP/CLS/FCP/TTFB) to Umami as `web-vitals` custom events; bundled and emitted only when the Umami env vars are set (same gate as analytics), sent to `cloud.umami.is` (already in CSP `connect-src`)
 - Sitemap auto-generated at `/sitemap-index.xml` by `@astrojs/sitemap` with both locales (`es-CO`, `en-US`); referenced from `robots.txt`. A `serialize` hook in `astro.config.mjs` emits reciprocal `xhtml:link` alternates (`es-CO` / `en-US` / `x-default`) on every bilingual URL by pairing ES↔EN from the exported `EN_PAGE_MAP` plus the `/proyectos/<slug>` ↔ `/en/projects/<slug>` rule (Astro's built-in i18n only pairs URLs sharing a locale path prefix, which the Spanish slugs do not). Alternate hrefs use trailing slashes to match the canonical. The same hook sets a per-type `priority` (home 1.0, section/index pages 0.8, case studies 0.7, legal pages 0.3) instead of a flat 1.0.
-- `llms.txt` at `/llms.txt` describes the site for AI assistants (llmstxt.org spec)
+- `llms.txt` at `/llms.txt` describes the site for AI assistants (llmstxt.org spec); `/llms-full.txt` is its long-form companion with expanded prose for every section (about, all case studies, services), linked from the `## Optional` section of `llms.txt`. Keep both in sync with site content (project metrics, stacks, services, contact).
 
 ### A11Y
 

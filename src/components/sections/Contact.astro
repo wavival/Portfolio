@@ -43,7 +43,11 @@ const base = import.meta.env.BASE_URL;
           <strong class="text-[var(--text-primary)]">
             {isEn ? "COP 2,000,000 / USD 500" : "COP 2.000.000 / USD 500"}
           </strong>
-          {isEn ? " depending on scope." : " según alcance."}
+          {
+            isEn
+              ? " depending on scope (MVP from 3-6 weeks)."
+              : " según alcance (MVP desde 3-6 semanas)."
+          }
         </p>
         <p class="text-xs text-[var(--text-muted)]">
           {
