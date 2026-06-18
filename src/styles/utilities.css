@@ -13,11 +13,11 @@
 
   .btn-primary {
     @apply inline-flex w-fit items-center gap-2 px-[14px] py-[12px] rounded-lg font-display font-semibold text-sm uppercase tracking-wide text-white transition-all duration-300 cursor-pointer;
-    background-color: #1e90ff;
+    background-color: var(--accent-link);
   }
 
   .btn-primary:hover {
-    background-color: #1a7fe0;
+    background-color: var(--accent-hover);
     transform: translateX(4px);
   }
 

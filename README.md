@@ -9,7 +9,7 @@
 [![Blog](https://img.shields.io/badge/Blog-blog.luminaw.co-407bff?style=for-the-badge&logo=hashnode&logoColor=white)](https://blog.luminaw.co/)
 [![Lúmina W](https://img.shields.io/badge/Lúmina%20W-luminaw.co-407bff?style=for-the-badge&logo=google-chrome&logoColor=white)](https://luminaw.co/)
 
-> Portfolio of **Valentina Ramírez**, Full Stack Developer (Django · React), Founder of [Lúmina W](https://luminaw.co). Third iteration of the site, built with Astro 6 and Tailwind 3. Static-rendered, dark-mode aware, SEO + A11Y + performance first. Deploys to Netlify in one click.
+> Portfolio of **Valentina Ramírez**, Full Stack Developer (Django · React), Founder of [Lúmina W](https://luminaw.co). Third iteration of the site, built with Astro 6 and Tailwind 3. Static-rendered, bilingual (ES default, EN), dark-mode aware, SEO + A11Y + performance first. Auto-deploys to Netlify on every push to `main`.
 
 ## Table of contents
 
@@ -19,108 +19,137 @@
 - [Environment variables](#environment-variables)
 - [Project conventions](#project-conventions)
 - [Architecture](#architecture)
+  - [Routing and i18n](#routing-and-i18n)
+  - [File structure](#file-structure)
   - [Page composition](#page-composition)
   - [Design tokens](#design-tokens)
 - [SEO and accessibility](#seo-and-accessibility)
 - [Performance](#performance)
-- [Testing](#testing)
+- [Testing and CI](#testing-and-ci)
 - [Deploying to Netlify](#deploying-to-netlify)
   - [One-time setup](#one-time-setup)
   - [What's already in the repo](#whats-already-in-the-repo)
   - [Security headers and cache](#security-headers-and-cache)
-  - [Subpath proxy](#subpath-proxy)
+  - [Redirects and proxies](#redirects-and-proxies)
 - [Using as a template](#using-as-a-template)
 - [Troubleshooting](#troubleshooting)
 - [Roadmap / known gaps](#roadmap--known-gaps)
 - [License](#license)
 
-Related docs: [DESIGN.md](./DESIGN.md) · [COMPONENTS.md](./COMPONENTS.md) · [CLAUDE.md](./CLAUDE.md)
+Related docs: [DESIGN.md](./DESIGN.md) · [COMPONENTS.md](./COMPONENTS.md) · [CLAUDE.md](./CLAUDE.md) · [AGENTS.md](./AGENTS.md)
 
 ## Stack
 
-| Layer     | Choice                                                               |
-| --------- | -------------------------------------------------------------------- |
-| Build     | Astro 6 (static output, `compressHTML`, `inlineStylesheets: 'auto'`) |
-| Styling   | Tailwind CSS 3 (`darkMode: 'class'`) + CSS custom property tokens    |
-| Scripts   | TypeScript (vanilla, no client-side framework)                       |
-| Sitemap   | `@astrojs/sitemap` (auto-generated at build)                         |
-| Animation | AOS 2 (Animate On Scroll), respects `prefers-reduced-motion`         |
-| Fonts     | Google Fonts (Raleway + Poppins), async non-blocking load            |
-| Analytics | Umami (cookieless), env-driven, conditionally injected               |
-| LLM SEO   | `/llms.txt` (llmstxt.org spec) for AI-assistant discovery            |
-| Testing   | Playwright (Chromium desktop + mobile)                               |
-| CI        | GitHub Actions: format check → build → Playwright E2E                |
-| Hosting   | Netlify (static publish + SPA fallback + security headers + cache)   |
+| Layer       | Choice                                                                                 |
+| ----------- | -------------------------------------------------------------------------------------- |
+| Build       | Astro 6 (static output, `compressHTML`, `inlineStylesheets: 'auto'`)                   |
+| Styling     | Tailwind CSS 3 (`darkMode: 'class'`) + CSS custom property tokens                      |
+| Scripts     | TypeScript (vanilla, no client-side framework)                                         |
+| i18n        | Bilingual: ES default at root, EN mirror under `/en/`, slug map in `src/i18n/utils.ts` |
+| Sitemap     | `@astrojs/sitemap` (auto-generated at build, both locales)                             |
+| Animation   | AOS (Animate On Scroll), respects `prefers-reduced-motion`                             |
+| Fonts       | Google Fonts (Raleway + Poppins), async non-blocking load                              |
+| Analytics   | Umami (cookieless), env-driven, conditionally injected                                 |
+| LLM SEO     | `/llms.txt` (llmstxt.org spec) for AI-assistant discovery                              |
+| Testing     | Playwright (Chromium desktop + mobile) + pure-unit specs                               |
+| Perf budget | Lighthouse CI (`@lhci/cli`, `lighthouserc.json`)                                       |
+| Link check  | linkinator (crawls built `dist/` for broken internal links)                            |
+| Formatting  | Prettier + `prettier-plugin-astro`                                                     |
+| Automation  | Dependabot (weekly npm + github-actions PRs)                                           |
+| CI          | GitHub Actions: quality gate → E2E + Lighthouse + links                                |
+| Hosting     | Netlify (static publish + security headers + cache + redirects)                        |
 
 ## Local setup
 
 ```bash
 git clone git@github.com:wavival/wavival.dev.git
 cd wavival.dev
+nvm use                           # Node 22 (pinned in .nvmrc)
 npm install
-cp .env.example .env             # fill in PUBLIC_UMAMI_SRC + PUBLIC_UMAMI_ID and PUBLIC_GSV if needed
-npm run dev                      # http://localhost:4321
+cp .env.example .env              # optional: Umami + GSV vars (all optional)
+npm run dev                       # http://localhost:4321
 ```
 
 `.npmrc` pins `legacy-peer-deps=true` because `@astrojs/tailwind@6` declares an Astro 3/4/5 peer range while the site is on Astro 6, but the integration works fine in practice.
 
-**Requires:** Node `>=22.12` (declared in `package.json` engines; CI pins `22`).
+**Requires:** Node `>=22.12` (declared in `package.json` engines; pinned in `.nvmrc` → `22`; all CI jobs read it via `node-version-file`).
 
 ### npm scripts
 
-| Script                 | What it does                                      |
-| ---------------------- | ------------------------------------------------- |
-| `npm run dev`          | Astro dev server with HMR at `localhost:4321`     |
-| `npm run build`        | `astro build` → static output in `./dist/`        |
-| `npm run preview`      | Serve the production build locally                |
-| `npm run check`        | `astro check` (type / diagnostic check)           |
-| `npm run format`       | Prettier write across the repo                    |
-| `npm run format:check` | Prettier check (no writes), used in CI            |
-| `npm test`             | Playwright E2E (boots `preview` automatically)    |
-| `npm run test:ui`      | Playwright in interactive UI mode                 |
-| `npm run test:install` | Install Playwright Chromium browser + system deps |
+| Script                 | What it does                                            |
+| ---------------------- | ------------------------------------------------------- |
+| `npm run dev`          | Astro dev server with HMR at `localhost:4321`           |
+| `npm run build`        | `astro build` → static output in `./dist/`              |
+| `npm run preview`      | Serve the production build locally                      |
+| `npm run check`        | `astro check` (type / diagnostic check, run in CI)      |
+| `npm run format`       | Prettier write across the repo                          |
+| `npm run format:check` | Prettier check (no writes), used in CI                  |
+| `npm test`             | Playwright E2E (boots `preview` on port 4329)           |
+| `npm run test:ui`      | Playwright in interactive UI mode                       |
+| `npm run test:install` | Install Playwright Chromium browser + system deps       |
+| `npm run lhci`         | Lighthouse CI against `./dist` (build first)            |
+| `npm run links`        | linkinator over `./dist` for broken links (build first) |
+
+> `lhci` and `links` run against the built output: run `npm run build` before them locally.
 
 ## Environment variables
 
-All client-exposed vars use the `PUBLIC_` prefix (Astro convention). They are baked into the static build at compile time; there is no runtime config.
+All client-exposed vars use the `PUBLIC_` prefix (Astro convention). They are baked into the static build at compile time; there is no runtime config. Every one is optional, and the associated script/meta tag is only emitted when its var(s) are set.
 
 | Variable           | Required | Example                            | Notes                                                                       |
 | ------------------ | -------- | ---------------------------------- | --------------------------------------------------------------------------- |
 | `PUBLIC_UMAMI_SRC` | No       | `https://cloud.umami.is/script.js` | Umami script URL. Both Umami vars must be set or no `<script>` is injected. |
-| `PUBLIC_UMAMI_ID`  | No       | `xxxxxxxx-uuid`                    | Umami website ID. Both Umami vars must be set or no `<script>` is injected. |
+| `PUBLIC_UMAMI_ID`  | No       | `xxxxxxxx-uuid`                    | Umami website ID. Cookieless, no Google Analytics.                          |
 | `PUBLIC_GSV`       | No       | `abc123...`                        | Google Site Verification token. Empty → `<meta>` not injected.              |
 
-Copy `.env.example` to `.env` for local development. In Netlify, set both under _Site settings → Environment variables_.
+Copy `.env.example` to `.env` for local development. In Netlify, set them under _Site settings → Environment variables_.
 
 ## Project conventions
 
 - **No hardcoded colors.** Every color reference uses `var(--token-name)` from `src/styles/tokens.css`.
 - **Utility classes for repeats.** `.section`, `.btn-primary`, `.card`, `.chip`, `.link`, etc. live in `@layer utilities` (`src/styles/utilities.css`).
 - **Astro components** type props with `interface Props` in the frontmatter.
+- **Locale-aware routing.** Shared section components take a `lang` prop and pick targets with the `isEn ? "/en/..." : "/<es-slug>"` ternary; never hardcode a route that ignores `lang`. The ES↔EN slug map in `src/i18n/utils.ts` is the single source of truth.
 - **External links** go through `Link.astro` / `Button.astro`, which both apply `rel="noopener noreferrer"` automatically when `target="_blank"`.
 - **Images:** WebP for photos, SVG for icons. Always include explicit `width` + `height` HTML attributes to prevent CLS. Decorative icons use `alt=""`.
 - **Dark mode** uses the `.dark` class on `<html>`, never `@media (prefers-color-scheme)`. A blocking `is:inline` script in `Layout.astro` `<head>` applies the saved theme before first paint to avoid FOUC.
 - **No client-side frameworks.** Vanilla TypeScript in `src/scripts/` is the only client code.
+- **No em dashes, no emojis** anywhere in the repo (copy, code, comments, commits, docs).
 
 Full design-token reference and utility-class catalog: see [DESIGN.md](./DESIGN.md). Component-by-component prop tables: see [COMPONENTS.md](./COMPONENTS.md).
 
 ## Architecture
 
-Single-page site, two routes only:
+Multi-page static site with a bilingual routing scheme. The home is a single-page assembly of sections; the rest are standalone pages plus one dynamic route (`proyectos/[slug]`).
 
-- `/` → `src/pages/index.astro`
-- `/404` → `src/pages/404.astro` (`noindex`)
+### Routing and i18n
+
+- **Spanish (default)** lives at the root with Spanish slugs:
+  `/`, `/proyectos`, `/proyectos/[slug]`, `/servicios`, `/sobre-mi`, `/contacto`, `/herramientas`, `/privacidad`, `/404`
+- **English** mirrors it under `/en/` with English slugs:
+  `/en`, `/en/projects`, `/en/projects/[slug]`, `/en/services`, `/en/about`, `/en/contact`, `/en/uses`, `/en/privacy`, `/en/404`
+- The ES↔EN slug mapping is the single source of truth in `src/i18n/utils.ts` (`EN_PAGE_MAP`, reverse `ES_PAGE_MAP`, and the `proyectos/<slug>` ↔ `en/projects/<slug>` special-case in `getAltLangUrl`). The language toggle reads from here, so any new page or slug rename MUST update this map.
+- Per-locale assets resolve through helpers in `src/i18n/utils.ts`: `cvHref(lang, base)` returns `cv_valentina_ramirez_<es|en>.pdf`. UI strings come from `src/i18n/ui.ts` via `useTranslations(lang)`.
+- Legacy English-word ES routes (`/projects`, `/services`, `/about`, `/contact`, `/uses`) are 301-redirected to the Spanish slugs in `netlify.toml`.
+
+### File structure
 
 ```
 src/
 ├── components/
 │   ├── sections/        # Hero · Projects · Stack · About · Contact
-│   └── ui/              # Button · Link · NavBar · Footer
+│   └── ui/              # Button · Link · NavBar · Footer · Loader
+├── data/                # projects.ts · stack.ts
+├── i18n/                # ui.ts (strings) · utils.ts (slug map + helpers)
 ├── layouts/
 │   └── Layout.astro     # Full <head> · pre-paint theme · skip link · NavBar · Footer
 ├── pages/
-│   ├── index.astro      # Composes all sections
-│   └── 404.astro        # Error page (noindex)
+│   ├── index.astro      # ES home: composes all sections
+│   ├── 404.astro        # ES error page (noindex)
+│   ├── proyectos/       # index.astro + [slug].astro (dynamic case studies)
+│   ├── servicios.astro · sobre-mi.astro · contacto.astro
+│   ├── herramientas.astro · privacidad.astro
+│   └── en/              # EN mirror: index, 404, projects/, services, about, contact, uses, privacy
 ├── scripts/
 │   ├── nav.ts           # Mobile menu + Escape handler
 │   └── theme.ts         # Dark/light toggle + localStorage (post-paint sync)
@@ -132,26 +161,33 @@ public/
 ├── brand/               # logo-w.webp, logo-w.ico
 ├── icons/ui/            # Decorative SVG icons
 ├── images/              # profile.webp
-├── cv_valentina_ramirez.pdf
+├── cv_valentina_ramirez_es.pdf · cv_valentina_ramirez_en.pdf
+├── favicon.ico · apple-touch-icon.png · icon-{192,512}.png · icon-maskable-512.png
+├── site.webmanifest     # Web app manifest (icons derived from brand/logo-w.webp)
 ├── llms.txt             # llmstxt.org descriptor for AI assistants
 └── robots.txt           # Points at /sitemap-index.xml (generated)
-tests/                   # Playwright E2E suites
-.github/workflows/ci.yml # Format check → build → Playwright E2E
+tests/                   # Playwright E2E + pure-unit specs
+lighthouserc.json        # Lighthouse CI config (staticDistDir + category assertions)
+.nvmrc                   # Node version pin (22)
+.github/dependabot.yml   # Weekly npm + github-actions update PRs
+.github/workflows/ci.yml # quality gate → e2e + lighthouse + links jobs
 ```
+
+The favicon/manifest icon set in `public/` is generated from `public/brand/logo-w.webp` with `sharp` (maskable variant gets a dark `#0f1117` safe-zone background). Regenerate if the logo changes.
 
 ### Page composition
 
 ```astro
-<Layout>
-  <Hero />
-  <Projects />
-  <Stack />
-  <About />
-  <Contact />
+<Layout lang="es">
+  <Hero lang="es" />
+  <Projects lang="es" />
+  <Stack lang="es" />
+  <About lang="es" />
+  <Contact lang="es" />
 </Layout>
 ```
 
-`Layout.astro` owns the entire document head (meta, OG, Twitter, JSON-LD, conditional GA, fonts, AOS init, pre-paint theme script), the skip link, the `<NavBar />`, and the `<Footer />`. Pages render inside `<main id="main-content">`.
+`Layout.astro` owns the entire document head (meta, OG, Twitter, JSON-LD, conditional Umami, fonts, AOS init, pre-paint theme script), the skip link, the `<NavBar />`, and the `<Footer />`. It accepts `lang` (default `es`) which drives `<html lang>`, `og:locale`, JSON-LD `inLanguage`, and translations. Pages render inside `<main id="main-content">`.
 
 ### Design tokens
 
@@ -178,18 +214,19 @@ Full token table, dark overrides, utility classes, typography, motion, and A11Y 
 
 - Meta title, description, author, robots (`max-snippet:-1`, `max-image-preview:large`)
 - Canonical URL built from `Astro.url.pathname` against `https://wavival.dev`
-- OpenGraph (image with `width="640" height="640"` + `alt`, locale `es_CO`)
+- Reciprocal `hreflang` (es / en / x-default) on every page via the `alternates` prop; ES/EN pair point at each other, `x-default` at the Spanish slug
+- OpenGraph (image with dimensions + `alt`, `og:locale` plus `og:locale:alternate`)
 - Twitter Card (`summary_large_image`)
-- JSON-LD: `Person` + `WebSite` schemas inside one `@graph`
-- `lang="es"` on `<html>`
+- JSON-LD `@graph`: `Person` + `Organization` (Lúmina W) + `WebSite`, plus per-page `BreadcrumbList`, `Service` + `FAQPage` (`/servicios`), `ContactPage` (`/contacto`), and `SoftwareApplication` | `WebSite` | `CreativeWork` per case study
+- `lang` on `<html>` driven by the `lang` prop (`es` default, `en` on `/en/`)
 - `PUBLIC_GSV` → `<meta name="google-site-verification">` (only when set)
-- `/sitemap-index.xml` auto-generated by `@astrojs/sitemap`, referenced from `/robots.txt`
-- `/llms.txt` describes the site for AI assistants per [llmstxt.org](https://llmstxt.org); improves discovery by LLM-powered search
+- `/sitemap-index.xml` auto-generated by `@astrojs/sitemap` with both locales (`es-CO`, `en-US`), referenced from `/robots.txt`
+- `/llms.txt` describes the site for AI assistants per [llmstxt.org](https://llmstxt.org)
 
 **A11Y:**
 
 - Skip link to `#main-content` (visible on focus)
-- Heading hierarchy: one `h1` in Hero, `h2` per section, `h3` inside cards
+- Heading hierarchy: one `h1` per page, `h2` per section, `h3` inside cards
 - `aria-label` on every interactive element
 - `aria-expanded` + `aria-controls` on the mobile menu trigger; Escape closes the menu
 - `role="list"` on desktop nav `<ul>`
@@ -200,38 +237,41 @@ Full token table, dark overrides, utility classes, typography, motion, and A11Y 
 ## Performance
 
 - Pre-paint theme script (sync `is:inline` in `<head>`) applies `.dark` before first paint: zero FOUC.
-- Hero portrait: WebP, `fetchpriority="high"`, `decoding="async"`, explicit 320×320, plus `<link rel="preload" as="image">` in `<head>` to win LCP.
+- Hero portrait: WebP, `fetchpriority="high"`, `decoding="async"`, explicit dimensions, plus `<link rel="preload" as="image">` in `<head>` to win LCP.
 - Google Fonts: async non-blocking load (`media="print"` + `onload="this.media='all'"`) + `<noscript>` fallback; `preconnect` to `fonts.googleapis.com` and `fonts.gstatic.com`.
-- Umami analytics: `is:inline defer`, conditionally rendered (no Umami vars = no script tag = no network call).
+- Umami analytics: cookieless, conditionally rendered (no Umami vars = no script tag = no network call).
 - Every icon `<img>` has explicit `width` + `height` to prevent CLS.
-- AOS: `once: true`. Under `prefers-reduced-motion`, `duration: 0`, `offset: 0`.
+- AOS: `once: true`. Under `prefers-reduced-motion`, `duration: 0`.
 - Astro: `compressHTML: true`, `build.inlineStylesheets: 'auto'`: small critical CSS inlined into the document.
-- Netlify cache: `/_astro/*`, `/images/*`, `/brand/*`, `/icons/*` served `Cache-Control: public, max-age=31536000, immutable`. PDF is `max-age=86400`. HTML uses Netlify defaults (revalidate on each deploy).
+- Netlify cache: `/_astro/*`, `/images/*`, `/brand/*`, `/icons/*` served `Cache-Control: public, max-age=31536000, immutable`. CV PDFs are `max-age=86400`. HTML uses Netlify defaults (revalidate on each deploy).
+- Lighthouse CI asserts category scores per commit (a11y + SEO are hard errors, perf + best-practices are warnings) against the built `dist/`.
 
-## Testing
+## Testing and CI
 
-End-to-end smoke tests live in `tests/` and run against `npm run preview` (Playwright boots the server automatically via `playwright.config.ts`).
+End-to-end and unit specs live in `tests/` and run against `astro preview` on port **4329** (`reuseExistingServer: false`, so a `npm run dev` server on 4321 is never reused: a dev server emits no sitemap and uses localhost canonicals, which would fail the SEO/i18n specs).
 
 ```bash
 npm run test:install       # one-time: download Chromium + system deps
-npm test                   # boot preview, run full suite
+npm run build              # the suite serves the static dist/, it does not build for you
+npm test                   # boot preview on 4329, run full suite
 npm run test:ui            # Playwright UI mode for local debugging
 ```
 
-Two projects run by default:
+Two Playwright projects run by default: `chromium-desktop` (Desktop Chrome) and `chromium-mobile` (Pixel 5).
 
-- `chromium-desktop` (Desktop Chrome)
-- `chromium-mobile` (Pixel 5)
+| Suite                 | Covers                                                                   |
+| --------------------- | ------------------------------------------------------------------------ |
+| `home.spec.ts`        | Single h1, canonical/OG host, JSON-LD types, hero image attrs, skip link |
+| `routes.spec.ts`      | All ES + EN routes and project case studies render (one h1 each)         |
+| `i18n.spec.ts`        | `lang` attrs, per-locale CV, hreflang, language toggle                   |
+| `i18n-utils.spec.ts`  | Pure-unit: `getAltLangUrl` and slug map in `src/i18n/utils.ts`           |
+| `redirects.spec.ts`   | Pure-unit: parses `netlify.toml` to lock legacy English-word 301s        |
+| `theme.spec.ts`       | Pre-paint dark/light from `localStorage`; toggle flips + persists        |
+| `mobile-menu.spec.ts` | Open/close, `aria-expanded`, Escape, link-click closes menu              |
+| `not-found.spec.ts`   | `/404` renders heading and emits `noindex`                               |
+| `seo.spec.ts`         | `robots.txt` content + localized `<loc>` entries in generated sitemap    |
 
-| Suite                 | Covers                                                                            |
-| --------------------- | --------------------------------------------------------------------------------- |
-| `home.spec.ts`        | Single h1, canonical/OG host, JSON-LD types, hero image attrs, anchors, skip link |
-| `theme.spec.ts`       | Pre-paint dark/light from `localStorage`; toggle flips + persists                 |
-| `mobile-menu.spec.ts` | Open/close, `aria-expanded`, Escape, link-click closes menu                       |
-| `not-found.spec.ts`   | `/404` renders heading and emits `noindex`                                        |
-| `seo.spec.ts`         | `robots.txt` content + `sitemap-index.xml` generated by integration               |
-
-CI runs the full suite on every PR (`.github/workflows/ci.yml`).
+CI (`.github/workflows/ci.yml`) runs four jobs on every push and PR to `main`: `quality` (format check → type check via `astro check` → build) gates the rest, then `e2e` (Playwright), `lighthouse` (Lighthouse CI), and `links` (linkinator) run in parallel before Netlify publishes. All jobs read the Node version from `.nvmrc`.
 
 ## Deploying to Netlify
 
@@ -242,18 +282,19 @@ CI runs the full suite on every PR (`.github/workflows/ci.yml`).
    - Build command: `npm run build`
    - Publish directory: `dist`
    - Node version: `22` (pinned in `[build.environment]`)
-3. **Environment variables** → _Site settings → Environment variables_:
-   - `PUBLIC_UMAMI_SRC` + `PUBLIC_UMAMI_ID` (optional; both required to enable analytics)
-   - `PUBLIC_GSV` (optional)
+3. **Environment variables** → _Site settings → Environment variables_ (all optional):
+   - `PUBLIC_UMAMI_SRC` + `PUBLIC_UMAMI_ID` (both required to enable analytics)
+   - `PUBLIC_GSV`
 4. **Custom domain:** _Domain settings_ → add `wavival.dev` → follow CNAME instructions. SSL auto-provisions via Let's Encrypt.
-5. **Deploy:** push to `main`. CI runs format check → build → Playwright E2E; on green, Netlify auto-builds and publishes.
+5. **Deploy:** push to `main`. CI runs quality → e2e + lighthouse + links; on green, Netlify auto-builds and publishes.
 
 ### What's already in the repo
 
-- `netlify.toml`: Node 22 pin, security headers, immutable cache for static assets, subpath proxy.
-- `astro.config.mjs`: `site: "https://wavival.dev"`, sitemap integration, HTML compression.
+- `netlify.toml`: Node 22 pin, security headers, immutable cache for static assets, redirects + proxies.
+- `astro.config.mjs`: `site: "https://wavival.dev"`, bilingual sitemap integration, HTML compression.
 - `public/robots.txt`, `public/llms.txt`: `sitemap-index.xml` generated at build.
-- `.github/workflows/ci.yml`: quality + e2e gates before Netlify deploys.
+- `.github/workflows/ci.yml`: quality + e2e + lighthouse + links gates before Netlify deploys.
+- `.github/dependabot.yml`: weekly npm + github-actions update PRs.
 
 ### Security headers and cache
 
@@ -266,73 +307,69 @@ CI runs the full suite on every PR (`.github/workflows/ci.yml`).
 | `X-Frame-Options`                                    | `DENY`                                                  |
 | `X-Content-Type-Options`                             | `nosniff`                                               |
 | `Referrer-Policy`                                    | `strict-origin-when-cross-origin`                       |
-| `Permissions-Policy`                                 | Locks camera, microphone, geolocation, interest-cohort  |
+| `Permissions-Policy`                                 | Locks camera, microphone, geolocation                   |
 | Cache (`/_astro/`, `/images/`, `/brand/`, `/icons/`) | `public, max-age=31536000, immutable`                   |
 
 If you add a third-party endpoint (Sentry, PostHog, etc.) update `script-src` / `connect-src` in the CSP.
 
-### Subpath proxy
+### Redirects and proxies
 
-`netlify.toml` proxies `wavival.dev/nullbreach/*` to the separate NullBreach Netlify site:
+`netlify.toml` declares the legacy-slug 301s plus three subpath proxies:
 
-```toml
-[[redirects]]
-  from = "/nullbreach/*"
-  to = "https://null-breach.netlify.app/:splat"
-  status = 200
-  force = false
-```
+| From            | To                                         | Status |
+| --------------- | ------------------------------------------ | ------ |
+| `/api/*`        | `https://nullbreach-api.wavival.dev/api/*` | 200    |
+| `/nullbreach/*` | `https://null-breach.netlify.app/*`        | 200    |
+| `/root/*`       | `https://ro-ot.netlify.app/root/*`         | 200    |
 
-Update or remove if the upstream changes.
+Update or remove if the upstreams change.
 
 ## Using as a template
 
-You're welcome to clone this repo as a base for your own portfolio. Design system, layout primitives, and SEO/A11Y baseline are reusable.
+You're welcome to clone this repo as a base for your own portfolio. Design system, layout primitives, i18n scaffold, and SEO/A11Y baseline are reusable.
 
 **Do not copy the personal content:** copy, images, projects, and contact details belong to Valentina Ramírez and are not covered by the license.
 
 ### Files to replace
 
-| File                                     | Data to change                                                                          |
-| ---------------------------------------- | --------------------------------------------------------------------------------------- |
-| `src/layouts/Layout.astro`               | Default title, description, JSON-LD (name, jobTitle, worksFor, sameAs), `site` constant |
-| `astro.config.mjs`                       | `site` URL                                                                              |
-| `src/components/sections/Hero.astro`     | Name, tagline, CV URL, social links                                                     |
-| `src/components/sections/Projects.astro` | `projects` array (title, tag, stack, problem, solution, links)                          |
-| `src/components/sections/Stack.astro`    | `stack` array (categories and tools)                                                    |
-| `src/components/sections/About.astro`    | Bio, personal quote, additional links                                                   |
-| `src/components/sections/Contact.astro`  | Contact email                                                                           |
-| `src/components/ui/NavBar.astro`         | CTA email, blog URL                                                                     |
-| `src/components/ui/Footer.astro`         | Name in copyright, Lúmina W links                                                       |
-| `public/robots.txt`                      | Sitemap absolute URL                                                                    |
-| `public/llms.txt`                        | Personal description, projects, links                                                   |
-| `public/cv_valentina_ramirez.pdf`        | CV file (rename + update Hero href)                                                     |
-| `public/images/profile.webp`             | Profile photo (640×640 recommended)                                                     |
-| `public/brand/logo-w.*`                  | Brand logo                                                                              |
-| `.env.example`                           | `PUBLIC_UMAMI_SRC`, `PUBLIC_UMAMI_ID`, `PUBLIC_GSV`                                     |
+| File                                      | Data to change                                                                |
+| ----------------------------------------- | ----------------------------------------------------------------------------- |
+| `src/layouts/Layout.astro`                | Default title, description, JSON-LD (Person + Organization + WebSite), `site` |
+| `astro.config.mjs`                        | `site` URL                                                                    |
+| `src/components/sections/Hero.astro`      | Name, tagline, CV URL, social links                                           |
+| `src/data/projects.ts`                    | Projects (title, tag, stack, problem, solution, links)                        |
+| `src/data/stack.ts`                       | Stack categories and tools                                                    |
+| `src/components/sections/About.astro`     | Bio, personal quote, additional links                                         |
+| `src/components/sections/Contact.astro`   | Contact email                                                                 |
+| `src/components/ui/NavBar.astro`          | CTA email, blog URL                                                           |
+| `src/components/ui/Footer.astro`          | Name in copyright, Lúmina W links                                             |
+| `src/i18n/ui.ts`                          | UI strings (ES + EN)                                                          |
+| `public/robots.txt` · `public/llms.txt`   | Sitemap URL · personal description, projects, links                           |
+| `public/cv_valentina_ramirez_{es,en}.pdf` | CV files (rename + update `cvHref` in `src/i18n/utils.ts`)                    |
+| `public/images/profile.webp`              | Profile photo                                                                 |
+| `public/brand/logo-w.*`                   | Brand logo (regenerate favicon/manifest icons with `sharp`)                   |
+| `.env.example`                            | `PUBLIC_UMAMI_SRC`, `PUBLIC_UMAMI_ID`, `PUBLIC_GSV`                           |
 
 Token, typography, and utility-class values are centralized in `src/styles/`, so you can re-skin without touching components.
 
 ## Troubleshooting
 
-| Symptom                                          | Fix                                                                                                                               |
-| ------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------- |
-| `npm install` fails on `ERESOLVE` peer warning   | `.npmrc` already sets `legacy-peer-deps=true`. If you removed it, re-add or run `npm install --legacy-peer-deps`.                 |
-| Dark mode flashes on first paint                 | The pre-paint script lives at the top of `<head>` in `Layout.astro`. Don't move it below other tags.                              |
-| Fonts flash unstyled (FOUT)                      | Expected with the `media="print"` + `onload` strategy. To eliminate, self-host Poppins + Raleway and drop the Google Fonts links. |
-| 404 on direct deep-link (`/anything`)            | Only `/` and `/404` exist, so Astro returns a real 404. SPA fallback isn't needed; the site is static.                            |
-| Umami not firing                                 | Confirm both `PUBLIC_UMAMI_SRC` and `PUBLIC_UMAMI_ID` are set in Netlify env vars and the build was triggered after setting them. |
-| Playwright fails locally with "browsers missing" | Run `npm run test:install` once.                                                                                                  |
-| CSP blocks a new third-party script              | Edit `Content-Security-Policy` in `netlify.toml` to add the origin to `script-src` / `connect-src`.                               |
+| Symptom                                          | Fix                                                                                                               |
+| ------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------- |
+| `npm install` fails on `ERESOLVE` peer warning   | `.npmrc` already sets `legacy-peer-deps=true`. If you removed it, re-add or run `npm install --legacy-peer-deps`. |
+| Dark mode flashes on first paint                 | The pre-paint script lives at the top of `<head>` in `Layout.astro`. Don't move it below other tags.              |
+| Fonts flash unstyled (FOUT)                      | Expected with the `media="print"` + `onload` strategy. To eliminate, self-host Poppins + Raleway.                 |
+| `npm test` fails with stale content              | Run `npm run build` first: the suite serves the static `dist/`, it does not build for you.                        |
+| Playwright fails locally with "browsers missing" | Run `npm run test:install` once.                                                                                  |
+| Language toggle points at a wrong URL            | Update the slug map (`EN_PAGE_MAP` / `getAltLangUrl`) in `src/i18n/utils.ts` after any page or slug rename.       |
+| Umami not firing                                 | Confirm both `PUBLIC_UMAMI_SRC` and `PUBLIC_UMAMI_ID` are set and the build was triggered after setting them.     |
+| CSP blocks a new third-party script              | Edit `Content-Security-Policy` in `netlify.toml` to add the origin to `script-src` / `connect-src`.               |
 
 ## Roadmap / known gaps
 
-- **Google Fonts external.** Poppins + Raleway are pulled from `fonts.gstatic.com`. Self-hosting would remove a third-party connect, remove FOUT risk, and shrink the CSP `font-src`.
+- **Google Fonts external.** Poppins + Raleway are pulled from `fonts.gstatic.com`. Self-hosting would remove a third-party connect and FOUT risk.
 - **Visual regression.** Playwright covers structure + behavior, not pixels. Add `toHaveScreenshot()` baselines once the design is frozen.
-- **Lighthouse CI.** Performance budget isn't enforced in CI. Add a `lighthouse-ci` job in `.github/workflows/ci.yml` and assert thresholds.
-- **Image variants.** No `<picture>` / `srcset` for the hero portrait, just a single WebP at 320×320. Acceptable for current LCP, but multi-resolution would help retina.
-- **OG image dedicated.** OG image is the profile photo (640×640). A purpose-built 1200×630 banner would render better on social.
-- **WhatsApp / contact button.** No floating WhatsApp CTA on the portfolio (unlike the NullBreach UI). Add if conversion matters.
+- **Image variants.** No `<picture>` / `srcset` for the hero portrait. Acceptable for current LCP, but multi-resolution would help retina.
 
 ## License
 
