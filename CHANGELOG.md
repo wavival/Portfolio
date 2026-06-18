@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - ESLint (flat config: `eslint-plugin-astro` + `typescript-eslint` + `eslint-config-prettier`) with `lint` / `lint:fix` scripts.
 - husky `pre-commit` hook running `lint-staged` (ESLint `--fix` + Prettier on staged files).
 - `Lint` step in the CI `quality` job.
+- Core Web Vitals RUM (`web-vitals` via `src/scripts/vitals.ts`): reports LCP/INP/CLS/FCP/TTFB to Umami as custom events, gated on the Umami env vars.
 - "Design & UX" category to the Stack section.
 - Sellable contact copy plus a footer CTA.
 

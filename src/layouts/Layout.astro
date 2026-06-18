@@ -200,6 +200,7 @@ const jsonLd = JSON.stringify({
       />
     </noscript>
     {UMAMI_SRC && UMAMI_ID && <script is:inline defer src={UMAMI_SRC} data-website-id={UMAMI_ID} />}
+    {UMAMI_SRC && UMAMI_ID && <script>import "@/scripts/vitals";</script>}
     <script>
       import AOS from "aos";
       import "aos/dist/aos.css";

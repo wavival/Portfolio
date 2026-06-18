@@ -15,6 +15,7 @@ Personal portfolio of **Valentina Ramírez**, Full Stack Developer (Django · Re
 - **Tailwind CSS v3** (`darkMode: 'class'`)
 - **TypeScript** (client-side scripts only)
 - **AOS** (Animate On Scroll)
+- **web-vitals**: Core Web Vitals RUM, reports LCP/INP/CLS/FCP/TTFB to Umami as custom events (only when Umami env is set)
 - **`@astrojs/sitemap`**: generates `/sitemap-index.xml` + `/sitemap-0.xml` at build
 - **Playwright**: E2E smoke tests (`tests/`)
 - **Lighthouse CI** (`@lhci/cli`, config in `lighthouserc.json`): asserts perf/a11y/best-practices/SEO category scores against the built `dist/` per commit
@@ -73,6 +74,7 @@ src/
   scripts/
     nav.ts            # Mobile menu: inert/focus management, Escape, focus trap
     theme.ts          # Dark/light toggle + localStorage (post-paint sync)
+    vitals.ts         # Core Web Vitals RUM, reports to Umami (only when Umami env set)
   styles/
     global.css        # Imports, body base, prefers-reduced-motion
     tokens.css        # CSS custom properties (design tokens)
@@ -185,6 +187,7 @@ Three columns: logo + social links, site navigation, resources. Year generated w
 - `lang` on `<html>` driven by the `lang` prop (`es` default, `en` on `/en/` pages)
 - Google Site Verification: env-driven via `PUBLIC_GSV` (meta tag only emitted when set)
 - Analytics: Umami, env-driven via `PUBLIC_UMAMI_SRC` + `PUBLIC_UMAMI_ID` (cookieless; script only emitted when both are set; no Google Analytics)
+- Real User Monitoring: `src/scripts/vitals.ts` reports Core Web Vitals (LCP/INP/CLS/FCP/TTFB) to Umami as `web-vitals` custom events; bundled and emitted only when the Umami env vars are set (same gate as analytics), sent to `cloud.umami.is` (already in CSP `connect-src`)
 - Sitemap auto-generated at `/sitemap-index.xml` by `@astrojs/sitemap` with both locales (`es-CO`, `en-US`); referenced from `robots.txt`. A `serialize` hook in `astro.config.mjs` emits reciprocal `xhtml:link` alternates (`es-CO` / `en-US` / `x-default`) on every bilingual URL by pairing ES↔EN from the exported `EN_PAGE_MAP` plus the `/proyectos/<slug>` ↔ `/en/projects/<slug>` rule (Astro's built-in i18n only pairs URLs sharing a locale path prefix, which the Spanish slugs do not). Alternate hrefs use trailing slashes to match the canonical.
 - `llms.txt` at `/llms.txt` describes the site for AI assistants (llmstxt.org spec)
 
@@ -211,6 +214,7 @@ Three columns: logo + social links, site navigation, resources. Year generated w
 - Hero image: WebP, `fetchpriority="high"`, `decoding="async"`, explicit dimensions, plus `<link rel="preload" as="image">` for LCP.
 - Google Fonts: async non-blocking load via `media="print"` + `onload` + `<noscript>` fallback.
 - Umami analytics: cookieless, script injected only when `PUBLIC_UMAMI_SRC` + `PUBLIC_UMAMI_ID` are set.
+- Core Web Vitals RUM (`web-vitals` via `src/scripts/vitals.ts`): bundled and run only when the Umami env vars are set; reports field LCP/INP/CLS/FCP/TTFB to Umami.
 - All icon `<img>` elements have `width` and `height` to prevent CLS.
 - AOS initialized with `once: true`, `duration: 0` when `prefers-reduced-motion` is set.
 - Netlify cache: `/_astro/`, `/images/`, `/brand/`, `/icons/` served immutable (1y). CSP + HSTS + frame-deny baked in.
