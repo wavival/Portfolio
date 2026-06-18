@@ -36,6 +36,7 @@ ehthumbs.db
 # editor / IDE
 .vscode/settings.json
 .idea/
+.editorconfig
 
 # Claude Code local config
 .claude/
