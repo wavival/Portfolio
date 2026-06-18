@@ -2,12 +2,18 @@
 import Link from "@/components/ui/Link.astro";
 import { stack } from "@/data/stack";
 
+interface Props {
+  lang?: "es" | "en";
+}
+const { lang = "es" } = Astro.props;
+const isEn = lang === "en";
+
 const base = import.meta.env.BASE_URL;
 ---
 
 <section id="stack" class="section !pb-0" data-aos="fade-up">
-  <p class="section-subtitle">Con qué trabajo</p>
-  <h2 class="section-title">Stack favorito</h2>
+  <p class="section-subtitle">{isEn ? "What I work with" : "Con qué trabajo"}</p>
+  <h2 class="section-title">{isEn ? "Go-to stack" : "Stack favorito"}</h2>
 
   <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10">
     {
@@ -19,7 +25,9 @@ const base = import.meta.env.BASE_URL;
         >
           <div>
             <h3 class="font-display font-bold text-lg text-[var(--brand-blue)]">{s.category}</h3>
-            <p class="text-xs mt-1 italic">{s.description}</p>
+            <p class="text-xs mt-1 italic">
+              {isEn ? (s.descriptionEn ?? s.description) : s.description}
+            </p>
           </div>
           <div class="flex flex-wrap gap-2">
             {s.tools.map((t) => (
@@ -31,9 +39,14 @@ const base = import.meta.env.BASE_URL;
     }
   </div>
 
-  <div class="mt-8">
-    <Link href={`${base}uses`} aria-label="Ver el detalle de herramientas y por qué las uso">
-      Por qué uso cada herramienta
+  <div class="mt-8 flex justify-center">
+    <Link
+      href={isEn ? `${base}en/uses` : `${base}herramientas`}
+      aria-label={isEn
+        ? "See the tools breakdown and why I use them"
+        : "Ver el detalle de herramientas y por qué las uso"}
+    >
+      {isEn ? "Technical criteria" : "Criterio técnico"}
     </Link>
   </div>
 </section>

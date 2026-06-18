@@ -21,11 +21,13 @@ test.describe("mobile menu", () => {
     await expect(menu).toHaveClass(/opacity-0/);
   });
 
-  test("clicking a menu link closes the menu", async ({ page }) => {
+  test("clicking a same-page anchor closes the menu", async ({ page }) => {
     await page.goto("/");
 
     await page.locator("#menu-btn").click();
-    await page.locator('#mobile-menu a[href="/#projects"]').first().click();
+    await expect(page.locator("#mobile-menu")).toHaveClass(/opacity-100/);
+
+    await page.locator('#mobile-menu a[href="/#stack"]').first().click();
 
     await expect(page.locator("#menu-btn")).toHaveAttribute("aria-expanded", "false");
     await expect(page.locator("#mobile-menu")).toHaveClass(/opacity-0/);

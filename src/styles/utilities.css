@@ -30,15 +30,20 @@
   }
 
   .card {
-    @apply bg-transparent rounded-2xl border border-[var(--border-base)] border-b-[4px] p-6 transition-all duration-300;
+    @apply bg-transparent rounded-2xl border border-[var(--border-base)] border-b-[4px] p-6;
     min-height: 200px;
     box-shadow: 0 2px 12px rgba(64, 123, 255, 0.07);
+    transition:
+      transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+      background-color 0.25s ease,
+      box-shadow 0.25s ease,
+      opacity 0.2s ease;
   }
 
   .card:hover {
     background-color: var(--bg-card);
-    transform: scale(1.01);
-    box-shadow: 0 6px 24px rgba(64, 123, 255, 0.15);
+    transform: scale(1.02);
+    box-shadow: 0 8px 28px rgba(64, 123, 255, 0.18);
   }
 
   .card-plain {

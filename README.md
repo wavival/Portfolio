@@ -46,7 +46,7 @@ Related docs: [DESIGN.md](./DESIGN.md) · [COMPONENTS.md](./COMPONENTS.md) · [C
 | Sitemap   | `@astrojs/sitemap` (auto-generated at build)                         |
 | Animation | AOS 2 (Animate On Scroll), respects `prefers-reduced-motion`         |
 | Fonts     | Google Fonts (Raleway + Poppins), async non-blocking load            |
-| Analytics | Google Analytics 4, env-driven, conditionally injected               |
+| Analytics | Umami (cookieless), env-driven, conditionally injected               |
 | LLM SEO   | `/llms.txt` (llmstxt.org spec) for AI-assistant discovery            |
 | Testing   | Playwright (Chromium desktop + mobile)                               |
 | CI        | GitHub Actions: format check → build → Playwright E2E                |
@@ -58,11 +58,11 @@ Related docs: [DESIGN.md](./DESIGN.md) · [COMPONENTS.md](./COMPONENTS.md) · [C
 git clone git@github.com:wavival/wavival.dev.git
 cd wavival.dev
 npm install
-cp .env.example .env             # fill in PUBLIC_GA_ID and PUBLIC_GSV if needed
+cp .env.example .env             # fill in PUBLIC_UMAMI_SRC + PUBLIC_UMAMI_ID and PUBLIC_GSV if needed
 npm run dev                      # http://localhost:4321
 ```
 
-`.npmrc` pins `legacy-peer-deps=true` because `@astrojs/tailwind@6` declares an Astro 3/4/5 peer range while the site is on Astro 6 — the integration works fine in practice.
+`.npmrc` pins `legacy-peer-deps=true` because `@astrojs/tailwind@6` declares an Astro 3/4/5 peer range while the site is on Astro 6, but the integration works fine in practice.
 
 **Requires:** Node `>=22.12` (declared in `package.json` engines; CI pins `22`).
 
@@ -82,12 +82,13 @@ npm run dev                      # http://localhost:4321
 
 ## Environment variables
 
-All client-exposed vars use the `PUBLIC_` prefix (Astro convention). They are baked into the static build at compile time — there is no runtime config.
+All client-exposed vars use the `PUBLIC_` prefix (Astro convention). They are baked into the static build at compile time; there is no runtime config.
 
-| Variable       | Required | Example        | Notes                                                                  |
-| -------------- | -------- | -------------- | ---------------------------------------------------------------------- |
-| `PUBLIC_GA_ID` | No       | `G-XXXXXXXXXX` | Google Analytics 4 Measurement ID. Empty → GA `<script>` not injected. |
-| `PUBLIC_GSV`   | No       | `abc123...`    | Google Site Verification token. Empty → `<meta>` not injected.         |
+| Variable           | Required | Example                            | Notes                                                                       |
+| ------------------ | -------- | ---------------------------------- | --------------------------------------------------------------------------- |
+| `PUBLIC_UMAMI_SRC` | No       | `https://cloud.umami.is/script.js` | Umami script URL. Both Umami vars must be set or no `<script>` is injected. |
+| `PUBLIC_UMAMI_ID`  | No       | `xxxxxxxx-uuid`                    | Umami website ID. Both Umami vars must be set or no `<script>` is injected. |
+| `PUBLIC_GSV`       | No       | `abc123...`                        | Google Site Verification token. Empty → `<meta>` not injected.              |
 
 Copy `.env.example` to `.env` for local development. In Netlify, set both under _Site settings → Environment variables_.
 
@@ -96,9 +97,9 @@ Copy `.env.example` to `.env` for local development. In Netlify, set both under 
 - **No hardcoded colors.** Every color reference uses `var(--token-name)` from `src/styles/tokens.css`.
 - **Utility classes for repeats.** `.section`, `.btn-primary`, `.card`, `.chip`, `.link`, etc. live in `@layer utilities` (`src/styles/utilities.css`).
 - **Astro components** type props with `interface Props` in the frontmatter.
-- **External links** go through `Link.astro` / `Button.astro` — both apply `rel="noopener noreferrer"` automatically when `target="_blank"`.
+- **External links** go through `Link.astro` / `Button.astro`, which both apply `rel="noopener noreferrer"` automatically when `target="_blank"`.
 - **Images:** WebP for photos, SVG for icons. Always include explicit `width` + `height` HTML attributes to prevent CLS. Decorative icons use `alt=""`.
-- **Dark mode** uses the `.dark` class on `<html>` — never `@media (prefers-color-scheme)`. A blocking `is:inline` script in `Layout.astro` `<head>` applies the saved theme before first paint to avoid FOUC.
+- **Dark mode** uses the `.dark` class on `<html>`, never `@media (prefers-color-scheme)`. A blocking `is:inline` script in `Layout.astro` `<head>` applies the saved theme before first paint to avoid FOUC.
 - **No client-side frameworks.** Vanilla TypeScript in `src/scripts/` is the only client code.
 
 Full design-token reference and utility-class catalog: see [DESIGN.md](./DESIGN.md). Component-by-component prop tables: see [COMPONENTS.md](./COMPONENTS.md).
@@ -126,7 +127,7 @@ src/
 └── styles/
     ├── global.css       # Imports + body base + prefers-reduced-motion
     ├── tokens.css       # CSS custom properties (design tokens)
-    └── utilities.css    # @layer utilities — custom classes
+    └── utilities.css    # @layer utilities: custom classes
 public/
 ├── brand/               # logo-w.webp, logo-w.ico
 ├── icons/ui/            # Decorative SVG icons
@@ -183,7 +184,7 @@ Full token table, dark overrides, utility classes, typography, motion, and A11Y 
 - `lang="es"` on `<html>`
 - `PUBLIC_GSV` → `<meta name="google-site-verification">` (only when set)
 - `/sitemap-index.xml` auto-generated by `@astrojs/sitemap`, referenced from `/robots.txt`
-- `/llms.txt` describes the site for AI assistants per [llmstxt.org](https://llmstxt.org) — improves discovery by LLM-powered search
+- `/llms.txt` describes the site for AI assistants per [llmstxt.org](https://llmstxt.org); improves discovery by LLM-powered search
 
 **A11Y:**
 
@@ -198,13 +199,13 @@ Full token table, dark overrides, utility classes, typography, motion, and A11Y 
 
 ## Performance
 
-- Pre-paint theme script (sync `is:inline` in `<head>`) applies `.dark` before first paint — zero FOUC.
+- Pre-paint theme script (sync `is:inline` in `<head>`) applies `.dark` before first paint: zero FOUC.
 - Hero portrait: WebP, `fetchpriority="high"`, `decoding="async"`, explicit 320×320, plus `<link rel="preload" as="image">` in `<head>` to win LCP.
 - Google Fonts: async non-blocking load (`media="print"` + `onload="this.media='all'"`) + `<noscript>` fallback; `preconnect` to `fonts.googleapis.com` and `fonts.gstatic.com`.
-- Google Analytics: `is:inline async`, conditionally rendered (no GA = no script tag = no network call).
+- Umami analytics: `is:inline defer`, conditionally rendered (no Umami vars = no script tag = no network call).
 - Every icon `<img>` has explicit `width` + `height` to prevent CLS.
 - AOS: `once: true`. Under `prefers-reduced-motion`, `duration: 0`, `offset: 0`.
-- Astro: `compressHTML: true`, `build.inlineStylesheets: 'auto'` — small critical CSS inlined into the document.
+- Astro: `compressHTML: true`, `build.inlineStylesheets: 'auto'`: small critical CSS inlined into the document.
 - Netlify cache: `/_astro/*`, `/images/*`, `/brand/*`, `/icons/*` served `Cache-Control: public, max-age=31536000, immutable`. PDF is `max-age=86400`. HTML uses Netlify defaults (revalidate on each deploy).
 
 ## Testing
@@ -242,31 +243,31 @@ CI runs the full suite on every PR (`.github/workflows/ci.yml`).
    - Publish directory: `dist`
    - Node version: `22` (pinned in `[build.environment]`)
 3. **Environment variables** → _Site settings → Environment variables_:
-   - `PUBLIC_GA_ID` (optional)
+   - `PUBLIC_UMAMI_SRC` + `PUBLIC_UMAMI_ID` (optional; both required to enable analytics)
    - `PUBLIC_GSV` (optional)
 4. **Custom domain:** _Domain settings_ → add `wavival.dev` → follow CNAME instructions. SSL auto-provisions via Let's Encrypt.
 5. **Deploy:** push to `main`. CI runs format check → build → Playwright E2E; on green, Netlify auto-builds and publishes.
 
 ### What's already in the repo
 
-- `netlify.toml` — Node 22 pin, security headers, immutable cache for static assets, subpath proxy.
-- `astro.config.mjs` — `site: "https://wavival.dev"`, sitemap integration, HTML compression.
-- `public/robots.txt`, `public/llms.txt` — `sitemap-index.xml` generated at build.
-- `.github/workflows/ci.yml` — quality + e2e gates before Netlify deploys.
+- `netlify.toml`: Node 22 pin, security headers, immutable cache for static assets, subpath proxy.
+- `astro.config.mjs`: `site: "https://wavival.dev"`, sitemap integration, HTML compression.
+- `public/robots.txt`, `public/llms.txt`: `sitemap-index.xml` generated at build.
+- `.github/workflows/ci.yml`: quality + e2e gates before Netlify deploys.
 
 ### Security headers and cache
 
 `netlify.toml` declares:
 
-| Header                                               | Value                                                  |
-| ---------------------------------------------------- | ------------------------------------------------------ |
-| `Content-Security-Policy`                            | Strict CSP allowing GA + Google Fonts only             |
-| `Strict-Transport-Security`                          | `max-age=63072000; includeSubDomains; preload`         |
-| `X-Frame-Options`                                    | `DENY`                                                 |
-| `X-Content-Type-Options`                             | `nosniff`                                              |
-| `Referrer-Policy`                                    | `strict-origin-when-cross-origin`                      |
-| `Permissions-Policy`                                 | Locks camera, microphone, geolocation, interest-cohort |
-| Cache (`/_astro/`, `/images/`, `/brand/`, `/icons/`) | `public, max-age=31536000, immutable`                  |
+| Header                                               | Value                                                   |
+| ---------------------------------------------------- | ------------------------------------------------------- |
+| `Content-Security-Policy`                            | Strict CSP allowing Umami Cloud, Google Fonts, Calendly |
+| `Strict-Transport-Security`                          | `max-age=63072000; includeSubDomains; preload`          |
+| `X-Frame-Options`                                    | `DENY`                                                  |
+| `X-Content-Type-Options`                             | `nosniff`                                               |
+| `Referrer-Policy`                                    | `strict-origin-when-cross-origin`                       |
+| `Permissions-Policy`                                 | Locks camera, microphone, geolocation, interest-cohort  |
+| Cache (`/_astro/`, `/images/`, `/brand/`, `/icons/`) | `public, max-age=31536000, immutable`                   |
 
 If you add a third-party endpoint (Sentry, PostHog, etc.) update `script-src` / `connect-src` in the CSP.
 
@@ -288,7 +289,7 @@ Update or remove if the upstream changes.
 
 You're welcome to clone this repo as a base for your own portfolio. Design system, layout primitives, and SEO/A11Y baseline are reusable.
 
-**Do not copy the personal content** — copy, images, projects, and contact details belong to Valentina Ramírez and are not covered by the license.
+**Do not copy the personal content:** copy, images, projects, and contact details belong to Valentina Ramírez and are not covered by the license.
 
 ### Files to replace
 
@@ -308,9 +309,9 @@ You're welcome to clone this repo as a base for your own portfolio. Design syste
 | `public/cv_valentina_ramirez.pdf`        | CV file (rename + update Hero href)                                                     |
 | `public/images/profile.webp`             | Profile photo (640×640 recommended)                                                     |
 | `public/brand/logo-w.*`                  | Brand logo                                                                              |
-| `.env.example`                           | `PUBLIC_GA_ID`, `PUBLIC_GSV`                                                            |
+| `.env.example`                           | `PUBLIC_UMAMI_SRC`, `PUBLIC_UMAMI_ID`, `PUBLIC_GSV`                                     |
 
-Token, typography, and utility-class values are centralized in `src/styles/` — re-skin without touching components.
+Token, typography, and utility-class values are centralized in `src/styles/`, so you can re-skin without touching components.
 
 ## Troubleshooting
 
@@ -319,8 +320,8 @@ Token, typography, and utility-class values are centralized in `src/styles/` —
 | `npm install` fails on `ERESOLVE` peer warning   | `.npmrc` already sets `legacy-peer-deps=true`. If you removed it, re-add or run `npm install --legacy-peer-deps`.                 |
 | Dark mode flashes on first paint                 | The pre-paint script lives at the top of `<head>` in `Layout.astro`. Don't move it below other tags.                              |
 | Fonts flash unstyled (FOUT)                      | Expected with the `media="print"` + `onload` strategy. To eliminate, self-host Poppins + Raleway and drop the Google Fonts links. |
-| 404 on direct deep-link (`/anything`)            | Only `/` and `/404` exist — Astro returns a real 404. SPA fallback isn't needed; the site is static.                              |
-| GA not firing                                    | Confirm `PUBLIC_GA_ID` is set in Netlify env vars and the build was triggered after setting it.                                   |
+| 404 on direct deep-link (`/anything`)            | Only `/` and `/404` exist, so Astro returns a real 404. SPA fallback isn't needed; the site is static.                            |
+| Umami not firing                                 | Confirm both `PUBLIC_UMAMI_SRC` and `PUBLIC_UMAMI_ID` are set in Netlify env vars and the build was triggered after setting them. |
 | Playwright fails locally with "browsers missing" | Run `npm run test:install` once.                                                                                                  |
 | CSP blocks a new third-party script              | Edit `Content-Security-Policy` in `netlify.toml` to add the origin to `script-src` / `connect-src`.                               |
 
@@ -329,7 +330,7 @@ Token, typography, and utility-class values are centralized in `src/styles/` —
 - **Google Fonts external.** Poppins + Raleway are pulled from `fonts.gstatic.com`. Self-hosting would remove a third-party connect, remove FOUT risk, and shrink the CSP `font-src`.
 - **Visual regression.** Playwright covers structure + behavior, not pixels. Add `toHaveScreenshot()` baselines once the design is frozen.
 - **Lighthouse CI.** Performance budget isn't enforced in CI. Add a `lighthouse-ci` job in `.github/workflows/ci.yml` and assert thresholds.
-- **Image variants.** No `<picture>` / `srcset` for the hero portrait — single WebP at 320×320. Acceptable for current LCP, but multi-resolution would help retina.
+- **Image variants.** No `<picture>` / `srcset` for the hero portrait, just a single WebP at 320×320. Acceptable for current LCP, but multi-resolution would help retina.
 - **OG image dedicated.** OG image is the profile photo (640×640). A purpose-built 1200×630 banner would render better on social.
 - **WhatsApp / contact button.** No floating WhatsApp CTA on the portfolio (unlike the NullBreach UI). Add if conversion matters.
 

@@ -17,23 +17,55 @@ export function useTranslations(lang: Lang) {
 }
 
 /**
+ * ES paths that have an EN equivalent.
+ * Add entries here as more pages get translated.
+ */
+const EN_PAGE_MAP: Record<string, string> = {
+  "/": "/en",
+  "/proyectos": "/en/projects",
+  "/sobre-mi": "/en/about",
+  "/servicios": "/en/services",
+  "/contacto": "/en/contact",
+  "/herramientas": "/en/uses",
+  "/privacidad": "/en/privacy",
+};
+
+/** Reverse of EN_PAGE_MAP: EN path → ES path, for pages where names differ. */
+const ES_PAGE_MAP: Record<string, string> = Object.fromEntries(
+  Object.entries(EN_PAGE_MAP).map(([es, en]) => [en, es])
+);
+
+/**
  * Target URL for the language toggle.
- * EN pages always strip the /en prefix back to their existing ES origin.
- * ES pages map to the EN home (only the home has an EN counterpart for now;
- * extend this when more /en/* content pages exist).
+ * EN pages check the reverse map first, then strip the /en prefix.
+ * ES pages map to their EN counterpart if one exists, else fall back to /en.
  */
 export function getAltLangUrl(url: URL): { href: string; lang: Lang } {
   const path = url.pathname;
   if (getLangFromUrl(url) === "en") {
-    const stripped = path.replace(/^\/en(\/|$)/, "/");
+    const normalized = path.replace(/\/$/, "") || "/";
+    if (ES_PAGE_MAP[normalized]) {
+      return { href: ES_PAGE_MAP[normalized], lang: "es" };
+    }
+    if (normalized.startsWith("/en/projects/")) {
+      return { href: normalized.replace("/en/projects/", "/proyectos/"), lang: "es" };
+    }
+    const stripped = path.replace(/^\/en(\/|$)/, "/") || "/";
     return { href: stripped, lang: "es" };
+  }
+  const normalized = path.replace(/\/$/, "") || "/";
+  if (EN_PAGE_MAP[normalized]) {
+    return { href: EN_PAGE_MAP[normalized], lang: "en" };
+  }
+  if (normalized.startsWith("/proyectos/")) {
+    return { href: normalized.replace("/proyectos/", "/en/projects/"), lang: "en" };
   }
   return { href: "/en", lang: "en" };
 }
 
 /** Per-locale CV filename. */
 export function cvHref(lang: Lang, base: string): string {
-  const file = lang === "en" ? "cv_valentina_ramirez_en.pdf" : "cv_valentina_ramirez.pdf";
+  const file = lang === "en" ? "cv_valentina_ramirez_en.pdf" : "cv_valentina_ramirez_es.pdf";
   return `${base}${file}`;
 }
 

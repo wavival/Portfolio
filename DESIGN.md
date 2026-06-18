@@ -1,4 +1,4 @@
-# DESIGN.md — Design System
+# DESIGN.md: Design System
 
 Design tokens, typography, color, and utility classes for `wavival.dev`. Everything documented here lives in `src/styles/` and `tailwind.config.mjs`.
 
@@ -149,10 +149,10 @@ All inside `@layer utilities` in `src/styles/utilities.css`, 2-space indentation
 ## Dark mode strategy
 
 - `tailwind.config.mjs` → `darkMode: 'class'`
-- **Initial state applied pre-paint.** A synchronous `<script is:inline>` at the top of `<head>` (in `Layout.astro`) reads `localStorage["theme"]` — falling back to `prefers-color-scheme: dark` — and adds `.dark` to `<html>` before stylesheets load. This eliminates FOUC.
+- **Initial state applied pre-paint.** A synchronous `<script is:inline>` at the top of `<head>` (in `Layout.astro`) reads `localStorage["theme"]` (falling back to `prefers-color-scheme: dark`) and adds `.dark` to `<html>` before stylesheets load. This eliminates FOUC.
 - **Post-paint behavior** is owned by `src/scripts/theme.ts`: it syncs the sun/moon icons to the already-applied state, then handles toggle clicks. Each click flips `.dark` on `<html>`, writes `localStorage["theme"]`, and re-syncs icons.
-- Toggle swaps two icon `<img>` elements (sun/moon) via `.hidden` class — no JS-rendered SVG.
-- Never use `@media (prefers-color-scheme)` in CSS for styling — the `.dark` class is the single source of truth.
+- Toggle swaps two icon `<img>` elements (sun/moon) via `.hidden` class, no JS-rendered SVG.
+- Never use `@media (prefers-color-scheme)` in CSS for styling; the `.dark` class is the single source of truth.
 
 ## Motion
 

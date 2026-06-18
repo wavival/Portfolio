@@ -16,7 +16,7 @@ export default defineConfig({
       lastmod: new Date(),
       i18n: {
         defaultLocale: "es",
-        locales: { es: "es-CO" },
+        locales: { es: "es-CO", en: "en-US" },
       },
     }),
   ],

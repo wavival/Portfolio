@@ -1,9 +1,14 @@
 ---
 import Link from "@/components/ui/Link.astro";
 import { getLangFromUrl, useTranslations, homeHref } from "@/i18n/utils";
+import type { Lang } from "@/i18n/utils";
+
+interface Props {
+  lang?: Lang;
+}
 
 const BASE = import.meta.env.BASE_URL;
-const lang = getLangFromUrl(Astro.url);
+const lang: Lang = Astro.props.lang ?? getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const home = homeHref(lang);
 const year = new Date().getFullYear();
@@ -50,20 +55,28 @@ const year = new Date().getFullYear();
           class="text-xs font-display font-bold uppercase tracking-widest text-[var(--text-primary)]"
           aria-hidden="true">{t("footer.navHeading")}</span
         >
-        <Link href={`${BASE}projects`} class="!text-xs" aria-label={t("nav.projects")}
-          >{t("nav.projects")}</Link
+        <Link
+          href={lang === "en" ? `${BASE}en/projects` : `${BASE}proyectos`}
+          class="!text-xs"
+          aria-label={t("nav.projects")}>{t("nav.projects")}</Link
         >
-        <Link href={`${BASE}services`} class="!text-xs" aria-label={t("nav.services")}
-          >{t("nav.services")}</Link
+        <Link
+          href={lang === "en" ? `${BASE}en/services` : `${BASE}servicios`}
+          class="!text-xs"
+          aria-label={t("nav.services")}>{t("nav.services")}</Link
         >
-        <Link href={`${BASE}stack`} class="!text-xs" aria-label={t("nav.stack")}
+        <Link href={`${home}#stack`} class="!text-xs" aria-label={t("nav.stack")}
           >{t("nav.stack")}</Link
         >
-        <Link href={`${BASE}about`} class="!text-xs" aria-label={t("nav.about")}
-          >{t("nav.about")}</Link
+        <Link
+          href={lang === "en" ? `${BASE}en/about` : `${BASE}sobre-mi`}
+          class="!text-xs"
+          aria-label={t("nav.about")}>{t("nav.about")}</Link
         >
-        <Link href={`${BASE}contact`} class="!text-xs" aria-label={t("nav.contact")}
-          >{t("nav.contact")}</Link
+        <Link
+          href={lang === "en" ? `${BASE}en/contact` : `${BASE}contacto`}
+          class="!text-xs"
+          aria-label={t("nav.contact")}>{t("nav.contact")}</Link
         >
       </nav>
 
@@ -72,17 +85,27 @@ const year = new Date().getFullYear();
           class="text-xs font-display font-bold uppercase tracking-widest text-[var(--text-primary)]"
           aria-hidden="true">{t("footer.resourcesHeading")}</span
         >
-        <Link href={`${BASE}writeups`} class="!text-xs" aria-label={t("footer.writeupsAria")}
-          >{t("footer.writeups")}</Link
+        <Link
+          href="https://github.com/wavival?tab=repositories"
+          target="_blank"
+          class="!text-xs"
+          aria-label={t("footer.reposAria")}>{t("footer.repos")}</Link
         >
-        <Link href={`${BASE}uses`} class="!text-xs" aria-label={t("footer.usesAria")}
-          >{t("footer.uses")}</Link
+        <Link
+          href={lang === "en" ? `${BASE}en/uses` : `${BASE}herramientas`}
+          class="!text-xs"
+          aria-label={t("footer.usesAria")}>{t("footer.uses")}</Link
         >
         <Link
           href="https://blog.luminaw.co"
           target="_blank"
           class="!text-xs"
           aria-label={t("footer.blogAria")}>{t("nav.blog")}</Link
+        >
+        <Link
+          href={lang === "en" ? `${BASE}en/privacy` : `${BASE}privacidad`}
+          class="!text-xs"
+          aria-label={t("footer.privacyAria")}>{t("footer.privacy")}</Link
         >
       </nav>
     </div>

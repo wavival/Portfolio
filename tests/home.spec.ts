@@ -8,7 +8,7 @@ test.describe("home page", () => {
   test("renders single h1 with the headline", async ({ page }) => {
     const h1 = page.getByRole("heading", { level: 1 });
     await expect(h1).toHaveCount(1);
-    await expect(h1).toContainText("Construyo productos completos");
+    await expect(h1).toContainText("El código que firmo también lo rompo");
   });
 
   test("has canonical and OG meta pointing to wavival.dev", async ({ page }) => {

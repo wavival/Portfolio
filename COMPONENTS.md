@@ -1,4 +1,4 @@
-# COMPONENTS.md — Component Reference
+# COMPONENTS.md: Component Reference
 
 Inventory of every Astro component in `src/components/`. Props, behavior, and where each one lives in the page composition.
 
@@ -36,17 +36,17 @@ Path: `src/layouts/Layout.astro`. Wraps every page. Owns the full `<head>`, skip
 
 What it injects in `<head>` (in order):
 
-- **Pre-paint theme script** (`is:inline`, synchronous) — first child of `<head>`. Reads `localStorage["theme"]` (falls back to `prefers-color-scheme`) and adds `.dark` to `<html>` before stylesheets load. Prevents FOUC.
+- **Pre-paint theme script** (`is:inline`, synchronous): first child of `<head>`. Reads `localStorage["theme"]` (falls back to `prefers-color-scheme`) and adds `.dark` to `<html>` before stylesheets load. Prevents FOUC.
 - Title, description, author (`Valentina Ramírez`), robots directives
 - Canonical URL from `Astro.url.pathname` against `https://wavival.dev`
 - OpenGraph (image with 640×640 dimensions + alt, locale `es_CO`)
 - Twitter Card (`summary_large_image`)
-- Google Site Verification meta — emitted **only when `PUBLIC_GSV` is set**
+- Google Site Verification meta: emitted **only when `PUBLIC_GSV` is set**
 - Theme color meta (light + dark variants)
 - Favicons (`logo-w.ico`, `logo-w.webp`)
 - `<link rel="preload" as="image">` for the hero portrait (LCP optimization)
-- Google Fonts (Poppins + Raleway) — async via `media="print"` + `onload` + `<noscript>` fallback
-- Google Analytics — emitted **only when `PUBLIC_GA_ID` is set**, `is:inline async`
+- Google Fonts (Poppins + Raleway): async via `media="print"` + `onload` + `<noscript>` fallback
+- Google Analytics: emitted **only when `PUBLIC_GA_ID` is set**, `is:inline async`
 - AOS init script with `prefers-reduced-motion` guard
 - JSON-LD `@graph` with `Person` + `WebSite` schemas
 
@@ -65,14 +65,14 @@ Path: `src/components/ui/Button.astro`. Renders an `<a>` if `href` is provided, 
 
 | Prop         | Type                              | Default    | Notes                                             |
 | ------------ | --------------------------------- | ---------- | ------------------------------------------------- |
-| `id`         | `string`                          | —          |                                                   |
-| `href`       | `string`                          | —          | Presence determines `<a>` vs `<button>`           |
+| `id`         | `string`                          | -          |                                                   |
+| `href`       | `string`                          | -          | Presence determines `<a>` vs `<button>`           |
 | `target`     | `"_blank" \| "_self"`             | `"_self"`  | `_blank` auto-applies `rel="noopener noreferrer"` |
 | `type`       | `"button" \| "submit" \| "reset"` | `"button"` | Only relevant when rendered as `<button>`         |
 | `class`      | `string`                          | `""`       | Appended to `.btn-primary`                        |
-| `icon`       | `string`                          | —          | SVG filename in `public/icons/ui/` (no extension) |
-| `download`   | `string`                          | —          | Forwarded to `<a download>`                       |
-| `aria-label` | `string`                          | —          |                                                   |
+| `icon`       | `string`                          | -          | SVG filename in `public/icons/ui/` (no extension) |
+| `download`   | `string`                          | -          | Forwarded to `<a download>`                       |
+| `aria-label` | `string`                          | -          |                                                   |
 
 Icon `<img>` is locked to `width="20" height="20"` and `alt=""`.
 
@@ -85,8 +85,8 @@ Path: `src/components/ui/Link.astro`. Text link with optional icon. Applies `.li
 | `href`       | `string`              | required  |                                                   |
 | `target`     | `"_blank" \| "_self"` | `"_self"` | `_blank` auto-applies `rel="noopener noreferrer"` |
 | `class`      | `string`              | `""`      | Appended to `.link`                               |
-| `icon`       | `string`              | —         | SVG filename in `public/icons/ui/` (no extension) |
-| `aria-label` | `string`              | —         |                                                   |
+| `icon`       | `string`              | -         | SVG filename in `public/icons/ui/` (no extension) |
+| `aria-label` | `string`              | -         |                                                   |
 
 Icon `<img>` is locked to `width="24" height="24"` and `alt=""`.
 
@@ -119,8 +119,8 @@ ARIA:
 Path: `src/components/ui/Footer.astro`. Three-column footer.
 
 - **Left:** logo + tagline + social icons (LinkedIn, GitHub, Instagram)
-- **Middle:** `Navegación` — anchors to Projects / Stack / About / Contact
-- **Right:** `Recursos` — Blog W (luminaw.co)
+- **Middle:** `Navegación`: anchors to Projects / Stack / About / Contact
+- **Right:** `Recursos`: Blog W (luminaw.co)
 - **Bottom strip:** CTA "Conoce Lúmina W" link + `© {year} Valentina Ramírez`
 
 Year is rendered with `new Date().getFullYear()` at build time.
@@ -137,7 +137,7 @@ Path: `src/components/sections/Hero.astro`. `id="hero"`. `min-h-[calc(100dvh-64p
 - Specialty chips: React / Django / PostgreSQL
 - Single `<h1>` headline with brand-blue accent line
 - Body copy
-- CV download button (`#btn-download-cv`) — fires `gtag("event", "file_download", ...)` on click
+- CV download button (`#btn-download-cv`): fires `gtag("event", "file_download", ...)` on click
 - Social Link icons: LinkedIn, GitHub, Blog (luminaw.co)
 
 ### `Projects.astro`
@@ -191,7 +191,7 @@ The only content page. Composes sections in order:
 
 ### `src/pages/404.astro`
 
-Renders inside `<Layout title="404 — Página no encontrada" noindex={true}>`. Centered 404 numeral, message, and a `Link` back to `/`.
+Renders inside `<Layout title="404: Página no encontrada" noindex={true}>`. Centered 404 numeral, message, and a `Link` back to `/`.
 
 ## Client scripts
 
@@ -205,7 +205,7 @@ Mobile menu controller. Imports nothing. Listens on:
 
 ### `src/scripts/theme.ts`
 
-Theme controller for **post-paint** state. The initial `.dark` class is already applied by the pre-paint `is:inline` script in `Layout.astro` `<head>` (see Layout section above) — `theme.ts` only syncs the sun/moon icons to that initial state and wires the toggle buttons. On click it flips `.dark` on `<html>`, persists the new value to `localStorage["theme"]`, and re-syncs icons.
+Theme controller for **post-paint** state. The initial `.dark` class is already applied by the pre-paint `is:inline` script in `Layout.astro` `<head>` (see Layout section above); `theme.ts` only syncs the sun/moon icons to that initial state and wires the toggle buttons. On click it flips `.dark` on `<html>`, persists the new value to `localStorage["theme"]`, and re-syncs icons.
 
 Both scripts are imported once from `NavBar.astro`:
 

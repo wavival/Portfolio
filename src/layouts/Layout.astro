@@ -16,7 +16,7 @@ interface Props {
 }
 
 const {
-  title = "Valentina Ramírez | Full Stack Developer · Django + React · IA & Seguridad",
+  title = "Valentina Ramírez | Full Stack Developer Django + React",
   description = "Full Stack Developer especializada en Django y React. Construyo productos completos: backend sólido, frontend funcional, integración de IA y seguridad desde el diseño.",
   image = "/images/profile.webp",
   ogImage,
@@ -33,9 +33,13 @@ const site = "https://wavival.dev";
 const canonicalURL = new URL(Astro.url.pathname, site);
 const personImage = new URL(image, site);
 const socialCard = ogImage ? new URL(ogImage, site) : new URL("/images/og-card.png", site);
-const socialCardAlt = "Valentina Ramírez — Full Stack Developer · Django + React · IA & Seguridad";
+const socialCardAlt =
+  lang === "en"
+    ? "Valentina Ramírez: Full Stack Developer · Django + React · AI & Security"
+    : "Valentina Ramírez: Full Stack Developer · Django + React · IA & Seguridad";
 
-const GA_ID = import.meta.env.PUBLIC_GA_ID;
+const UMAMI_SRC = import.meta.env.PUBLIC_UMAMI_SRC;
+const UMAMI_ID = import.meta.env.PUBLIC_UMAMI_ID;
 const GSV = import.meta.env.PUBLIC_GSV;
 
 const jsonLd = JSON.stringify({
@@ -49,26 +53,47 @@ const jsonLd = JSON.stringify({
       image: personImage.toString(),
       jobTitle: "Full Stack Developer",
       description: description,
-      worksFor: {
-        "@type": "Organization",
-        name: "Lúmina W",
-        url: "https://luminaw.co",
-      },
+      knowsAbout: [
+        "Full Stack Development",
+        "Django",
+        "Django REST Framework",
+        "React",
+        "TypeScript",
+        "PostgreSQL",
+        "REST APIs",
+        "AI integration",
+        "LLM workflows",
+        "Application Security",
+        "OWASP",
+      ],
+      knowsLanguage: ["es", "en"],
+      nationality: { "@type": "Country", name: "Colombia" },
+      alumniOf: [
+        { "@type": "EducationalOrganization", name: "SENA" },
+        { "@type": "EducationalOrganization", name: "Universidad de San Buenaventura" },
+        { "@type": "EducationalOrganization", name: "Platzi", url: "https://platzi.com" },
+      ],
+      worksFor: { "@id": `${site}/#organization` },
       sameAs: [
         "https://linkedin.com/in/wavival",
         "https://github.com/wavival",
         "https://instagram.com/wavival",
         "https://platzi.com/p/wavival",
-        "https://luminaw.co",
-        "https://blog.luminaw.co",
-        "https://wa.me/573116865766",
       ],
+    },
+    {
+      "@type": "Organization",
+      "@id": `${site}/#organization`,
+      name: "Lúmina W",
+      url: "https://luminaw.co",
+      founder: { "@id": `${site}/#person` },
+      sameAs: ["https://luminaw.co", "https://blog.luminaw.co"],
     },
     {
       "@type": "WebSite",
       "@id": `${site}/#website`,
       url: site,
-      name: title,
+      name: "Valentina Ramírez",
       description: description,
       inLanguage: inLanguage,
       author: { "@id": `${site}/#person` },
@@ -117,6 +142,7 @@ const jsonLd = JSON.stringify({
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:locale" content={ogLocale} />
+    <meta property="og:locale:alternate" content={ogLocale === "en_US" ? "es_CO" : "en_US"} />
     <meta property="og:site_name" content="Valentina Ramírez" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
@@ -124,9 +150,15 @@ const jsonLd = JSON.stringify({
     <meta name="twitter:image" content={socialCard} />
     <meta name="twitter:image:alt" content={socialCardAlt} />
     {GSV && <meta name="google-site-verification" content={GSV} />}
-    <link rel="icon" href={`${import.meta.env.BASE_URL}brand/logo-w.ico`} />
-    <link rel="icon" type="image/webp" href={`${import.meta.env.BASE_URL}brand/logo-w.webp`} />
-    <link rel="apple-touch-icon" href={`${import.meta.env.BASE_URL}brand/logo-w.webp`} />
+    <link rel="icon" href={`${import.meta.env.BASE_URL}favicon.ico`} sizes="any" />
+    <link
+      rel="icon"
+      type="image/png"
+      href={`${import.meta.env.BASE_URL}icon-192.png`}
+      sizes="192x192"
+    />
+    <link rel="apple-touch-icon" href={`${import.meta.env.BASE_URL}apple-touch-icon.png`} />
+    <link rel="manifest" href={`${import.meta.env.BASE_URL}site.webmanifest`} />
     <meta name="theme-color" content="#f0f4ff" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#0f1117" media="(prefers-color-scheme: dark)" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -149,17 +181,7 @@ const jsonLd = JSON.stringify({
         rel="stylesheet"
       />
     </noscript>
-    {
-      GA_ID && (
-        <>
-          <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`} />
-          <script
-            is:inline
-            set:html={`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date());gtag("config","${GA_ID}");`}
-          />
-        </>
-      )
-    }
+    {UMAMI_SRC && UMAMI_ID && <script is:inline defer src={UMAMI_SRC} data-website-id={UMAMI_ID} />}
     <script>
       import AOS from "aos";
       import "aos/dist/aos.css";
@@ -183,10 +205,10 @@ const jsonLd = JSON.stringify({
     >
       {t("common.skip")}
     </a>
-    <NavBar />
+    <NavBar lang={lang as Lang} />
     <main id="main-content" class="pt-16">
       <slot />
     </main>
-    <Footer />
+    <Footer lang={lang as Lang} />
   </body>
 </html>

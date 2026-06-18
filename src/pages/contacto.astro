@@ -1,0 +1,206 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Link from "@/components/ui/Link.astro";
+
+const email = "wavival.dev@luminaw.co";
+const whatsappNumber = "573116865766";
+const whatsappMessage = "Hola Valentina, vengo de tu portafolio y quiero hablar de un proyecto.";
+const whatsappHref = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
+const calendlyUrl = "https://calendly.com/wavival/descubrimiento-servicios-wavival";
+
+const pageTitle = "Contacto: Hablemos de tu producto | Valentina Ramírez";
+const pageDescription =
+  "Tres formas de empezar: correo, WhatsApp o una llamada de descubrimiento de 30 minutos. Diseño y construyo productos completos, del backend a la interfaz.";
+
+const site = "https://wavival.dev";
+const contactSchema = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "ContactPage",
+  "@id": `${site}/contacto#contactpage`,
+  url: `${site}/contacto`,
+  name: pageTitle,
+  description: pageDescription,
+  inLanguage: "es-CO",
+  mainEntity: { "@id": `${site}/#person` },
+});
+
+const channels = [
+  {
+    icon: "send-email-white",
+    iconWrap: "bg-[var(--brand-blue)]",
+    title: "Correo",
+    body: "Cuéntame tu proyecto con calma. Respondo en 24h.",
+    href: `mailto:${email}`,
+    target: "_self" as const,
+    cta: "Escríbeme",
+    ariaLabel: "Enviar un correo electrónico a Valentina Ramírez",
+  },
+  {
+    icon: "whatsapp",
+    iconWrap: "bg-[var(--bg-blur)]",
+    title: "WhatsApp",
+    body: "Para dudas rápidas o arrancar de una.",
+    href: whatsappHref,
+    target: "_blank" as const,
+    cta: "Chatear",
+    ariaLabel: "Escribir a Valentina Ramírez por WhatsApp",
+  },
+  {
+    icon: "calendar-blue",
+    iconWrap: "bg-[var(--bg-blur)]",
+    title: "Llamada 30 min",
+    body: "Sin compromiso. Agenda en tu zona horaria; coordino desde COT (UTC-5).",
+    href: "#agenda",
+    target: "_self" as const,
+    cta: "Agendar",
+    ariaLabel: "Ir al calendario para agendar una llamada",
+  },
+];
+---
+
+<Layout
+  title={pageTitle}
+  description={pageDescription}
+  alternates={[
+    { hreflang: "es", href: "https://wavival.dev/contacto" },
+    { hreflang: "en", href: "https://wavival.dev/en/contact" },
+    { hreflang: "x-default", href: "https://wavival.dev/contacto" },
+  ]}
+>
+  <section class="section" data-aos="fade-up">
+    <p class="section-subtitle">Hablemos</p>
+    <h1 class="section-title">
+      Tu próxima idea merece <span class="text-[var(--brand-blue)]">código que la sostenga.</span>
+    </h1>
+    <p class="text-[var(--text-muted)] leading-relaxed mt-4 max-w-2xl">
+      ¿Tienes un producto en mente? Elige cómo prefieres empezar. Diseño y construyo productos
+      completos, del backend a la interfaz, con IA integrada y seguridad desde el diseño.
+    </p>
+
+    <div class="grid gap-6 md:grid-cols-3 mt-10">
+      {
+        channels.map((c) => (
+          <article class="card flex flex-col gap-4 !p-6">
+            <span
+              class={`flex items-center justify-center w-12 h-12 rounded-[var(--radius-md)] ${c.iconWrap}`}
+            >
+              <img
+                src={`${import.meta.env.BASE_URL}icons/ui/${c.icon}.svg`}
+                alt=""
+                width="24"
+                height="24"
+                class="w-[24px] h-[24px]"
+              />
+            </span>
+            <div class="flex flex-col gap-1">
+              <h3 class="font-display font-bold text-lg text-[var(--text-primary)]">{c.title}</h3>
+              <p class="text-sm text-[var(--text-muted)] leading-relaxed">{c.body}</p>
+            </div>
+            <Link href={c.href} target={c.target} class="!text-sm mt-auto" aria-label={c.ariaLabel}>
+              {c.cta}
+            </Link>
+          </article>
+        ))
+      }
+    </div>
+
+    <p class="text-xs text-[var(--text-muted)] mt-6">
+      Proyectos desde <strong class="text-[var(--text-primary)]">COP 2.000.000 / USD 500</strong> según
+      alcance. Disponibilidad limitada.
+    </p>
+  </section>
+
+  <section id="agenda" class="section !pt-0" data-aos="fade-up">
+    <h2 class="font-display font-bold text-2xl text-[var(--text-primary)] mb-6">
+      Agenda una llamada de descubrimiento
+    </h2>
+
+    <ol class="grid gap-4 md:grid-cols-3 mb-10">
+      {
+        [
+          { n: "1", text: "Eliges un horario que te sirva." },
+          { n: "2", text: "Hablamos 30 min de tu idea." },
+          { n: "3", text: "Te envío una propuesta clara." },
+        ].map((step) => (
+          <li class="flex items-center gap-3 text-sm text-[var(--text-muted)]">
+            <span class="flex items-center justify-center w-8 h-8 shrink-0 rounded-full bg-[var(--brand-blue)] text-white font-display font-bold">
+              {step.n}
+            </span>
+            {step.text}
+          </li>
+        ))
+      }
+    </ol>
+
+    <div
+      id="calendly-embed"
+      class="rounded-[var(--radius-md)] overflow-hidden border border-[var(--border-base)]"
+    >
+      <noscript>
+        <p class="text-[var(--text-muted)] leading-relaxed p-6">
+          El calendario necesita JavaScript. Agenda directamente en
+          <Link
+            href={calendlyUrl}
+            target="_blank"
+            class="inline"
+            aria-label="Abrir el calendario de Calendly">Calendly</Link
+          > o escríbeme a <Link href={`mailto:${email}`} class="inline">{email}</Link>.
+        </p>
+      </noscript>
+    </div>
+  </section>
+
+  <script is:inline define:vars={{ calendlyUrl }}>
+    (function () {
+      var dark = document.documentElement.classList.contains("dark");
+      var url = calendlyUrl + "?hide_gdpr_banner=1&primary_color=407bff";
+      if (dark) url += "&background_color=0f1117&text_color=e5e7eb";
+
+      var container = document.getElementById("calendly-embed");
+      var widget = document.createElement("div");
+      widget.className = "calendly-inline-widget";
+      widget.setAttribute("data-url", url);
+      widget.style.minWidth = "320px";
+      widget.style.height = "1000px";
+      container.appendChild(widget);
+
+      window.addEventListener("message", function (e) {
+        if (e.origin.indexOf("calendly.com") === -1) return;
+        if (!e.data || e.data.event !== "calendly.page_height") return;
+        var h = e.data.payload && e.data.payload.height;
+        if (!h) return;
+        widget.style.height = h;
+        var iframe = widget.querySelector("iframe");
+        if (iframe) iframe.style.height = h;
+      });
+
+      var s = document.createElement("script");
+      s.src = "https://assets.calendly.com/assets/external/widget.js";
+      s.async = true;
+      document.body.appendChild(s);
+    })();
+  </script>
+
+  <script is:inline>
+    (function () {
+      function method(href) {
+        if (!href) return null;
+        if (href.indexOf("mailto:") === 0) return "email";
+        if (href.indexOf("wa.me") !== -1) return "whatsapp";
+        if (href.indexOf("#agenda") !== -1 || href.indexOf("calendly.com") !== -1)
+          return "calendly";
+        return null;
+      }
+      document.addEventListener("click", function (e) {
+        var a = e.target.closest && e.target.closest("a");
+        if (!a) return;
+        var m = method(a.getAttribute("href"));
+        if (m && window.umami) {
+          window.umami.track("contact_click", { method: m });
+        }
+      });
+    })();
+  </script>
+
+  <script is:inline type="application/ld+json" set:html={contactSchema} />
+</Layout>

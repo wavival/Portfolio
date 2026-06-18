@@ -9,6 +9,18 @@
   transition: border-color 0.3s ease;
 }
 
+.card {
+  transition:
+    transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+    background-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.card:hover {
+  transform: scale(1.02) !important;
+  box-shadow: 0 8px 28px rgba(64, 123, 255, 0.18);
+}
+
 html {
   transition: color 0.3s ease;
 }
@@ -20,6 +32,29 @@ body {
   transition:
     background-color 0.3s ease,
     color 0.3s ease;
+}
+
+/* Custom scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--brand-blue) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--brand-blue);
+  border-radius: 20px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--accent-hover);
 }
 
 @media (prefers-reduced-motion: reduce) {

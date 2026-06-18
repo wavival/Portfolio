@@ -1,0 +1,363 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Contact from "@/components/sections/Contact.astro";
+
+const base = import.meta.env.BASE_URL;
+const site = "https://wavival.dev";
+
+const pageTitle = "Servicios: Desarrollo Full Stack a medida | Valentina Ramírez";
+const pageDescription =
+  "Desarrolladora Full Stack freelance: aplicaciones web a medida con Django y React, APIs REST, integraciones de IA y seguridad desde el diseño. Del problema al producto en producción.";
+
+interface ServiceExample {
+  name: string;
+  description: string;
+  href: string;
+}
+
+interface Service {
+  title: string;
+  body: string;
+  tools: string[];
+  timeline: string;
+  featured?: boolean;
+  specialty?: boolean;
+  examples?: ServiceExample[];
+}
+
+const services: Service[] = [
+  {
+    title: "Aplicaciones web a medida",
+    body: "Producto completo de extremo a extremo: backend en Django + DRF, frontend en React + TypeScript, base de datos PostgreSQL y despliegue. Para fundadores que necesitan algo real, no un demo.",
+    tools: ["Django", "DRF", "React", "TypeScript", "PostgreSQL"],
+    timeline: "8 a 14 semanas",
+    featured: true,
+    examples: [
+      {
+        name: "TerraCore",
+        description: "plataforma agropecuaria multitenancy",
+        href: `${base}proyectos/terracore`,
+      },
+      {
+        name: "Root",
+        description: "PWA de salud alimentaria offline-first",
+        href: `${base}proyectos/root`,
+      },
+    ],
+  },
+  {
+    title: "APIs REST y backend",
+    body: "Diseño e implemento APIs limpias, autenticadas y documentadas. Modelado relacional, control de acceso por rol, multitenancy y lógica de negocio compleja que aguanta el crecimiento.",
+    tools: ["Django REST Framework", "JWT", "PostgreSQL", "Multitenancy"],
+    timeline: "3 a 6 semanas",
+    examples: [
+      {
+        name: "NullBreach API",
+        description: "backend de análisis OWASP",
+        href: `${base}proyectos/nullbreach`,
+      },
+    ],
+  },
+  {
+    title: "Seguridad y AppSec",
+    body: "Reviso aplicaciones con criterio OWASP Top 10 y mentalidad de pentester. Seguridad integrada desde el diseño: autenticación, manejo de secretos, validación y endpoints protegidos.",
+    tools: ["OWASP", "AppSec", "PTES", "MITRE ATT&CK"],
+    timeline: "1 a 2 semanas",
+    examples: [
+      {
+        name: "Forgotten Portal",
+        description: "pentesting ofensivo sobre DockerLabs",
+        href: `${base}proyectos/forgotten-portal`,
+      },
+    ],
+  },
+  {
+    title: "Integraciones de IA",
+    body: "Conecto Claude API y flujos con LLM donde aportan valor medible: análisis, asistencia con contexto, automatización con n8n. IA como copiloto del producto, no como adorno.",
+    tools: ["Claude API", "LLM Workflows", "n8n", "Prompt Engineering"],
+    timeline: "2 a 4 semanas",
+    specialty: true,
+    examples: [
+      {
+        name: "Root",
+        description: "scanner de etiquetas con Claude API",
+        href: `${base}proyectos/root`,
+      },
+      {
+        name: "NullBreach",
+        description: "análisis OWASP con chat de IA persistente",
+        href: `${base}proyectos/nullbreach`,
+      },
+    ],
+  },
+];
+
+const fit = {
+  yes: [
+    "Fundadores con producto real que necesitan velocidad",
+    "Equipos que necesitan API y frontend en un solo contrato",
+    "Startups que valoran seguridad desde el diseño",
+  ],
+  no: [
+    "El proyecto es solo diseño o maquetado estático",
+    "Necesitas alguien disponible en oficina 9-5",
+    "Buscas el precio más bajo, no el mejor resultado",
+  ],
+};
+
+const process = [
+  {
+    step: "01",
+    title: "Conversación",
+    body: "Entiendo el problema de negocio antes de hablar de tecnología. Qué necesitas, para quién y por qué.",
+  },
+  {
+    step: "02",
+    title: "Propuesta",
+    body: "Defino alcance, arquitectura y entregables. Sin sorpresas: sabes qué se construye y en qué orden.",
+  },
+  {
+    step: "03",
+    title: "Build iterativo",
+    body: "Construyo en entregas visibles. Ves avances reales, no un silencio de semanas seguido de un big bang.",
+  },
+  {
+    step: "04",
+    title: "Entrega",
+    body: "Producto en producción, documentado y mantenible. Pensado para durar más allá del primer release.",
+  },
+];
+
+const faqs = [
+  {
+    q: "¿Manejas el diseño?",
+    a: "Sí, soy diseñadora UX/UI y puedo trabajarlo sin problema. Si llegas con referencias o una dirección visual clara, mejor. Si necesitas el proceso de diseño completo desde cero, lo incluimos en la propuesta.",
+  },
+  {
+    q: "¿Qué necesito para empezar?",
+    a: "Tener claro el problema y a quién va dirigido el producto. No necesitas llegar con un PRD (documento de requerimientos de producto: el listado detallado de funciones, flujos y reglas de negocio que define qué debe hacer el software). Eso lo construimos juntos en la propuesta.",
+  },
+  {
+    q: "¿Trabajas con equipos o solo con founders?",
+    a: "Con ambos. Puedo llevar el desarrollo completo como dev única o integrarme a un equipo existente como refuerzo backend, API o seguridad.",
+  },
+];
+
+const serviceLd = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "Service",
+  name: "Valentina Ramírez: Desarrollo Full Stack",
+  description: pageDescription,
+  url: `${site}${base}servicios`,
+  provider: { "@id": `${site}/#person` },
+  areaServed: "Worldwide",
+  serviceType: services.map((s) => s.title),
+});
+
+const faqLd = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqs.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a },
+  })),
+});
+
+const breadcrumbLd = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Inicio", item: "https://wavival.dev/" },
+    { "@type": "ListItem", position: 2, name: "Servicios", item: "https://wavival.dev/servicios" },
+  ],
+});
+---
+
+<Layout
+  title={pageTitle}
+  description={pageDescription}
+  alternates={[
+    { hreflang: "es", href: "https://wavival.dev/servicios" },
+    { hreflang: "en", href: "https://wavival.dev/en/services" },
+    { hreflang: "x-default", href: "https://wavival.dev/servicios" },
+  ]}
+>
+  <section class="section">
+    <p class="section-subtitle">En qué te puedo ayudar</p>
+    <h1 class="section-title">Construyo el producto que tu negocio necesita</h1>
+    <p class="text-[var(--text-muted)] leading-relaxed max-w-3xl mt-4">
+      Soy Full Stack Developer: tomo un problema de negocio y lo entrego como software real en
+      producción. Backend sólido, frontend funcional, IA aplicada y seguridad desde el diseño, sin
+      depender de tres proveedores distintos.
+    </p>
+
+    <!-- Servicios: bento asimétrico -->
+    <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
+      {
+        services.map((s, index) => {
+          const spanClass = s.featured || s.specialty ? "col-span-1 md:col-span-2" : "col-span-1";
+          const headingSize = s.featured || s.specialty ? "text-2xl" : "text-xl";
+          return (
+            <article
+              class={`card flex flex-col gap-3 ${spanClass}`}
+              style={
+                s.specialty
+                  ? "background-color: var(--bg-blur); border-color: var(--brand-blue);"
+                  : ""
+              }
+              data-aos="fade-up"
+              data-aos-delay={index * 80}
+            >
+              {s.specialty && (
+                <p class="text-[var(--brand-blue)] font-semibold text-xs uppercase tracking-widest">
+                  Especialidad
+                </p>
+              )}
+              <h2 class={`font-display font-bold ${headingSize} text-[var(--text-primary)]`}>
+                {s.title}
+              </h2>
+              <p class="text-sm text-[var(--text-muted)] leading-relaxed">{s.body}</p>
+              <div class="flex flex-wrap gap-2 mt-1">
+                {s.tools.map((t) => (
+                  <span class="chip !text-[var(--text-primary)]">{t}</span>
+                ))}
+              </div>
+              <p class="text-xs text-[var(--text-muted)] mt-1">
+                Duración estimada:
+                <span class="font-display font-semibold text-[var(--brand-blue)]">
+                  {" "}
+                  {s.timeline}
+                </span>
+              </p>
+              {s.examples && (
+                <div class="flex flex-col gap-2 pt-3 border-t border-[var(--border-base)]">
+                  <p class="text-xs font-semibold uppercase tracking-widest text-[var(--text-muted)]">
+                    Ejemplos de este servicio
+                  </p>
+                  <ul class="flex flex-col gap-1">
+                    {s.examples.map((ex) => (
+                      <li>
+                        <a
+                          href={ex.href}
+                          class="text-xs text-[var(--text-muted)] hover:text-[var(--brand-blue)] transition-colors duration-200"
+                        >
+                          <span class="font-display font-semibold text-[var(--brand-blue)]">
+                            {ex.name}:
+                          </span>{" "}
+                          {ex.description}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </article>
+          );
+        })
+      }
+    </div>
+
+    <!-- Filtro: con quién trabajo -->
+    <div
+      class="mt-16 rounded-2xl border border-[var(--border-base)] p-8 grid grid-cols-1 md:grid-cols-2 gap-8"
+      data-aos="fade-up"
+    >
+      <div class="flex flex-col gap-4">
+        <h3
+          class="font-display font-bold text-sm uppercase tracking-widest text-[var(--text-primary)]"
+        >
+          Trabajo mejor con
+        </h3>
+        <ul class="flex flex-col gap-2 text-sm text-[var(--text-muted)] leading-relaxed">
+          {
+            fit.yes.map((item) => (
+              <li class="flex gap-2 items-start">
+                <span class="text-[var(--brand-blue)] font-bold mt-0.5 shrink-0" aria-hidden="true">
+                  ·
+                </span>
+                {item}
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+      <div
+        class="flex flex-col gap-4 border-t md:border-t-0 md:border-l border-[var(--border-base)] md:pl-8 pt-6 md:pt-0"
+      >
+        <h3
+          class="font-display font-bold text-sm uppercase tracking-widest text-[var(--text-muted)]"
+        >
+          No es para mí si
+        </h3>
+        <ul class="flex flex-col gap-2 text-sm text-[var(--text-muted)] leading-relaxed">
+          {
+            fit.no.map((item) => (
+              <li class="flex gap-2 items-start">
+                <span class="font-bold mt-0.5 shrink-0" aria-hidden="true">
+                  ·
+                </span>
+                {item}
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+
+    <!-- Proceso: timeline horizontal -->
+    <h2 class="section-title mt-20">Cómo trabajo</h2>
+    <div class="relative mt-10">
+      <div
+        class="hidden md:block absolute h-px"
+        style="top: 44px; left: 12.5%; right: 12.5%; background-color: var(--border-base);"
+        aria-hidden="true"
+      >
+      </div>
+      <ol class="grid grid-cols-1 md:grid-cols-4 gap-0 md:gap-4" role="list">
+        {
+          process.map((p, i) => (
+            <li
+              class="flex flex-col gap-3 px-6 py-6 relative border-l-2 md:border-l-0 border-[var(--border-base)]"
+              data-aos="fade-up"
+              data-aos-delay={i * 80}
+            >
+              <span class="font-display font-bold text-sm w-10 h-10 rounded-full flex items-center justify-center bg-[var(--bg-card)] border-2 border-[var(--brand-blue)] text-[var(--brand-blue)] relative z-10 md:mx-auto mb-2 shrink-0">
+                {p.step}
+              </span>
+              <h3 class="font-display font-bold text-base text-[var(--text-primary)] md:text-center">
+                {p.title}
+              </h3>
+              <p class="text-sm text-[var(--text-muted)] leading-relaxed md:text-center">
+                {p.body}
+              </p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+
+    <!-- FAQ -->
+    <h2 class="section-title mt-20">Preguntas frecuentes</h2>
+    <div class="mt-6 flex flex-col gap-4">
+      {
+        faqs.map((f, i) => (
+          <div
+            class="rounded-2xl border border-[var(--border-base)] px-6 py-5 flex flex-col gap-2 transition-all duration-300"
+            data-aos="fade-up"
+            data-aos-delay={i * 60}
+          >
+            <h3 class="font-display font-semibold text-base text-[var(--text-primary)]">{f.q}</h3>
+            <p class="text-sm text-[var(--text-muted)] leading-relaxed">{f.a}</p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <Contact showServicesLink={false} />
+
+  <script is:inline type="application/ld+json" set:html={serviceLd} />
+  <script is:inline type="application/ld+json" set:html={faqLd} />
+  <script is:inline type="application/ld+json" set:html={breadcrumbLd} />
+</Layout>

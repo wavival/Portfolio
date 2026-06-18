@@ -22,6 +22,37 @@
   status = 200
   force = true
 
+# Legacy English-word ES routes renamed to Spanish slugs (content unchanged, still Spanish).
+[[redirects]]
+  from = "/projects/*"
+  to = "/proyectos/:splat"
+  status = 301
+[[redirects]]
+  from = "/projects"
+  to = "/proyectos"
+  status = 301
+[[redirects]]
+  from = "/services"
+  to = "/servicios"
+  status = 301
+[[redirects]]
+  from = "/about"
+  to = "/sobre-mi"
+  status = 301
+[[redirects]]
+  from = "/contact"
+  to = "/contacto"
+  status = 301
+[[redirects]]
+  from = "/uses"
+  to = "/herramientas"
+  status = 301
+
+[[redirects]]
+  from = "/en/*"
+  to = "/en/404.html"
+  status = 404
+
 [[headers]]
   for = "/*"
   [headers.values]
@@ -30,7 +61,8 @@
     Referrer-Policy = "strict-origin-when-cross-origin"
     Permissions-Policy = "camera=(), microphone=(), geolocation=()"
     Strict-Transport-Security = "max-age=63072000; includeSubDomains; preload"
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://ro-ot.netlify.app; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://ro-ot.netlify.app; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://www.google-analytics.com; connect-src 'self' https://nullbreach-api.wavival.dev https://root-api.wavival.dev https://www.google-analytics.com https://analytics.google.com https://ro-ot.netlify.app; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests"
+    # Analytics: Umami Cloud (cloud.umami.is) allowed in script-src + connect-src.
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://cloud.umami.is https://ro-ot.netlify.app https://assets.calendly.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://ro-ot.netlify.app https://assets.calendly.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://*.calendly.com https://d3v0px0pttie1i.cloudfront.net; connect-src 'self' https://cloud.umami.is https://nullbreach-api.wavival.dev https://root-api.wavival.dev https://ro-ot.netlify.app https://calendly.com; frame-src https://calendly.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests"
 
 [[headers]]
   for = "/_astro/*"
@@ -53,7 +85,7 @@
     Cache-Control = "public, max-age=31536000, immutable"
 
 [[headers]]
-  for = "/cv_valentina_ramirez.pdf"
+  for = "/cv_valentina_ramirez_*.pdf"
   [headers.values]
     Cache-Control = "public, max-age=86400"
 
