@@ -24,7 +24,9 @@ const base = import.meta.env.BASE_URL;
           data-aos-delay={index * 100}
         >
           <div>
-            <h3 class="font-display font-bold text-lg text-[var(--brand-blue)]">{s.category}</h3>
+            <h3 class="font-display font-bold text-lg text-[var(--brand-blue-text)]">
+              {s.category}
+            </h3>
             <p class="text-xs mt-1 italic">
               {isEn ? (s.descriptionEn ?? s.description) : s.description}
             </p>
@@ -43,8 +45,8 @@ const base = import.meta.env.BASE_URL;
     <Link
       href={isEn ? `${base}en/uses` : `${base}herramientas`}
       aria-label={isEn
-        ? "See the tools breakdown and why I use them"
-        : "Ver el detalle de herramientas y por qué las uso"}
+        ? "Technical criteria: tools breakdown and why I use them"
+        : "Criterio técnico: detalle de herramientas y por qué las uso"}
     >
       {isEn ? "Technical criteria" : "Criterio técnico"}
     </Link>

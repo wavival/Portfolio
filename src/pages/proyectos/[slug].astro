@@ -226,7 +226,7 @@ const nextProject = idx < caseStudies.length - 1 ? caseStudies[idx + 1] : null;
                 {project.chainStepsTitle ?? "Ejemplo de cadena de acciones"}
               </h3>
               <ol class="mt-4 flex flex-col gap-2">
-                {project.chainSteps.map((step, i) => (
+                {project.chainSteps.map((step) => (
                   <li class="flex items-start gap-3 text-sm text-[var(--text-muted)]">
                     <span class="text-[var(--brand-blue)] font-bold shrink-0" aria-hidden="true">
                       ·

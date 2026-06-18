@@ -12,6 +12,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `public/.well-known/security.txt` (RFC 9116): security contact, expiry, and canonical URL.
 - CI build-status badge in `README.md`, linked to the GitHub Actions `ci.yml` workflow.
 - This `CHANGELOG.md`.
+- ESLint (flat config: `eslint-plugin-astro` + `typescript-eslint` + `eslint-config-prettier`) with `lint` / `lint:fix` scripts.
+- husky `pre-commit` hook running `lint-staged` (ESLint `--fix` + Prettier on staged files).
+- `Lint` step in the CI `quality` job.
 - "Design & UX" category to the Stack section.
 - Sellable contact copy plus a footer CTA.
 

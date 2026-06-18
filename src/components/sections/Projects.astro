@@ -20,7 +20,7 @@ const list = featured ? projects.filter((p) => featuredSlugs.includes(p.slug)) :
 
 const tagStyles: Record<string, string> = {
   green: "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400",
-  blue: "bg-blue-100 text-[var(--brand-blue)] dark:bg-blue-900/30",
+  blue: "bg-blue-100 text-blue-900 dark:bg-blue-900/30 dark:text-blue-300",
   orange: "bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400",
   gray: "bg-[var(--bg-blur)] text-[var(--text-muted)]",
 };
@@ -116,12 +116,12 @@ function getLinks(p: Project) {
             <div class="flex items-start justify-between gap-4 flex-wrap">
               <div class="flex flex-col gap-1">
                 {p.slug === "terracore" && (
-                  <span class="text-[var(--brand-blue)] font-semibold text-xs uppercase tracking-widest">
+                  <span class="text-[var(--brand-blue-text)] font-semibold text-xs uppercase tracking-widest">
                     {isEn ? "Featured project" : "Proyecto destacado"}
                   </span>
                 )}
                 {p.slug === "nullbreach" && (
-                  <span class="text-[var(--brand-blue)] font-semibold text-xs uppercase tracking-widest">
+                  <span class="text-[var(--brand-blue-text)] font-semibold text-xs uppercase tracking-widest">
                     {isEn ? "AI · Security" : "IA · Seguridad"}
                   </span>
                 )}
@@ -138,13 +138,13 @@ function getLinks(p: Project) {
 
             <div class="grid grid-cols-1 md:grid-cols-2 border border-[var(--border-base)] rounded-[var(--radius-md)] overflow-hidden text-sm">
               <div class="p-4 flex flex-col gap-2">
-                <span class="text-xs font-bold uppercase tracking-widest text-[var(--brand-blue)]">
+                <span class="text-xs font-bold uppercase tracking-widest text-[var(--brand-blue-text)]">
                   {isEn ? "The challenge" : "El reto"}
                 </span>
                 <p class="text-[var(--text-muted)] leading-relaxed">{getProblem(p)}</p>
               </div>
               <div class="p-4 flex flex-col gap-2 border-t border-[var(--border-base)] md:border-t-0 md:border-l bg-[var(--bg-blur)]">
-                <span class="text-xs font-bold uppercase tracking-widest text-[var(--brand-blue)]">
+                <span class="text-xs font-bold uppercase tracking-widest text-[var(--brand-blue-text)]">
                   {isEn ? "What I built" : "Lo que construí"}
                 </span>
                 <p class="text-[var(--text-muted)] leading-relaxed">{getSolution(p)}</p>
@@ -152,7 +152,7 @@ function getLinks(p: Project) {
             </div>
 
             <div class="flex flex-col gap-2 items-center">
-              <span class="text-xs font-bold uppercase tracking-widest text-[var(--brand-blue)]">
+              <span class="text-xs font-bold uppercase tracking-widest text-[var(--brand-blue-text)]">
                 Stack
               </span>
               <div class="flex flex-wrap gap-1.5 justify-center">
@@ -239,19 +239,19 @@ function getLinks(p: Project) {
 <style>
   .filter-btn {
     color: var(--text-muted);
-    border-color: var(--border-base);
+    border-color: var(--text-muted);
     background-color: transparent;
   }
 
   .filter-btn:hover {
-    color: var(--brand-blue);
-    border-color: var(--brand-blue);
+    color: var(--brand-blue-text);
+    border-color: var(--brand-blue-text);
   }
 
   .filter-btn[data-active="true"] {
-    background-color: var(--brand-blue);
+    background-color: var(--brand-blue-text);
     color: white;
-    border-color: var(--brand-blue);
+    border-color: var(--brand-blue-text);
   }
 
   [data-project-card].is-filtering-out {

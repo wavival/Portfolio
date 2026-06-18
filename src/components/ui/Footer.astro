@@ -12,6 +12,14 @@ const lang: Lang = Astro.props.lang ?? getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const home = homeHref(lang);
 const year = new Date().getFullYear();
+
+const normalizePath = (p: string) => p.replace(/\/+$/, "") || "/";
+const currentPath = normalizePath(Astro.url.pathname);
+const isCurrent = (href: string): "page" | undefined => {
+  const url = new URL(href, Astro.url);
+  if (url.hash) return undefined;
+  return normalizePath(url.pathname) === currentPath ? "page" : undefined;
+};
 ---
 
 <footer class="w-full border-t border-[var(--border-base)] mt-24">
@@ -21,7 +29,7 @@ const year = new Date().getFullYear();
         <a href={home} aria-label={t("nav.homeAria")}>
           <img
             src={`${BASE}brand/logo-w.webp`}
-            alt="wavival.dev"
+            alt=""
             class="h-10 w-auto"
             width="120"
             height="40"
@@ -51,19 +59,24 @@ const year = new Date().getFullYear();
       </div>
 
       <nav aria-label={t("footer.siteNavAria")} class="flex flex-col gap-3">
-        <span
+        <h2
           class="text-xs font-display font-bold uppercase tracking-widest text-[var(--text-primary)]"
-          aria-hidden="true">{t("footer.navHeading")}</span
         >
+          {t("footer.navHeading")}
+        </h2>
         <Link
           href={lang === "en" ? `${BASE}en/projects` : `${BASE}proyectos`}
           class="!text-xs"
-          aria-label={t("nav.projects")}>{t("nav.projects")}</Link
+          aria-label={t("nav.projects")}
+          aria-current={isCurrent(lang === "en" ? `${BASE}en/projects` : `${BASE}proyectos`)}
+          >{t("nav.projects")}</Link
         >
         <Link
           href={lang === "en" ? `${BASE}en/services` : `${BASE}servicios`}
           class="!text-xs"
-          aria-label={t("nav.services")}>{t("nav.services")}</Link
+          aria-label={t("nav.services")}
+          aria-current={isCurrent(lang === "en" ? `${BASE}en/services` : `${BASE}servicios`)}
+          >{t("nav.services")}</Link
         >
         <Link href={`${home}#stack`} class="!text-xs" aria-label={t("nav.stack")}
           >{t("nav.stack")}</Link
@@ -71,20 +84,25 @@ const year = new Date().getFullYear();
         <Link
           href={lang === "en" ? `${BASE}en/about` : `${BASE}sobre-mi`}
           class="!text-xs"
-          aria-label={t("nav.about")}>{t("nav.about")}</Link
+          aria-label={t("nav.about")}
+          aria-current={isCurrent(lang === "en" ? `${BASE}en/about` : `${BASE}sobre-mi`)}
+          >{t("nav.about")}</Link
         >
         <Link
           href={lang === "en" ? `${BASE}en/contact` : `${BASE}contacto`}
           class="!text-xs"
-          aria-label={t("nav.contact")}>{t("nav.contact")}</Link
+          aria-label={t("nav.contact")}
+          aria-current={isCurrent(lang === "en" ? `${BASE}en/contact` : `${BASE}contacto`)}
+          >{t("nav.contact")}</Link
         >
       </nav>
 
       <nav aria-label={t("footer.resourcesAria")} class="flex flex-col gap-3">
-        <span
+        <h2
           class="text-xs font-display font-bold uppercase tracking-widest text-[var(--text-primary)]"
-          aria-hidden="true">{t("footer.resourcesHeading")}</span
         >
+          {t("footer.resourcesHeading")}
+        </h2>
         <Link
           href="https://github.com/wavival?tab=repositories"
           target="_blank"
@@ -94,7 +112,9 @@ const year = new Date().getFullYear();
         <Link
           href={lang === "en" ? `${BASE}en/uses` : `${BASE}herramientas`}
           class="!text-xs"
-          aria-label={t("footer.usesAria")}>{t("footer.uses")}</Link
+          aria-label={t("footer.usesAria")}
+          aria-current={isCurrent(lang === "en" ? `${BASE}en/uses` : `${BASE}herramientas`)}
+          >{t("footer.uses")}</Link
         >
         <Link
           href="https://blog.luminaw.co"
@@ -105,7 +125,9 @@ const year = new Date().getFullYear();
         <Link
           href={lang === "en" ? `${BASE}en/privacy` : `${BASE}privacidad`}
           class="!text-xs"
-          aria-label={t("footer.privacyAria")}>{t("footer.privacy")}</Link
+          aria-label={t("footer.privacyAria")}
+          aria-current={isCurrent(lang === "en" ? `${BASE}en/privacy` : `${BASE}privacidad`)}
+          >{t("footer.privacy")}</Link
         >
       </nav>
     </div>

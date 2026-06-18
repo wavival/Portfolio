@@ -39,7 +39,6 @@ const painPoints = en?.painPoints ?? project.painPoints;
 const modules = en?.modules ?? project.modules;
 const chainSteps = en?.chainSteps ?? project.chainSteps;
 const chainStepsTitle = en?.chainStepsTitle ?? project.chainStepsTitle;
-const imageAlt = en?.imageAlt ?? project.imageAlt ?? "";
 const metaDesc = en?.metaDescription ?? project.metaDescription ?? solution;
 
 const pageTitle = `${project.title}: Case study | Valentina Ramirez`;
@@ -245,7 +244,7 @@ const nextProject = idx < caseStudies.length - 1 ? caseStudies[idx + 1] : null;
                 {chainStepsTitle ?? "Example action chain"}
               </h3>
               <ol class="mt-4 flex flex-col gap-2">
-                {chainSteps.map((step, i) => (
+                {chainSteps.map((step) => (
                   <li class="flex items-start gap-3 text-sm text-[var(--text-muted)]">
                     <span class="text-[var(--brand-blue)] font-bold shrink-0" aria-hidden="true">
                       ·

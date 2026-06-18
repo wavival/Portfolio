@@ -20,10 +20,12 @@ Personal portfolio of **Valentina Ramírez**, Full Stack Developer (Django · Re
 - **Lighthouse CI** (`@lhci/cli`, config in `lighthouserc.json`): asserts perf/a11y/best-practices/SEO category scores against the built `dist/` per commit
 - **linkinator**: crawls the built `dist/` for broken internal links (catches dead routes after slug renames)
 - **Prettier** + `prettier-plugin-astro`
+- **ESLint** (flat config `eslint.config.mjs`: `eslint-plugin-astro` + `typescript-eslint` + `eslint-config-prettier`)
+- **husky** + **lint-staged**: `.husky/pre-commit` runs `lint-staged` (ESLint `--fix` + Prettier on staged files)
 - **Dependabot** (`.github/dependabot.yml`): weekly npm + github-actions update PRs
 - **Node >= 22.12** (repo pins `.nvmrc` → `22`; all CI jobs read it via `node-version-file: ".nvmrc"`)
 
-Auto-deploy to **Netlify** on every push to `main`. CI (`.github/workflows/ci.yml`) has four jobs: `quality` (dependency audit (`npm audit --audit-level=high --omit=dev`) → format check → type check (`astro check`) → build) gates the rest, then `e2e` (Playwright), `lighthouse` (Lighthouse CI), and `links` (linkinator) run after it before Netlify publishes.
+Auto-deploy to **Netlify** on every push to `main`. CI (`.github/workflows/ci.yml`) has four jobs: `quality` (dependency audit (`npm audit --audit-level=high --omit=dev`) → format check → lint (`npm run lint`) → type check (`astro check`) → build) gates the rest, then `e2e` (Playwright), `lighthouse` (Lighthouse CI), and `links` (linkinator) run after it before Netlify publishes.
 
 `.npmrc` sets `legacy-peer-deps=true` because `@astrojs/tailwind@6` declares an Astro 3/4/5 peer range while we run Astro 6.
 
@@ -96,6 +98,8 @@ lighthouserc.json     # Lighthouse CI config (staticDistDir + category assertion
 .nvmrc                # Node version pin (22)
 .github/dependabot.yml    # Weekly npm + github-actions update PRs
 .github/workflows/ci.yml  # quality gate → e2e + lighthouse + links jobs
+eslint.config.mjs     # ESLint flat config (astro + typescript-eslint + prettier)
+.husky/pre-commit     # Runs lint-staged (ESLint --fix + Prettier on staged files)
 CHANGELOG.md          # Keep a Changelog format, SemVer; update on every release
 ```
 
@@ -263,6 +267,8 @@ npm run preview       # Preview the build
 npm run check         # astro check (type + diagnostic)
 npm run format        # Format with Prettier
 npm run format:check  # Check formatting without writing
+npm run lint          # ESLint (flat config, eslint-plugin-astro + typescript-eslint)
+npm run lint:fix      # ESLint with --fix
 npm test              # Playwright E2E (builds nothing; runs `astro preview` on port 4329)
 npm run test:ui       # Playwright UI mode
 npm run test:install  # One-time: download Chromium + system deps

@@ -25,6 +25,14 @@ const desktopLinks = [
   { href: `${home}#stack`, label: t("nav.stack"), aria: t("nav.stack") },
   { href: aboutHref, label: t("nav.about"), aria: t("nav.about") },
 ];
+
+const normalizePath = (p: string) => p.replace(/\/+$/, "") || "/";
+const currentPath = normalizePath(Astro.url.pathname);
+const isCurrent = (href: string): "page" | undefined => {
+  const url = new URL(href, Astro.url);
+  if (url.hash) return undefined;
+  return normalizePath(url.pathname) === currentPath ? "page" : undefined;
+};
 ---
 
 <header
@@ -35,14 +43,14 @@ const desktopLinks = [
     class="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between"
   >
     <a href={home} aria-label={t("nav.homeAria")}>
-      <img src={`${BASE}brand/logo-w.webp`} alt="wavival.dev" width="72" height="40" />
+      <img src={`${BASE}brand/logo-w.webp`} alt="" width="72" height="40" />
     </a>
 
     <ul class="hidden md:flex items-center gap-8" role="list">
       {
         desktopLinks.map((l) => (
           <li>
-            <Link href={l.href} aria-label={l.aria}>
+            <Link href={l.href} aria-label={l.aria} aria-current={isCurrent(l.href)}>
               {l.label}
             </Link>
           </li>
@@ -171,18 +179,34 @@ const desktopLinks = [
     aria-label={t("nav.mobileAria")}
     class="md:hidden fixed left-0 right-0 z-40 flex flex-col gap-8 px-8 py-10 bg-[var(--bg-page)] border-t border-[var(--border-base)] transition-all duration-300 ease-in-out opacity-0 pointer-events-none translate-y-2"
     style="top: 64px;"
+    inert
   >
-    <Link href={home} class="!text-base block" aria-label={t("nav.home")}>
+    <Link
+      href={home}
+      class="!text-base block"
+      aria-label={t("nav.home")}
+      aria-current={isCurrent(home)}
+    >
       {t("nav.home")}
     </Link>
     {
       desktopLinks.map((l) => (
-        <Link href={l.href} class="!text-base block" aria-label={l.aria}>
+        <Link
+          href={l.href}
+          class="!text-base block"
+          aria-label={l.aria}
+          aria-current={isCurrent(l.href)}
+        >
           {l.label}
         </Link>
       ))
     }
-    <Link href={contactHref} class="!text-base block" aria-label={t("nav.contact")}>
+    <Link
+      href={contactHref}
+      class="!text-base block"
+      aria-label={t("nav.contact")}
+      aria-current={isCurrent(contactHref)}
+    >
       {t("nav.contact")}
     </Link>
     <Button href="https://blog.luminaw.co" icon="read-more-white" aria-label={t("footer.blogAria")}>

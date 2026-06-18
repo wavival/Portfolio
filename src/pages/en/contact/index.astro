@@ -164,12 +164,12 @@ const channels = [
 
   <script is:inline define:vars={{ calendlyUrl }}>
     (function () {
-      var dark = document.documentElement.classList.contains("dark");
-      var url = calendlyUrl + "?hide_gdpr_banner=1&primary_color=407bff";
+      const dark = document.documentElement.classList.contains("dark");
+      let url = calendlyUrl + "?hide_gdpr_banner=1&primary_color=407bff";
       if (dark) url += "&background_color=0f1117&text_color=e5e7eb";
 
-      var container = document.getElementById("calendly-embed");
-      var widget = document.createElement("div");
+      const container = document.getElementById("calendly-embed");
+      const widget = document.createElement("div");
       widget.className = "calendly-inline-widget";
       widget.setAttribute("data-url", url);
       widget.style.minWidth = "320px";
@@ -179,10 +179,10 @@ const channels = [
       window.addEventListener("message", function (e) {
         if (e.origin.indexOf("calendly.com") === -1) return;
         if (!e.data || e.data.event !== "calendly.page_height") return;
-        var h = e.data.payload && e.data.payload.height;
+        const h = e.data.payload && e.data.payload.height;
         if (!h) return;
         widget.style.height = h;
-        var iframe = widget.querySelector("iframe");
+        const iframe = widget.querySelector("iframe");
         if (iframe) {
           iframe.style.height = h;
           if (!iframe.getAttribute("title"))
@@ -190,7 +190,7 @@ const channels = [
         }
       });
 
-      var s = document.createElement("script");
+      const s = document.createElement("script");
       s.src = "https://assets.calendly.com/assets/external/widget.js";
       s.async = true;
       document.body.appendChild(s);

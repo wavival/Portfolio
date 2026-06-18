@@ -16,6 +16,14 @@ const BASE = import.meta.env.BASE_URL;
   </div>
 </div>
 
+<noscript>
+  <style>
+    #page-loader {
+      display: none !important;
+    }
+  </style>
+</noscript>
+
 <style>
   #page-loader {
     position: fixed;
@@ -89,7 +97,7 @@ const BASE = import.meta.env.BASE_URL;
 
 <script is:inline>
   (function () {
-    var loader = document.getElementById("page-loader");
+    const loader = document.getElementById("page-loader");
     if (!loader) return;
 
     function hide() {
@@ -111,17 +119,17 @@ const BASE = import.meta.env.BASE_URL;
     document.addEventListener("click", function (e) {
       if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey)
         return;
-      var a = e.target && e.target.closest ? e.target.closest("a") : null;
+      const a = e.target && e.target.closest ? e.target.closest("a") : null;
       if (!a) return;
-      var href = a.getAttribute("href");
+      const href = a.getAttribute("href");
       if (!href) return;
       if (a.target === "_blank" || a.hasAttribute("download")) return;
       if (href.indexOf("#") === 0 || href.indexOf("mailto:") === 0 || href.indexOf("tel:") === 0)
         return;
-      var url;
+      let url;
       try {
         url = new URL(a.href);
-      } catch (err) {
+      } catch {
         return;
       }
       if (url.origin !== window.location.origin) return;

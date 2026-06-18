@@ -6,6 +6,18 @@ function syncIcons(isDark: boolean) {
   document.getElementById("moon-desktop")?.classList.toggle("hidden", isDark);
   document.getElementById("sun-mobile")?.classList.toggle("hidden", !isDark);
   document.getElementById("moon-mobile")?.classList.toggle("hidden", isDark);
+
+  const isEn = root.lang === "en";
+  const label = isDark
+    ? isEn
+      ? "Switch to light theme"
+      : "Cambiar a tema claro"
+    : isEn
+      ? "Switch to dark theme"
+      : "Cambiar a tema oscuro";
+  ["theme-toggle-desktop", "theme-toggle-mobile"].forEach((id) =>
+    document.getElementById(id)?.setAttribute("aria-label", label)
+  );
 }
 
 syncIcons(root.classList.contains("dark"));

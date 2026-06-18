@@ -26,7 +26,6 @@ const {
 } = Astro.props;
 
 const ogLocale = lang === "en" ? "en_US" : "es_CO";
-const inLanguage = lang === "en" ? "en-US" : "es-CO";
 const t = useTranslations(lang as Lang);
 const personDescription =
   "Full Stack Developer especializada en Django y React. Fundadora de Lúmina W. Construyo productos completos con IA integrada y seguridad desde el diseño.";
@@ -126,12 +125,14 @@ const jsonLd = JSON.stringify({
     <script is:inline>
       (function () {
         try {
-          var t = localStorage.getItem("theme");
-          var prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+          const t = localStorage.getItem("theme");
+          const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
           if (t === "dark" || (t === null && prefersDark)) {
             document.documentElement.classList.add("dark");
           }
-        } catch (e) {}
+        } catch {
+          /* localStorage unavailable: keep default theme */
+        }
       })();
     </script>
     <title>{title}</title>

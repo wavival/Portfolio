@@ -1,5 +1,6 @@
 :root {
   --brand-blue: #407bff;
+  --brand-blue-text: #1d4ed8;
   --brand-dark: #1b1f28;
   --brand-light: #dee9ff;
 
@@ -26,6 +27,7 @@
 }
 
 .dark {
+  --brand-blue-text: #5b8cff;
   --bg-page: #0f1117;
   --bg-card: #1a1f2e;
   --bg-blur: rgba(64, 123, 255, 0.08);
