@@ -23,7 +23,7 @@ Personal portfolio of **Valentina Ramírez**, Full Stack Developer (Django · Re
 - **Prettier** + `prettier-plugin-astro`
 - **ESLint** (flat config `eslint.config.mjs`: `eslint-plugin-astro` + `typescript-eslint` + `eslint-config-prettier`)
 - **husky** + **lint-staged**: `.husky/pre-commit` runs `lint-staged` (ESLint `--fix` + Prettier on staged files)
-- **Dependabot** (`.github/dependabot.yml`): weekly npm + github-actions update PRs
+- **Dependabot** (`.github/dependabot.yml`): weekly npm + github-actions update PRs. `tailwindcss` major bumps are ignored: `@astrojs/tailwind@6` only supports Tailwind v3, so a v4 bump breaks the build (`astro:config:setup` fails). Keep `tailwindcss` on `^3.x` until the integration is replaced by `@tailwindcss/vite`.
 - **Node >= 22.12** (repo pins `.nvmrc` → `22`; all CI jobs read it via `node-version-file: ".nvmrc"`)
 
 Auto-deploy to **Netlify** on every push to `main`. CI (`.github/workflows/ci.yml`) has four jobs: `quality` (dependency audit (`npm audit --audit-level=high --omit=dev`) → format check → lint (`npm run lint`) → type check (`astro check`) → build) gates the rest, then `e2e` (Playwright), `lighthouse` (Lighthouse CI), and `links` (linkinator) run after it before Netlify publishes.
