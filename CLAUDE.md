@@ -14,7 +14,8 @@ Personal portfolio of **Valentina Ramírez**, Full Stack Developer (Django · Re
 - **Astro 6** (static output, no SSR, no server functions; `compressHTML: true`)
 - **Tailwind CSS v3** (`darkMode: 'class'`)
 - **TypeScript** (client-side scripts only)
-- **AOS** (Animate On Scroll)
+- **Scroll reveal**: CSS transitions + IntersectionObserver (`[data-aos]` attributes, script inlined in `Layout.astro`, styles in `global.css`, re-run on `astro:page-load`); no JS animation library
+- **View Transitions**: Astro `<ClientRouter />` for SPA-like same-origin navigation (replaces the old full-screen Loader)
 - **web-vitals**: Core Web Vitals RUM, reports LCP/INP/CLS/FCP/TTFB to Umami as custom events (only when Umami env is set)
 - **`@astrojs/sitemap`**: generates `/sitemap-index.xml` + `/sitemap-0.xml` at build
 - **Playwright**: E2E smoke tests (`tests/`)
@@ -48,7 +49,7 @@ Multi-page static site with a bilingual (ES default, EN) routing scheme. The hom
 - Legacy English-word ES routes (`/projects`, `/services`, `/about`, `/contact`, `/uses`) are 301-redirected to the Spanish slugs in `netlify.toml`. Content stays Spanish; only the URL changed.
 - EN pages declare `hreflang` alternates (es / en / x-default) in their `Layout` call; the `es`/`x-default` hrefs point at the Spanish slugs.
 
-The base layout (`src/layouts/Layout.astro`) owns the entire `<head>`: meta tags, OG, JSON-LD, fonts, Umami, skip link, NavBar, and Footer. It accepts `lang` (default `es`) which drives `<html lang>`, `og:locale`, JSON-LD `inLanguage`, and translations.
+The base layout (`src/layouts/Layout.astro`) owns the entire `<head>`: meta tags, OG, JSON-LD, fonts, Umami, skip link, NavBar, and Footer. It derives `lang` from the URL (`getLangFromUrl(Astro.url)`), which drives `<html lang>`, `og:locale`, translations, and the home-only `ProfilePage` `inLanguage`. The `lang` prop remains in the interface for back-compat but is ignored, so `<html lang>` always matches the actual route.
 
 ---
 
@@ -80,9 +81,10 @@ src/
     tokens.css        # CSS custom properties (design tokens)
     utilities.css     # @layer utilities: custom utility classes
 public/
-  brand/              # logo-w.webp, logo-w.ico (visible brand logo in NavBar/Footer)
-  icons/ui/           # Decorative SVGs (always alt="")
-  images/             # profile.webp
+  brand/              # logo-w.webp (visible brand logo in NavBar/Footer)
+  icons/ui/           # Decorative SVGs (always alt=""); blue icons hardcode fill="#1565c0" (loaded via <img>, so no token; recolor in-file to change)
+  images/             # profile.webp, og-card.webp
+  fonts/              # Self-hosted woff2: Poppins 400/500/600 (static), Raleway variable 600–800 (latin subset)
   favicon.ico         # Favicon (16/32/48 multi-res, generated from logo-w.webp)
   apple-touch-icon.png # 180x180 iOS home-screen icon
   icon-192.png        # PWA/manifest icon (purpose any)
@@ -121,10 +123,11 @@ All color, spacing, and shadow values live as CSS custom properties in `:root` a
 Key tokens:
 
 - `--brand-blue: #407bff`: primary brand color (use for fills, borders, and large/display text only; at ~3.4:1 on `--bg-page` it fails AA for small text)
-- `--brand-blue-text: #1d4ed8` light / `#5b8cff` dark: accessible blue for small text (>=4.5:1). Use this token, never `--brand-blue`, for `text-xs`/`text-sm` and other sub-large blue text (section subtitles, chips, card labels, filter buttons)
+- `--brand-blue-text: #1565c0` light / `#5b8cff` dark: accessible blue for small text (>=4.5:1). Use this token, never `--brand-blue`, for `text-xs`/`text-sm` and other sub-large blue text (section subtitles, chips, card labels, filter buttons)
 - `--bg-page` / `--bg-card` / `--bg-blur`: backgrounds
 - `--text-primary` / `--text-muted`: typography
-- `--accent-link` / `--accent-hover`: interactive elements
+- `--accent-link: #1565c0` light / `#5b8cff` dark, `--accent-hover: #0f4c91` light / `#82a8ff` dark: text/foreground color for link and icon anchors (`.link`, `.btn-ghost` border+text). Same value as `--btn-bg` in light mode so every interactive blue (buttons + icon anchors + links) is one identical blue per theme
+- `--btn-bg: #1565c0` / `--btn-bg-hover: #0f4c91`: solid fill for `.btn-primary` (and `.btn-ghost` hover). Theme-independent so white button text stays >=4.5:1 in both light and dark (a brighter blue fails white-on-fill: the retired dodger-blue accent was only 3.24:1)
 - `--border-base`: borders
 - `--radius-sm/md/lg`: border radii
 - `--space-section: 96px`: section spacing
@@ -182,7 +185,7 @@ Three columns: logo + social links, site navigation, resources. Year generated w
 - Reciprocal `hreflang` (es / en / x-default) on every page via the `alternates` prop passed to `Layout`: the ES and EN pair point at each other, `x-default` points at the Spanish slug
 - Full OpenGraph (og:image with dimensions, alt, `og:locale` plus `og:locale:alternate` for the other locale); `og:image:type` is derived from the OG image file extension (`.webp` yields `image/webp`, otherwise `image/png`)
 - Twitter Card (`summary_large_image`, with `twitter:site` / `twitter:creator` = `@wavival0`)
-- JSON-LD `@graph` in `Layout.astro`: `Person` (with `knowsAbout`, `knowsLanguage`, `nationality`, `alumniOf`, `worksFor` referencing the Organization by `@id`, a `sameAs` of identity profiles only (canonical www + trailing-slash forms), `image` as an `ImageObject` with `@id`/`url`/`width`/`height`/`caption`, and a stable `description` constant independent of the page meta description), `Organization` (Lúmina W, own `@id`, `logo` as an `ImageObject`, a `contactPoint`, and an external-only `sameAs` that excludes its own `url`), and `WebSite` (fixed `name`; no `inLanguage` to avoid per-locale mutation under the shared `@id`)
+- JSON-LD `@graph` in `Layout.astro`: `Person` (with `knowsAbout`, `knowsLanguage`, `nationality`, `alumniOf`, `worksFor` referencing the Organization by `@id`, a `sameAs` of identity profiles only (canonical www + trailing-slash forms), `image` as an `ImageObject` with `@id`/`url`/`width`/`height`/`caption`, and a stable `description` constant independent of the page meta description), `Organization` (Lúmina W, own `@id`, `logo` as an `ImageObject`, a `contactPoint`, and an external-only `sameAs` that excludes its own `url`), and `WebSite` (fixed `name`; no `inLanguage` to avoid per-locale mutation under the shared `@id`). A `ProfilePage` node is appended to the `@graph` only on the home pages (`/`, `/en`, `/en/`, gated by an `isHome` check in `Layout.astro`): it carries `mainEntity` → `#person`, `isPartOf` → `#website`, per-locale `inLanguage`, and a build-date `dateModified`
 - Per-page JSON-LD: `BreadcrumbList` on section/index pages, `/proyectos/[slug]`, `/contacto`, and `/en/contact`; `Service` (with `@id` and `priceRange`) + `FAQPage` on `/servicios` and `/en/services`; `ContactPage` on `/contacto` and `/en/contact`; case studies emit `SoftwareApplication` | `WebSite` | `CreativeWork` per `project.schemaType`, each with an `@id` (`<pageURL>#project`) and `datePublished`/`dateModified` sourced from `project.datePublished`/`dateModified` in `src/data/projects.ts` (fallback: build date; also drives the visible "Actualizado"/"Updated" date). `SoftwareApplication` nodes carry `applicationCategory` (`project.appCategory`), real `programmingLanguage` (`project.programmingLanguage`: Python/TypeScript/SQL), and `softwareRequirements` (frameworks/tools from `project.stack`)
 - All hreflang `href` values and BreadcrumbList/Service `item`/`url` values use trailing slashes to match canonical URLs
 - `lang` on `<html>` driven by the `lang` prop (`es` default, `en` on `/en/` pages)
@@ -198,27 +201,27 @@ Three columns: logo + social links, site navigation, resources. Year generated w
 - Heading hierarchy: single h1 in Hero, h2 in each section, h3 in cards. Footer group titles ("Navegación"/"Recursos") are real `<h2>` elements (not `aria-hidden` spans)
 - `aria-label` on all interactive elements, respecting Label-in-Name (WCAG 2.5.3): when a control has visible text, its `aria-label` must contain that text verbatim (e.g. nav email CTA, blog link, Stack "Criterio técnico"/"Technical criteria")
 - `aria-expanded` + `aria-controls` on mobile menu button
-- Mobile menu focus management (`src/scripts/nav.ts`): the menu carries `inert` while closed (set in markup + JS, so closed links are never tabbable, also correct without JS); opening moves focus to the first link, Escape and link-clicks close it, Escape restores focus to the hamburger, and Tab is trapped within the open menu
+- Mobile menu focus management (`src/scripts/nav.ts`): the menu carries `inert` while closed (set in markup + JS, so closed links are never tabbable, also correct without JS); opening moves focus to the first link, Escape and link-clicks close it, Escape restores focus to the hamburger, and Tab is trapped within the open menu. The hamburger's `aria-label` is localized and state-aware: NavBar passes `data-label-open`/`data-label-close` (from `nav.openMenu`/`nav.closeMenu` translations) on the button, and `nav.ts` reads them to swap the label on open/close instead of hardcoding Spanish strings
 - `aria-current="page"` on the active NavBar + Footer link (computed via `isCurrent()` from `Astro.url.pathname`, hash-only links excluded); styled with an underline (not color alone) via `.link[aria-current="page"]`
 - Theme toggle exposes the current state: `theme.ts` sets a dynamic `aria-label` ("Cambiar a tema claro/oscuro" per locale) on each toggle in `syncIcons`
 - All decorative icon `<img>` elements have `alt=""` (including the NavBar/Footer brand logo, whose link is named by `aria-label`)
 - Icon-only links get a >=44x44 px hit target via `.link:has(> img:only-child)` (WCAG 2.5.8)
 - `role="list"` on desktop nav `<ul>`
-- `prefers-reduced-motion` respected in AOS init, `global.css`, the `proyectos/[slug]` accordion, project filters, and the Loader. The accordion cancels any in-flight animation on re-click (no dropped Enter presses)
-- The `Loader` overlay is hidden via `<noscript>` so a no-JS / failed-JS load never blocks the page (plus a 1200ms JS safety-net `hide()`)
-- Theme toggle and hamburger buttons have `focus-visible:ring-2`
-- WCAG AA contrast: `--text-muted` light `#4b5563` (~5.9:1 on `#f0f4ff`), dark `#9ca3af` (~7.4:1 on `#0f1117`). Small blue text uses `--brand-blue-text` (>=4.5:1); `--brand-blue` is reserved for fills, borders, and large/display text (>=3:1). Project tag chips use `text-blue-900` (light) / `text-blue-300` (dark) for the `blue` variant
+- `prefers-reduced-motion` respected in the scroll-reveal init, `global.css`, the `proyectos/[slug]` accordion, and project filters. The accordion cancels any in-flight animation on re-click (no dropped Enter presses)
+- Visible focus ring (`focus-visible:ring-2 focus-visible:ring-[var(--accent-link)]`) on every interactive element: nav theme toggle, hamburger, and language toggle (inline classes), plus `.btn-primary`, `.btn-ghost`, and `.link`/icon anchors (baked into the utility classes). The skip link also has a focus ring.
+- WCAG AA contrast: `--text-muted` light `#4b5563` (~5.9:1 on `#f0f4ff`), dark `#9ca3af` (~7.4:1 on `#0f1117`). Interactive blue is `#1565c0` light / `#5b8cff` dark: button fill with white text is 5.67:1, and link/icon text on `--bg-page` is 5.13:1 (light) / 5.93:1 (dark) — all >=4.5:1. Small blue text uses `--brand-blue-text`; `--brand-blue` (#407bff) is reserved for fills, borders, and large/display text (>=3:1) only. Project tag chips use `text-blue-900` (light) / `text-blue-300` (dark) for the `blue` variant
 
 ### Performance
 
-- Pre-paint theme script (sync `is:inline` in `<head>`) avoids FOUC.
-- Hero image: WebP, `fetchpriority="high"`, `decoding="async"`, explicit dimensions, plus a `<link rel="preload" as="image">` for LCP emitted only on pages that render the photo (home and about) via the `preloadHero` Layout prop, so other routes do not preload an image they never show.
-- Google Fonts: async non-blocking load via `media="print"` + `onload` + `<noscript>` fallback.
+- Pre-paint theme script (sync `is:inline` in `<head>`) avoids FOUC; it re-applies `.dark` on `astro:after-swap` so the theme never flashes across View Transitions navigations.
+- View Transitions (`<ClientRouter />`): same-origin navigations swap without a full reload. DOM-binding scripts (theme toggle, mobile nav, scroll reveal) re-run on `astro:page-load`; document-level handlers (Escape/Tab focus trap) bind once and re-query the DOM. No full-screen Loader.
+- Hero image: WebP, `fetchpriority="high"`, `decoding="async"`, explicit dimensions, plus a `<link rel="preload" as="image">` for LCP emitted only on pages that render the photo (home and about) via the `preloadHero` Layout prop, so other routes do not preload an image they never show. The Hero `<section>` carries no `data-aos`, so the scroll-reveal init never sets `opacity:0` on the above-fold LCP element (the photo paints immediately); scroll reveal applies only to below-fold sections.
+- Fonts self-hosted in `public/fonts/`: Poppins 400/500/600 (static, latin subset) + Raleway as a single variable `woff2` (`wght` 600–800, latin subset, one `@font-face` with `font-weight: 600 800`). `font-display: swap` in `global.css`; critical weights (Poppins 400 + Raleway variable) preloaded in `Layout.astro`. No Google Fonts request or `preconnect`. Regenerate with `pyftsubset` (Raleway: `fonttools varLib.instancer ... wght=600:800` then `pyftsubset --flavor=woff2 --no-hinting`).
 - Umami analytics: cookieless, script injected only when `PUBLIC_UMAMI_SRC` + `PUBLIC_UMAMI_ID` are set.
 - Core Web Vitals RUM (`web-vitals` via `src/scripts/vitals.ts`): bundled and run only when the Umami env vars are set; reports field LCP/INP/CLS/FCP/TTFB to Umami.
 - All icon `<img>` elements have `width` and `height` to prevent CLS.
-- AOS initialized with `once: true`, `duration: 0` when `prefers-reduced-motion` is set.
-- Netlify cache: `/_astro/`, `/images/`, `/brand/`, `/icons/` served immutable (1y). CSP + HSTS + frame-deny baked in.
+- Scroll reveal via IntersectionObserver: reveals once then `unobserve`s; when `prefers-reduced-motion` is set (or no IO support), elements show immediately with no transition.
+- Netlify cache: `/_astro/`, `/images/`, `/brand/`, `/icons/`, `/fonts/` served immutable (1y). CSP + HSTS + frame-deny baked in.
 - Netlify secrets scanning: `SECRETS_SCAN_OMIT_KEYS` in `netlify.toml` `[build.environment]` excludes the `PUBLIC_*` keys (`PUBLIC_UMAMI_SRC`, `PUBLIC_UMAMI_ID`, `PUBLIC_GSV`). These are client-exposed by design (Astro convention), so their values legitimately appear in repo docs (`.env.example`, `README.md`) and the built client bundle; without the omit, the scanner fails the build on those matches. Add any new `PUBLIC_*` key to this list.
 
 ---

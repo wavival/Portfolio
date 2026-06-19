@@ -66,7 +66,7 @@
     Permissions-Policy = "camera=(), microphone=(), geolocation=()"
     Strict-Transport-Security = "max-age=63072000; includeSubDomains; preload"
     # Analytics: Umami Cloud (cloud.umami.is) allowed in script-src + connect-src.
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://cloud.umami.is https://ro-ot.netlify.app https://assets.calendly.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://ro-ot.netlify.app https://assets.calendly.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://*.calendly.com https://d3v0px0pttie1i.cloudfront.net; connect-src 'self' https://cloud.umami.is https://nullbreach-api.wavival.dev https://root-api.wavival.dev https://ro-ot.netlify.app https://calendly.com; frame-src https://calendly.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://cloud.umami.is https://ro-ot.netlify.app https://assets.calendly.com; style-src 'self' 'unsafe-inline' https://ro-ot.netlify.app https://assets.calendly.com; font-src 'self'; img-src 'self' data: https://*.calendly.com https://d3v0px0pttie1i.cloudfront.net; connect-src 'self' https://cloud.umami.is https://nullbreach-api.wavival.dev https://root-api.wavival.dev https://ro-ot.netlify.app https://calendly.com; frame-src https://calendly.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests"
 
 [[headers]]
   for = "/_astro/*"
@@ -85,6 +85,11 @@
 
 [[headers]]
   for = "/icons/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/fonts/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
