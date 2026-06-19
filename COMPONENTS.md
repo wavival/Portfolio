@@ -31,17 +31,17 @@ Related: [README.md](./README.md) · [DESIGN.md](./DESIGN.md) · [CLAUDE.md](./C
 
 Path: `src/layouts/Layout.astro`. Wraps every page. Owns the full `<head>`, the Loader, skip link, NavBar, Footer.
 
-| Prop          | Type                                   | Default                                                                                    |
-| ------------- | -------------------------------------- | ------------------------------------------------------------------------------------------ |
-| `title`       | `string`                               | `"Valentina Ramírez \| Full Stack Developer Django + React"`                               |
-| `description` | `string`                               | `"Full Stack Developer especializada en Django y React. Construyo productos completos..."` |
-| `image`       | `string`                               | `"/images/profile.webp"` (used for the JSON-LD Person `image`)                             |
-| `ogImage`     | `string`                               | unset (falls back to `/images/og-card.png` for OG + Twitter cards)                         |
-| `noindex`     | `boolean`                              | `false`                                                                                    |
-| `lang`        | `string`                               | `"es"` (drives `<html lang>`, `og:locale`, JSON-LD `inLanguage`, translations)             |
-| `alternates`  | `{ hreflang: string; href: string }[]` | `[]` (emitted as `<link rel="alternate" hreflang>` tags)                                   |
+| Prop          | Type                                   | Default                                                                                                                                                                                                                                        |
+| ------------- | -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `title`       | `string`                               | `"Valentina Ramírez \| Full Stack Developer Django + React"`                                                                                                                                                                                   |
+| `description` | `string`                               | `"Full Stack Developer especializada en Django y React. Construyo productos completos..."`                                                                                                                                                     |
+| `image`       | `string`                               | `"/images/profile.webp"` (used for the JSON-LD Person `image`)                                                                                                                                                                                 |
+| `ogImage`     | `string`                               | unset (falls back to `/images/og-card.png` for OG + Twitter cards)                                                                                                                                                                             |
+| `noindex`     | `boolean`                              | `false`                                                                                                                                                                                                                                        |
+| `lang`        | `string`                               | Derived internally from the URL via `getLangFromUrl(Astro.url)` (drives `<html lang>`, `og:locale`, JSON-LD `inLanguage`, translations). The prop is retained for back-compat but ignored, so `<html lang>` always matches the rendered locale |
+| `alternates`  | `{ hreflang: string; href: string }[]` | `[]` (emitted as `<link rel="alternate" hreflang>` tags)                                                                                                                                                                                       |
 
-`lang` derives `ogLocale` (`en_US` / `es_CO`), `inLanguage` (`en-US` / `es-CO`), the `socialCardAlt` text, and the translator (`useTranslations`).
+`lang` derives `ogLocale` (`en_US` / `es_CO`), the `socialCardAlt` text, the translator (`useTranslations`), and the home-only `ProfilePage` `inLanguage` (`en-US` / `es-CO`).
 
 What it injects in `<head>` (in order):
 
@@ -55,14 +55,15 @@ What it injects in `<head>` (in order):
 - Google Site Verification meta: emitted **only when `PUBLIC_GSV` is set**
 - Favicons / icons: `favicon.ico`, `icon-192.png`, `apple-touch-icon.png`, `site.webmanifest`
 - Theme color meta (light + dark variants)
-- Font preconnects, `<link rel="preload" as="image">` for the hero portrait (LCP optimization)
-- Google Fonts (Poppins + Raleway): async via `media="print"` + `onload` + `<noscript>` fallback
+- Self-hosted font preloads (`<link rel="preload" as="font">` for the critical weights Poppins 400 + Raleway 700) and `<link rel="preload" as="image">` for the hero portrait (LCP optimization, gated by `preloadHero`)
+- Fonts (Poppins + Raleway): self-hosted latin-subset `woff2` in `public/fonts/`, declared via `@font-face` (`font-display: swap`) in `global.css`. No Google Fonts request or `preconnect`
 - **Umami analytics**: emitted **only when both `PUBLIC_UMAMI_SRC` and `PUBLIC_UMAMI_ID` are set** (`is:inline defer`). Cookieless. No Google Analytics.
-- AOS init script with `prefers-reduced-motion` guard (`duration: 0`, `offset: 0`, `once: true` when reduced motion is set)
-- JSON-LD `@graph` (`is:inline`, `application/ld+json`) with three nodes:
+- Scroll-reveal script (inline): a custom IntersectionObserver that adds `.aos-in` to each `[data-aos]` element as it enters, then `unobserve`s it; under `prefers-reduced-motion` (or no IntersectionObserver support) every element is revealed immediately. No JS animation library.
+- JSON-LD `@graph` (`is:inline`, `application/ld+json`): `Person`, `Organization`, and `WebSite` on every page, plus a `ProfilePage` appended only on the home pages (`isHome`):
   - `Person` (`#person`): `knowsAbout`, `knowsLanguage`, `nationality`, `alumniOf` (SENA, Universidad de San Buenaventura, Platzi), `worksFor` referencing the Organization by `@id`, `sameAs` identity profiles
   - `Organization` (`#organization`): Lúmina W, `founder` referencing the Person by `@id`, `sameAs`
-  - `WebSite` (`#website`): fixed `name`, `inLanguage` from `lang`, `author` referencing the Person
+  - `WebSite` (`#website`): fixed `name`, `author` referencing the Person; omits `inLanguage` (shared `@id` must not mutate per locale)
+  - `ProfilePage` (`#profilepage`, home only): per-locale `inLanguage`, `mainEntity` → `#person`, `isPartOf` → `#website`, build-date `dateModified`
 
 Per-page JSON-LD (Breadcrumb, Service, FAQPage, ContactPage, and the case-study `SoftwareApplication` / `WebSite` / `CreativeWork`) is emitted by the individual pages, not by `Layout`.
 
@@ -166,7 +167,7 @@ Path: `src/components/ui/Loader.astro`. Full-screen page-load overlay rendered f
 
 ## Sections
 
-All sections render inside `.section` and use `data-aos="fade-up"` for entry animation. Each accepts a `lang` prop (`"es" | "en"`, default `"es"`) and switches copy/routes on `isEn`. Section anchors (`#hero`, `#projects`, `#stack`, `#about`, `#contact`) are stable across locales.
+All sections render inside `.section` and carry a `data-aos` attribute for entry reveal (driven by the custom IntersectionObserver in `Layout.astro` + CSS in `global.css`, not the AOS library). Each accepts a `lang` prop (`"es" | "en"`, default `"es"`) and switches copy/routes on `isEn`. Section anchors (`#hero`, `#projects`, `#stack`, `#about`, `#contact`) are stable across locales.
 
 ### `Hero.astro`
 
