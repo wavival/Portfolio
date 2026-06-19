@@ -151,6 +151,8 @@ const isCurrent = (href: string): "page" | undefined => {
         id="menu-btn"
         class="p-2 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-link)]"
         aria-label={t("nav.openMenu")}
+        data-label-open={t("nav.openMenu")}
+        data-label-close={t("nav.closeMenu")}
         aria-expanded="false"
         aria-controls="mobile-menu"
       >
