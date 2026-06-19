@@ -23,7 +23,7 @@
     "links": "linkinator ./dist --recurse --skip \"^(?!https?://localhost)\""
   },
   "dependencies": {
-    "@astrojs/sitemap": "^3.3.0",
+    "@astrojs/sitemap": "^3.7.3",
     "@astrojs/tailwind": "^6.0.2",
     "aos": "^2.3.4",
     "astro": "^6.4.7",
