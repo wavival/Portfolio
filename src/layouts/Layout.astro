@@ -2,7 +2,7 @@
 import "@/styles/global.css";
 import NavBar from "@/components/ui/NavBar.astro";
 import Footer from "@/components/ui/Footer.astro";
-import Loader from "@/components/ui/Loader.astro";
+import { ClientRouter } from "astro:transitions";
 import { getLangFromUrl, useTranslations, type Lang } from "@/i18n/utils";
 
 interface Props {
@@ -35,9 +35,11 @@ const personDescription =
 
 const site = "https://wavival.dev";
 const canonicalURL = new URL(Astro.url.pathname, site);
+const isHome = ["/", "/en", "/en/"].includes(Astro.url.pathname);
+const buildDate = new Date().toISOString().slice(0, 10);
 const personImage = new URL(image, site);
-const socialCard = ogImage ? new URL(ogImage, site) : new URL("/images/og-card.png", site);
-const socialCardType = (ogImage ?? "/images/og-card.png").endsWith(".webp")
+const socialCard = ogImage ? new URL(ogImage, site) : new URL("/images/og-card.webp", site);
+const socialCardType = (ogImage ?? "/images/og-card.webp").endsWith(".webp")
   ? "image/webp"
   : "image/png";
 const socialCardAlt =
@@ -125,6 +127,20 @@ const jsonLd = JSON.stringify({
       description: description,
       author: { "@id": `${site}/#person` },
     },
+    ...(isHome
+      ? [
+          {
+            "@type": "ProfilePage",
+            "@id": `${site}/#profilepage`,
+            url: canonicalURL.toString(),
+            name: "Valentina Ramírez",
+            inLanguage: lang === "en" ? "en-US" : "es-CO",
+            isPartOf: { "@id": `${site}/#website` },
+            dateModified: buildDate,
+            mainEntity: { "@id": `${site}/#person` },
+          },
+        ]
+      : []),
   ],
 });
 ---
@@ -133,17 +149,23 @@ const jsonLd = JSON.stringify({
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <ClientRouter />
     <script is:inline>
       (function () {
-        try {
-          const t = localStorage.getItem("theme");
-          const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-          if (t === "dark" || (t === null && prefersDark)) {
-            document.documentElement.classList.add("dark");
+        function applyTheme() {
+          try {
+            const t = localStorage.getItem("theme");
+            const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+            const dark = t === "dark" || (t === null && prefersDark);
+            document.documentElement.classList.toggle("dark", dark);
+          } catch {
+            /* localStorage unavailable: keep default theme */
           }
-        } catch {
-          /* localStorage unavailable: keep default theme */
         }
+        applyTheme();
+        // Re-apply before paint after a View Transitions swap: the incoming static
+        // document has no .dark class, so without this the theme flashes on navigation.
+        document.addEventListener("astro:after-swap", applyTheme);
       })();
     </script>
     <title>{title}</title>
@@ -192,8 +214,20 @@ const jsonLd = JSON.stringify({
     <link rel="manifest" href={`${import.meta.env.BASE_URL}site.webmanifest`} />
     <meta name="theme-color" content="#f0f4ff" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#0f1117" media="(prefers-color-scheme: dark)" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      href={`${import.meta.env.BASE_URL}fonts/poppins-400.woff2`}
+      crossorigin
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      href={`${import.meta.env.BASE_URL}fonts/raleway-var.woff2`}
+      crossorigin
+    />
     {
       preloadHero && (
         <link
@@ -204,37 +238,38 @@ const jsonLd = JSON.stringify({
         />
       )
     }
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Raleway:wght@600;700;800&display=swap"
-      rel="stylesheet"
-      media="print"
-      onload="this.media='all'"
-    />
-    <noscript>
-      <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Raleway:wght@600;700;800&display=swap"
-        rel="stylesheet"
-      />
-    </noscript>
     {UMAMI_SRC && UMAMI_ID && <script is:inline defer src={UMAMI_SRC} data-website-id={UMAMI_ID} />}
     {UMAMI_SRC && UMAMI_ID && <script>import "@/scripts/vitals";</script>}
     <script>
-      import AOS from "aos";
-      import "aos/dist/aos.css";
+      function revealOnScroll() {
+        const els = document.querySelectorAll("[data-aos]");
+        if (!els.length) return;
+        const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        if (reduceMotion || !("IntersectionObserver" in window)) {
+          els.forEach((el) => el.classList.add("aos-in"));
+          return;
+        }
+        const io = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("aos-in");
+                io.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0, rootMargin: "0px 0px -100px 0px" }
+        );
+        els.forEach((el) => io.observe(el));
+      }
 
-      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-      AOS.init({
-        duration: reduceMotion ? 0 : 800,
-        easing: "ease-in-out",
-        once: true,
-        offset: reduceMotion ? 0 : 100,
-      });
+      // astro:page-load fires on the initial load and after every View Transitions
+      // navigation, so freshly-swapped [data-aos] elements get re-observed.
+      document.addEventListener("astro:page-load", revealOnScroll);
     </script>
     <script is:inline type="application/ld+json" set:html={jsonLd} />
   </head>
   <body class="bg-[var(--bg-page)] text-[var(--text-primary)] antialiased">
-    <Loader />
     <a
       href="#main-content"
       class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#1565c0] focus:text-white focus:rounded-lg focus:font-semibold focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2"
