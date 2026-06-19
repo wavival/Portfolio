@@ -3,6 +3,9 @@ const menu = document.getElementById("mobile-menu");
 const iconOpen = document.getElementById("icon-open");
 const iconClose = document.getElementById("icon-close");
 
+const labelOpen = btn?.dataset.labelOpen ?? "Abrir menú de navegación";
+const labelClose = btn?.dataset.labelClose ?? "Cerrar menú de navegación";
+
 function getFocusable(): HTMLElement[] {
   if (!menu) return [];
   return Array.from(menu.querySelectorAll<HTMLElement>("a[href], button:not([disabled])"));
@@ -15,7 +18,7 @@ function openMenu() {
   iconOpen?.classList.add("hidden");
   iconClose?.classList.remove("hidden");
   btn?.setAttribute("aria-expanded", "true");
-  btn?.setAttribute("aria-label", "Cerrar menú de navegación");
+  btn?.setAttribute("aria-label", labelClose);
   getFocusable()[0]?.focus();
 }
 
@@ -26,7 +29,7 @@ function closeMenu(restoreFocus = true) {
   iconOpen?.classList.remove("hidden");
   iconClose?.classList.add("hidden");
   btn?.setAttribute("aria-expanded", "false");
-  btn?.setAttribute("aria-label", "Abrir menú de navegación");
+  btn?.setAttribute("aria-label", labelOpen);
   if (restoreFocus) btn?.focus();
 }
 
