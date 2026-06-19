@@ -23,7 +23,7 @@ Personal portfolio of **Valentina Ramírez**, Full Stack Developer (Django · Re
 - **Prettier** + `prettier-plugin-astro`
 - **ESLint** (flat config `eslint.config.mjs`: `eslint-plugin-astro` + `typescript-eslint` + `eslint-config-prettier`)
 - **husky** + **lint-staged**: `.husky/pre-commit` runs `lint-staged` (ESLint `--fix` + Prettier on staged files)
-- **Dependabot** (`.github/dependabot.yml`): weekly npm + github-actions update PRs
+- **Dependabot** (`.github/dependabot.yml`): weekly npm + github-actions update PRs. `tailwindcss` major bumps are ignored: `@astrojs/tailwind@6` only supports Tailwind v3, so a v4 bump breaks the build (`astro:config:setup` fails). Keep `tailwindcss` on `^3.x` until the integration is replaced by `@tailwindcss/vite`.
 - **Node >= 22.12** (repo pins `.nvmrc` → `22`; all CI jobs read it via `node-version-file: ".nvmrc"`)
 
 Auto-deploy to **Netlify** on every push to `main`. CI (`.github/workflows/ci.yml`) has four jobs: `quality` (dependency audit (`npm audit --audit-level=high --omit=dev`) → format check → lint (`npm run lint`) → type check (`astro check`) → build) gates the rest, then `e2e` (Playwright), `lighthouse` (Lighthouse CI), and `links` (linkinator) run after it before Netlify publishes.
@@ -219,6 +219,7 @@ Three columns: logo + social links, site navigation, resources. Year generated w
 - All icon `<img>` elements have `width` and `height` to prevent CLS.
 - AOS initialized with `once: true`, `duration: 0` when `prefers-reduced-motion` is set.
 - Netlify cache: `/_astro/`, `/images/`, `/brand/`, `/icons/` served immutable (1y). CSP + HSTS + frame-deny baked in.
+- Netlify secrets scanning: `SECRETS_SCAN_OMIT_KEYS` in `netlify.toml` `[build.environment]` excludes the `PUBLIC_*` keys (`PUBLIC_UMAMI_SRC`, `PUBLIC_UMAMI_ID`, `PUBLIC_GSV`). These are client-exposed by design (Astro convention), so their values legitimately appear in repo docs (`.env.example`, `README.md`) and the built client bundle; without the omit, the scanner fails the build on those matches. Add any new `PUBLIC_*` key to this list.
 
 ---
 
