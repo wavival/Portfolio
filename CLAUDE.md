@@ -219,6 +219,7 @@ Three columns: logo + social links, site navigation, resources. Year generated w
 - All icon `<img>` elements have `width` and `height` to prevent CLS.
 - AOS initialized with `once: true`, `duration: 0` when `prefers-reduced-motion` is set.
 - Netlify cache: `/_astro/`, `/images/`, `/brand/`, `/icons/` served immutable (1y). CSP + HSTS + frame-deny baked in.
+- Netlify secrets scanning: `SECRETS_SCAN_OMIT_KEYS` in `netlify.toml` `[build.environment]` excludes the `PUBLIC_*` keys (`PUBLIC_UMAMI_SRC`, `PUBLIC_UMAMI_ID`, `PUBLIC_GSV`). These are client-exposed by design (Astro convention), so their values legitimately appear in repo docs (`.env.example`, `README.md`) and the built client bundle; without the omit, the scanner fails the build on those matches. Add any new `PUBLIC_*` key to this list.
 
 ---
 

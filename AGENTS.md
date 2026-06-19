@@ -29,4 +29,6 @@ Guidance for AI coding agents working in this repo. See `CLAUDE.md` for full pro
 
 - **Analytics and RUM.** Umami (cookieless) and Core Web Vitals RUM (`src/scripts/vitals.ts`, the `web-vitals` package) are both gated on `PUBLIC_UMAMI_SRC` + `PUBLIC_UMAMI_ID`: neither the analytics script nor the vitals bundle is emitted unless both are set. Vitals report LCP/INP/CLS/FCP/TTFB to Umami as `web-vitals` custom events over `connect-src cloud.umami.is` (already in the CSP). Do not add a third-party RUM/error service without updating the CSP.
 
+- **Netlify secrets scanning.** `SECRETS_SCAN_OMIT_KEYS` in `netlify.toml` `[build.environment]` excludes the `PUBLIC_*` keys (`PUBLIC_UMAMI_SRC`, `PUBLIC_UMAMI_ID`, `PUBLIC_GSV`). They are client-exposed by design, so their values legitimately appear in repo docs and the built bundle; without the omit, the scanner fails the build. Add any new `PUBLIC_*` key to this list.
+
 - Follow all conventions in `CLAUDE.md` (design tokens, dark-mode via `.dark` class, static-only Astro, accessibility, etc.).

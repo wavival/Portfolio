@@ -4,6 +4,10 @@
 
 [build.environment]
   NODE_VERSION = "22"
+  # PUBLIC_ vars are client-exposed by design (Astro convention), not secrets.
+  # Their values legitimately appear in repo docs (.env.example, README) and the
+  # built client bundle, so exclude them from Netlify's secrets scanner.
+  SECRETS_SCAN_OMIT_KEYS = "PUBLIC_UMAMI_SRC,PUBLIC_UMAMI_ID,PUBLIC_GSV"
 
 [[redirects]]
   from = "/api/*"
@@ -89,4 +93,4 @@
   [headers.values]
     Cache-Control = "public, max-age=86400"
 
-# Updated: 2026-05-19
+# Updated: 2026-06-19
