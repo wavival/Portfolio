@@ -34,11 +34,12 @@ All tokens live in `src/styles/tokens.css`. Defined on `:root`, overridden on `.
 
 ### Brand
 
-| Token           | Light     | Dark   | Usage                  |
-| --------------- | --------- | ------ | ---------------------- |
-| `--brand-blue`  | `#407bff` | (same) | Primary brand color    |
-| `--brand-dark`  | `#1b1f28` | (same) | Reserved dark surface  |
-| `--brand-light` | `#dee9ff` | (same) | Reserved light surface |
+| Token               | Light     | Dark      | Usage                                                                                         |
+| ------------------- | --------- | --------- | --------------------------------------------------------------------------------------------- |
+| `--brand-blue`      | `#407bff` | (same)    | Decorative only: fills, borders, shadows, large/display text (>=3:1). Fails AA for small text |
+| `--brand-blue-text` | `#1565c0` | `#5b8cff` | Accessible blue for small text (subtitles, chips, labels) — >=4.5:1                           |
+| `--brand-dark`      | `#1b1f28` | (same)    | Reserved dark surface                                                                         |
+| `--brand-light`     | `#dee9ff` | (same)    | Reserved light surface                                                                        |
 
 ### Backgrounds
 
@@ -61,10 +62,16 @@ WCAG AA verified: muted on `--bg-page` ≈ 5.9:1 (light) and ≈ 7.4:1 (dark).
 
 ### Accent / interactive
 
-| Token            | Value     | Usage                                         |
-| ---------------- | --------- | --------------------------------------------- |
-| `--accent-link`  | `#1e90ff` | Links, focus rings, `.btn-primary` background |
-| `--accent-hover` | `#1a7fe0` | Link / button hover state                     |
+| Token            | Light     | Dark      | Usage                                                                          |
+| ---------------- | --------- | --------- | ------------------------------------------------------------------------------ |
+| `--accent-link`  | `#1565c0` | `#5b8cff` | Link + icon-anchor text, focus rings, `.btn-ghost` border/text                 |
+| `--accent-hover` | `#0f4c91` | `#82a8ff` | Link / ghost-button hover state                                                |
+| `--btn-bg`       | `#1565c0` | (same)    | `.btn-primary` fill + `.btn-ghost` hover fill (white text >=4.5:1 both themes) |
+| `--btn-bg-hover` | `#0f4c91` | (same)    | `.btn-primary` hover fill                                                      |
+
+All interactive blue resolves to one value per theme — `#1565c0` (light) / `#5b8cff` (dark) — across buttons, links, icon anchors, and the UI SVGs (which hardcode `fill="#1565c0"`, recolor in-file). The previous brighter accent (a dodger-blue) was retired: white-on-it was only 3.24:1 and failed AA.
+
+WCAG AA verified: button white-on-`#1565c0` = 5.67:1; link text on `--bg-page` = 5.13:1 (light) / 5.93:1 (dark).
 
 ### Borders, shadows, radii
 
@@ -86,7 +93,7 @@ Most layout spacing is Tailwind-driven (`gap-`, `py-`, `px-`). The token exists 
 
 ### Dark mode overrides
 
-Only the subset of tokens that need to invert live under `.dark` in `tokens.css`: `--bg-page`, `--bg-card`, `--bg-blur`, `--nav-blur`, `--text-primary`, `--text-muted`, `--border-base`, `--shadow-base`. The shape is a normal selector block:
+Only the subset of tokens that need to invert live under `.dark` in `tokens.css`: `--bg-page`, `--bg-card`, `--bg-blur`, `--nav-blur`, `--text-primary`, `--text-muted`, `--border-base`, `--shadow-base`, plus the interactive blues `--brand-blue-text`, `--accent-link`, and `--accent-hover` (which lighten so blue text stays legible on the dark background). The shape is a normal selector block:
 
 ```css
 .dark {
@@ -97,7 +104,7 @@ Only the subset of tokens that need to invert live under `.dark` in `tokens.css`
 }
 ```
 
-Brand colors, accent colors, radii, and spacing stay constant across themes.
+The decorative `--brand-blue` fill, radii, and spacing stay constant across themes; the interactive blues (`--brand-blue-text`, `--accent-link`, `--accent-hover`) and `--btn-bg`/`--btn-bg-hover` invert as noted above (`--btn-bg` stays constant so white button text passes AA in both themes).
 
 ## Typography
 
@@ -108,7 +115,7 @@ Configured in `tailwind.config.mjs`:
 | Display | `font-display` | `Raleway, sans-serif` |
 | Body    | `font-body`    | `Poppins, sans-serif` |
 
-Loaded via Google Fonts in `Layout.astro` with `media="print"` + `onload="this.media='all'"` for non-blocking load. `<noscript>` fallback included.
+Self-hosted: latin-subset `woff2` in `public/fonts/`, declared via `@font-face` (`font-display: swap`) in `global.css`. Critical weights (Poppins 400 + Raleway 700) are preloaded in `Layout.astro`. No Google Fonts request or `preconnect`.
 
 **Weight palette:**
 
@@ -121,20 +128,20 @@ Loaded via Google Fonts in `Layout.astro` with `media="print"` + `onload="this.m
 
 All inside `@layer utilities` in `src/styles/utilities.css`, 2-space indentation.
 
-| Class               | Purpose                                                                                                                                         |
-| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| `.section`          | Section container: `max-w-5xl mx-auto px-6 py-24`                                                                                               |
-| `.section-title`    | `h2` heading (3xl, display, bold)                                                                                                               |
-| `.section-subtitle` | Uppercase blue label above title (xs, tracked widest)                                                                                           |
-| `.btn-primary`      | Solid button, `px-[14px] py-[12px]`, `background-color: var(--accent-link)`. Hover: `background-color: var(--accent-hover)` + `translateX(4px)` |
-| `.btn-ghost`        | Outline button. Hover: fills `--accent-link` + inverts text                                                                                     |
-| `.chip`             | Pill badge for tech tags (rounded-full, border, xs)                                                                                             |
-| `.card`             | Surface with 4px bottom border. Hover: `scale(1.02)` + `--bg-card` fill                                                                         |
-| `.card-plain`       | Borderless card. Hover: `translateX(6px)`                                                                                                       |
-| `.nav-link`         | Muted uppercase link, hover to `--accent-link`                                                                                                  |
-| `.link`             | Inline text link. Hover: `translateX(4px)`                                                                                                      |
-| `.icon`             | Base icon utility: `shrink-0`, transition                                                                                                       |
-| `.icon-sm/md/lg/xl` | `w-4/5/6/8` paired sizing                                                                                                                       |
+| Class               | Purpose                                                                                                                                                              |
+| ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `.section`          | Section container: `max-w-5xl mx-auto px-6 py-24`                                                                                                                    |
+| `.section-title`    | `h2` heading (3xl, display, bold)                                                                                                                                    |
+| `.section-subtitle` | Uppercase blue label above title (xs, tracked widest)                                                                                                                |
+| `.btn-primary`      | Solid button, `px-[14px] py-[12px]`, `background-color: var(--btn-bg)`. Hover: `background-color: var(--btn-bg-hover)` + `translateX(4px)`. Has `focus-visible` ring |
+| `.btn-ghost`        | Outline button (`--accent-link` border/text). Hover: fills `--btn-bg` + white text. Has `focus-visible` ring                                                         |
+| `.chip`             | Pill badge for tech tags (rounded-full, border, xs)                                                                                                                  |
+| `.card`             | Surface with 4px bottom border. Hover: `scale(1.02)` + `--bg-card` fill                                                                                              |
+| `.card-plain`       | Borderless card. Hover: `translateX(6px)`                                                                                                                            |
+| `.nav-link`         | Muted uppercase link, hover to `--accent-link`                                                                                                                       |
+| `.link`             | Inline text link. Hover: `translateX(4px)`                                                                                                                           |
+| `.icon`             | Base icon utility: `shrink-0`, transition                                                                                                                            |
+| `.icon-sm/md/lg/xl` | `w-4/5/6/8` paired sizing                                                                                                                                            |
 
 ### Component coverage by class
 
@@ -157,12 +164,12 @@ All inside `@layer utilities` in `src/styles/utilities.css`, 2-space indentation
 
 ## Motion
 
-| Source                       | Behavior                                                                                                                                                              |
-| ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `global.css`                 | Universal `*` selector transitions `border-color` (0.3s ease) only. `html` transitions `color` (0.3s); `body` transitions `background-color` and `color` (0.3s each). |
-| `.card` (utilities + global) | Hover lift via `transform: scale(1.02)` on a bouncy `cubic-bezier(0.34, 1.56, 0.64, 1)` curve, plus `background-color`, `box-shadow`, and `opacity` transitions       |
-| AOS (`Layout.astro`)         | `fade-*` on sections, `duration: 800`, `easing: "ease-in-out"`, `once: true`, `offset: 100`                                                                           |
-| `prefers-reduced-motion`     | All animations/transitions clamped to `0.01ms`. AOS `duration: 0`, `offset: 0`                                                                                        |
+| Source                                        | Behavior                                                                                                                                                                              |
+| --------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `global.css`                                  | Universal `*` selector transitions `border-color` (0.3s ease) only. `html` transitions `color` (0.3s); `body` transitions `background-color` and `color` (0.3s each).                 |
+| `.card` (utilities + global)                  | Hover lift via `transform: scale(1.02)` on a bouncy `cubic-bezier(0.34, 1.56, 0.64, 1)` curve, plus `background-color`, `box-shadow`, and `opacity` transitions                       |
+| Scroll reveal (`Layout.astro` + `global.css`) | Custom IntersectionObserver toggles `.aos-in` on `[data-aos]` elements as they enter; the fade/slide and timing live in `global.css`. Reveals once, then `unobserve`s. No AOS library |
+| `prefers-reduced-motion`                      | All animations/transitions clamped to `0.01ms`; the scroll reveal shows elements immediately (no transition, observer skipped)                                                        |
 
 The reduce-motion override lives in `global.css`:
 
@@ -182,9 +189,9 @@ The reduce-motion override lives in `global.css`:
 ## Accessibility
 
 - All interactive elements have `aria-label`.
-- Focus rings: `focus-visible:ring-2 focus-visible:ring-[var(--accent-link)]` on theme toggle, hamburger, skip link.
+- Focus rings: `focus-visible:ring-2 focus-visible:ring-[var(--accent-link)]` on every interactive element — `.btn-primary`, `.btn-ghost`, `.link`/icon anchors (baked into the utility classes), plus the NavBar theme toggle, language toggle, hamburger, and the skip link.
 - Skip link to `#main-content` (`Layout.astro`), visible only on focus.
 - Heading hierarchy: single `h1` in `Hero`, one `h2` per section, `h3` inside cards.
 - Decorative `<img>` always has `alt=""`. Content images have descriptive `alt`.
 - Mobile menu: `aria-expanded`, `aria-controls`, Escape closes (`src/scripts/nav.ts`).
-- WCAG AA contrast verified for `--text-muted` over `--bg-page` in both themes.
+- WCAG AA contrast verified in both themes: `--text-muted` over `--bg-page` (≈5.9:1 light / ≈7.4:1 dark), button white-on-`#1565c0` (5.67:1), and interactive blue text on `--bg-page` (5.13:1 light / 5.93:1 dark).

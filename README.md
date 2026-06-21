@@ -41,24 +41,24 @@ Related docs: [DESIGN.md](./DESIGN.md) · [COMPONENTS.md](./COMPONENTS.md) · [C
 
 ## Stack
 
-| Layer       | Choice                                                                                 |
-| ----------- | -------------------------------------------------------------------------------------- |
-| Build       | Astro 6 (static output, `compressHTML`, `inlineStylesheets: 'auto'`)                   |
-| Styling     | Tailwind CSS 3 (`darkMode: 'class'`) + CSS custom property tokens                      |
-| Scripts     | TypeScript (vanilla, no client-side framework)                                         |
-| i18n        | Bilingual: ES default at root, EN mirror under `/en/`, slug map in `src/i18n/utils.ts` |
-| Sitemap     | `@astrojs/sitemap` (auto-generated at build, both locales)                             |
-| Animation   | AOS (Animate On Scroll), respects `prefers-reduced-motion`                             |
-| Fonts       | Google Fonts (Raleway + Poppins), async non-blocking load                              |
-| Analytics   | Umami (cookieless), env-driven, conditionally injected                                 |
-| LLM SEO     | `/llms.txt` (llmstxt.org spec) for AI-assistant discovery                              |
-| Testing     | Playwright (Chromium desktop + mobile) + pure-unit specs                               |
-| Perf budget | Lighthouse CI (`@lhci/cli`, `lighthouserc.json`)                                       |
-| Link check  | linkinator (crawls built `dist/` for broken internal links)                            |
-| Formatting  | Prettier + `prettier-plugin-astro`                                                     |
-| Automation  | Dependabot (weekly npm + github-actions PRs)                                           |
-| CI          | GitHub Actions: quality gate → E2E + Lighthouse + links                                |
-| Hosting     | Netlify (static publish + security headers + cache + redirects)                        |
+| Layer         | Choice                                                                                                             |
+| ------------- | ------------------------------------------------------------------------------------------------------------------ |
+| Build         | Astro 6 (static output, `compressHTML`, `inlineStylesheets: 'auto'`)                                               |
+| Styling       | Tailwind CSS 3 (`darkMode: 'class'`) + CSS custom property tokens                                                  |
+| Scripts       | TypeScript (vanilla, no client-side framework)                                                                     |
+| i18n          | Bilingual: ES default at root, EN mirror under `/en/`, slug map in `src/i18n/utils.ts`                             |
+| Sitemap       | `@astrojs/sitemap` (auto-generated at build, both locales)                                                         |
+| Scroll reveal | Custom IntersectionObserver (`[data-aos]` + `.aos-in`), respects `prefers-reduced-motion`; no JS animation library |
+| Fonts         | Self-hosted latin-subset `woff2` (Raleway + Poppins), `@font-face` with `font-display: swap`; no Google Fonts      |
+| Analytics     | Umami (cookieless), env-driven, conditionally injected                                                             |
+| LLM SEO       | `/llms.txt` (llmstxt.org spec) for AI-assistant discovery                                                          |
+| Testing       | Playwright (Chromium desktop + mobile) + pure-unit specs                                                           |
+| Perf budget   | Lighthouse CI (`@lhci/cli`, `lighthouserc.json`)                                                                   |
+| Link check    | linkinator (crawls built `dist/` for broken internal links)                                                        |
+| Formatting    | Prettier + `prettier-plugin-astro`                                                                                 |
+| Automation    | Dependabot (weekly npm + github-actions PRs)                                                                       |
+| CI            | GitHub Actions: quality gate → E2E + Lighthouse + links                                                            |
+| Hosting       | Netlify (static publish + security headers + cache + redirects)                                                    |
 
 ## Local setup
 
@@ -188,7 +188,7 @@ The favicon/manifest icon set in `public/` is generated from `public/brand/logo-
 </Layout>
 ```
 
-`Layout.astro` owns the entire document head (meta, OG, Twitter, JSON-LD, conditional Umami, fonts, AOS init, pre-paint theme script), the skip link, the `<NavBar />`, and the `<Footer />`. It accepts `lang` (default `es`) which drives `<html lang>`, `og:locale`, JSON-LD `inLanguage`, and translations. Pages render inside `<main id="main-content">`.
+`Layout.astro` owns the entire document head (meta, OG, Twitter, JSON-LD, conditional Umami, self-hosted font preloads, scroll-reveal init, pre-paint theme script), the skip link, the `<NavBar />`, and the `<Footer />`. It derives `lang` from the URL (`getLangFromUrl`), driving `<html lang>`, `og:locale`, translations, and the home-only `ProfilePage` `inLanguage`. Pages render inside `<main id="main-content">`.
 
 ### Design tokens
 
@@ -196,14 +196,18 @@ The favicon/manifest icon set in `public/` is generated from `public/brand/logo-
 
 Brand palette quick-reference:
 
-| Token            | Hex                          | Usage               |
-| ---------------- | ---------------------------- | ------------------- |
-| `--brand-blue`   | `#407bff`                    | Primary brand color |
-| `--accent-link`  | `#1e90ff`                    | Links, focus rings  |
-| `--accent-hover` | `#1a7fe0`                    | Link / button hover |
-| `--bg-page`      | `#f0f4ff` / `#0f1117` (dark) | Body background     |
-| `--text-primary` | `#1a1a2e` / `#e8eaf6` (dark) | Headings, copy      |
-| `--text-muted`   | `#4b5563` / `#9ca3af` (dark) | Secondary copy      |
+| Token               | Hex                          | Usage                                            |
+| ------------------- | ---------------------------- | ------------------------------------------------ |
+| `--brand-blue`      | `#407bff`                    | Decorative only (fills, borders, large text)     |
+| `--brand-blue-text` | `#1565c0` / `#5b8cff` (dark) | Accessible small blue text (subtitles, chips)    |
+| `--accent-link`     | `#1565c0` / `#5b8cff` (dark) | Links, icon anchors, focus rings                 |
+| `--accent-hover`    | `#0f4c91` / `#82a8ff` (dark) | Link / button hover                              |
+| `--btn-bg`          | `#1565c0`                    | `.btn-primary` fill (white text, AA both themes) |
+| `--bg-page`         | `#f0f4ff` / `#0f1117` (dark) | Body background                                  |
+| `--text-primary`    | `#1a1a2e` / `#e8eaf6` (dark) | Headings, copy                                   |
+| `--text-muted`      | `#4b5563` / `#9ca3af` (dark) | Secondary copy                                   |
+
+Interactive blue is one value per theme (`#1565c0` light / `#5b8cff` dark) across buttons, links, icon anchors, and UI SVGs. The previous brighter accent was retired — it failed AA (3.24:1 white-on-fill).
 
 Full token table, dark overrides, utility classes, typography, motion, and A11Y notes: **[DESIGN.md](./DESIGN.md)**.
 
@@ -239,10 +243,10 @@ Full token table, dark overrides, utility classes, typography, motion, and A11Y 
 
 - Pre-paint theme script (sync `is:inline` in `<head>`) applies `.dark` before first paint: zero FOUC.
 - Hero portrait: WebP, `fetchpriority="high"`, `decoding="async"`, explicit dimensions, plus `<link rel="preload" as="image">` in `<head>` to win LCP.
-- Google Fonts: async non-blocking load (`media="print"` + `onload="this.media='all'"`) + `<noscript>` fallback; `preconnect` to `fonts.googleapis.com` and `fonts.gstatic.com`.
+- Fonts: self-hosted latin-subset `woff2` in `public/fonts/`, `@font-face` with `font-display: swap`; critical weights (Poppins 400 + Raleway 700) preloaded. No Google Fonts request or `preconnect`.
 - Umami analytics: cookieless, conditionally rendered (no Umami vars = no script tag = no network call).
 - Every icon `<img>` has explicit `width` + `height` to prevent CLS.
-- AOS: `once: true`. Under `prefers-reduced-motion`, `duration: 0`.
+- Scroll reveal: IntersectionObserver reveals each `[data-aos]` element once, then `unobserve`s. Under `prefers-reduced-motion` (or no IntersectionObserver support), elements show immediately with no transition.
 - Astro: `compressHTML: true`, `build.inlineStylesheets: 'auto'`: small critical CSS inlined into the document.
 - Netlify cache: `/_astro/*`, `/images/*`, `/brand/*`, `/icons/*` served `Cache-Control: public, max-age=31536000, immutable`. CV PDFs are `max-age=86400`. HTML uses Netlify defaults (revalidate on each deploy).
 - Lighthouse CI asserts category scores per commit (a11y + SEO are hard errors, perf + best-practices are warnings) against the built `dist/`.
@@ -301,15 +305,15 @@ CI (`.github/workflows/ci.yml`) runs four jobs on every push and PR to `main`: `
 
 `netlify.toml` declares:
 
-| Header                                               | Value                                                   |
-| ---------------------------------------------------- | ------------------------------------------------------- |
-| `Content-Security-Policy`                            | Strict CSP allowing Umami Cloud, Google Fonts, Calendly |
-| `Strict-Transport-Security`                          | `max-age=63072000; includeSubDomains; preload`          |
-| `X-Frame-Options`                                    | `DENY`                                                  |
-| `X-Content-Type-Options`                             | `nosniff`                                               |
-| `Referrer-Policy`                                    | `strict-origin-when-cross-origin`                       |
-| `Permissions-Policy`                                 | Locks camera, microphone, geolocation                   |
-| Cache (`/_astro/`, `/images/`, `/brand/`, `/icons/`) | `public, max-age=31536000, immutable`                   |
+| Header                                               | Value                                                                            |
+| ---------------------------------------------------- | -------------------------------------------------------------------------------- |
+| `Content-Security-Policy`                            | Strict CSP: `font-src 'self'` (self-hosted fonts), allows Umami Cloud + Calendly |
+| `Strict-Transport-Security`                          | `max-age=63072000; includeSubDomains; preload`                                   |
+| `X-Frame-Options`                                    | `DENY`                                                                           |
+| `X-Content-Type-Options`                             | `nosniff`                                                                        |
+| `Referrer-Policy`                                    | `strict-origin-when-cross-origin`                                                |
+| `Permissions-Policy`                                 | Locks camera, microphone, geolocation                                            |
+| Cache (`/_astro/`, `/images/`, `/brand/`, `/icons/`) | `public, max-age=31536000, immutable`                                            |
 
 If you add a third-party endpoint (Sentry, PostHog, etc.) update `script-src` / `connect-src` in the CSP.
 
@@ -367,7 +371,6 @@ Token, typography, and utility-class values are centralized in `src/styles/`, so
 
 ## Roadmap / known gaps
 
-- **Google Fonts external.** Poppins + Raleway are pulled from `fonts.gstatic.com`. Self-hosting would remove a third-party connect and FOUT risk.
 - **Visual regression.** Playwright covers structure + behavior, not pixels. Add `toHaveScreenshot()` baselines once the design is frozen.
 - **Image variants.** No `<picture>` / `srcset` for the hero portrait. Acceptable for current LCP, but multi-resolution would help retina.
 

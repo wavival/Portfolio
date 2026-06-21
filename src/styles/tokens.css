@@ -1,6 +1,6 @@
 :root {
   --brand-blue: #407bff;
-  --brand-blue-text: #1d4ed8;
+  --brand-blue-text: #1565c0;
   --brand-dark: #1b1f28;
   --brand-light: #dee9ff;
 
@@ -13,8 +13,11 @@
   --text-muted: #4b5563;
   --text-button: #ffffff;
 
-  --accent-link: #1e90ff;
-  --accent-hover: #1a7fe0;
+  --accent-link: #1565c0;
+  --accent-hover: #0f4c91;
+
+  --btn-bg: #1565c0;
+  --btn-bg-hover: #0f4c91;
 
   --border-base: #e2e8f0;
   --shadow-base: 0 4px 24px rgba(64, 123, 255, 0.08);
@@ -28,6 +31,8 @@
 
 .dark {
   --brand-blue-text: #5b8cff;
+  --accent-link: #5b8cff;
+  --accent-hover: #82a8ff;
   --bg-page: #0f1117;
   --bg-card: #1a1f2e;
   --bg-blur: rgba(64, 123, 255, 0.08);

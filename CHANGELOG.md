@@ -18,6 +18,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Core Web Vitals RUM (`web-vitals` via `src/scripts/vitals.ts`): reports LCP/INP/CLS/FCP/TTFB to Umami as custom events, gated on the Umami env vars.
 - "Design & UX" category to the Stack section.
 - Sellable contact copy plus a footer CTA.
+- Self-hosted fonts in `public/fonts/` (Poppins 400/500/600 static + Raleway variable `wght` 600–800, latin-subset `woff2`), with `font-display: swap` and critical weights preloaded — removing the Google Fonts network request.
+- View Transitions via Astro `<ClientRouter />` for SPA-like same-origin navigation; DOM-binding scripts re-run on `astro:page-load` and the pre-paint theme re-applies on `astro:after-swap`.
 
 ### Changed
 
@@ -25,6 +27,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Reworked the Projects section content and ordering.
 - Colors are now token-only (no hardcoded color values in components).
 - Synced `COMPONENTS.md`, `DESIGN.md`, and `README.md` to the current code.
+- Scroll reveal reimplemented with CSS transitions + IntersectionObserver (inlined, re-run on `astro:page-load`), dropping the AOS dependency.
+- Social card `og-card` converted from PNG to WebP (~97 KB → ~21 KB).
+
+### Removed
+
+- AOS animation library (`aos` + `@types/aos`) and its render-blocking ~26 KB stylesheet.
+- Full-screen `Loader` overlay (superseded by View Transitions).
+- Google Fonts `<link>` and `preconnect`, plus the now-unused `fonts.googleapis.com` / `fonts.gstatic.com` CSP allowances.
+- Dead ~200 KB `public/brand/logo-w.ico` (the favicon is already served by the 16 KB `favicon.ico`).
 
 ### Changed
 

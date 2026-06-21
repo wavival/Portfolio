@@ -12,17 +12,17 @@
   }
 
   .btn-primary {
-    @apply inline-flex w-fit items-center gap-2 px-[14px] py-[12px] rounded-lg font-display font-semibold text-sm uppercase tracking-wide text-white transition-all duration-300 cursor-pointer;
-    background-color: var(--accent-link);
+    @apply inline-flex w-fit items-center gap-2 px-[14px] py-[12px] rounded-lg font-display font-semibold text-sm uppercase tracking-wide text-white transition-all duration-300 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-link)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg-page)];
+    background-color: var(--btn-bg);
   }
 
   .btn-primary:hover {
-    background-color: var(--accent-hover);
+    background-color: var(--btn-bg-hover);
     transform: translateX(4px);
   }
 
   .btn-ghost {
-    @apply inline-flex items-center gap-2 px-5 py-2.5 rounded-lg font-display font-semibold text-sm uppercase tracking-wide border border-[var(--accent-link)] text-[var(--accent-link)] hover:bg-[var(--accent-link)] hover:text-white transition-all duration-300 cursor-pointer;
+    @apply inline-flex items-center gap-2 px-5 py-2.5 rounded-lg font-display font-semibold text-sm uppercase tracking-wide border border-[var(--accent-link)] text-[var(--accent-link)] hover:bg-[var(--btn-bg)] hover:text-white transition-all duration-300 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-link)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg-page)];
   }
 
   .chip {
@@ -60,7 +60,7 @@
   }
 
   .link {
-    @apply inline-block text-[var(--accent-link)] hover:text-[var(--accent-hover)] font-display font-semibold uppercase text-sm tracking-wide transition-all duration-300 cursor-pointer;
+    @apply inline-block text-[var(--accent-link)] hover:text-[var(--accent-hover)] font-display font-semibold uppercase text-sm tracking-wide transition-all duration-300 cursor-pointer rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-link)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg-page)];
   }
 
   .link:hover {
