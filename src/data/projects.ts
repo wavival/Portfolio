@@ -592,9 +592,9 @@ export const projects: Project[] = [
     ],
     links: [
       {
-        href: "https://wavival.dev/root/",
-        text: "Ver sitio",
-        ariaLabel: "Ver landing de Root",
+        href: "https://app.okroot.co/",
+        text: "Ver app",
+        ariaLabel: "Ver app de Root",
       },
     ],
     caseStudy: true,
@@ -662,9 +662,9 @@ export const projects: Project[] = [
         "The user photographs a product and within seconds knows whether they can eat it given their active restrictions (celiac disease, diabetes, lactose intolerance), combinable with each other. Root goes beyond the scanner: curated recipes with strict filtering and an offline food diary for those who already know what they cannot eat and want to know what they can.",
       links: [
         {
-          href: "https://wavival.dev/root/",
-          text: "Visit site",
-          ariaLabel: "Visit Root landing",
+          href: "https://app.okroot.co/",
+          text: "Visit app",
+          ariaLabel: "Visit Root app",
         },
       ],
       metaDescription:
@@ -765,7 +765,7 @@ export const projects: Project[] = [
       "Caso de estudio de Root Landing: landing en Astro y Tailwind CSS que comunica el scanner de etiquetas por IA y las restricciones alimentarias compatibles.",
     links: [
       {
-        href: "https://wavival.dev/root/",
+        href: "https://okroot.co/",
         text: "Ver sitio",
         ariaLabel: "Ver landing de Root",
       },
@@ -778,7 +778,7 @@ export const projects: Project[] = [
         "Root landing that explains the AI label scanner, the compatible active restrictions (celiac disease, diabetes, lactose intolerance), and access to the PWA.",
       links: [
         {
-          href: "https://wavival.dev/root/",
+          href: "https://okroot.co/",
           text: "Visit site",
           ariaLabel: "Visit Root landing",
         },

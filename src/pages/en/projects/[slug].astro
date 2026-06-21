@@ -76,6 +76,7 @@ const schemaType = project.schemaType ?? "SoftwareApplication";
 const buildDate = new Date().toISOString().slice(0, 10);
 const datePublished = project.datePublished ?? buildDate;
 const dateModified = project.dateModified ?? datePublished;
+const toIsoDateTime = (d: string) => (d.length === 10 ? `${d}T00:00:00-05:00` : d);
 const fmtDate = (iso: string) =>
   new Date(`${iso}T12:00:00`).toLocaleDateString("en-US", {
     day: "numeric",
@@ -101,8 +102,8 @@ const projectLd = JSON.stringify({
   description: metaDesc,
   url: pageURL,
   author: { "@id": `${site}/#person` },
-  datePublished,
-  dateModified,
+  datePublished: toIsoDateTime(datePublished),
+  dateModified: toIsoDateTime(dateModified),
   ...(schemaType === "SoftwareApplication"
     ? {
         applicationCategory: project.appCategory ?? "WebApplication",
