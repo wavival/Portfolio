@@ -26,6 +26,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Colors are now token-only (no hardcoded color values in components).
 - Synced `COMPONENTS.md`, `DESIGN.md`, and `README.md` to the current code.
 
+### Changed
+
+- Root moved to its own domain: project links and `llms.txt`/`llms-full.txt` now point at `https://okroot.co` (landing) and `https://app.okroot.co` (PWA) instead of `https://wavival.dev/root/`.
+
+### Removed
+
+- `/root/*` Netlify proxy to `ro-ot.netlify.app` (Root now self-hosted on `okroot.co`), and the now-unused `ro-ot.netlify.app` (`script-src`/`style-src`/`connect-src`) and `root-api.wavival.dev` (`connect-src`) entries from the CSP.
+
 ### Fixed
 
 - Reverted `tailwindcss` from 4.3.1 back to `^3.4.19`: a Dependabot major bump broke the build (`@astrojs/tailwind@6` only supports Tailwind v3, so `astro:config:setup` failed). Dependabot now ignores `tailwindcss` major bumps.

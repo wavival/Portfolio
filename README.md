@@ -315,15 +315,14 @@ If you add a third-party endpoint (Sentry, PostHog, etc.) update `script-src` / 
 
 ### Redirects and proxies
 
-`netlify.toml` declares the legacy-slug 301s plus three subpath proxies:
+`netlify.toml` declares the legacy-slug 301s plus two subpath proxies:
 
 | From            | To                                         | Status |
 | --------------- | ------------------------------------------ | ------ |
 | `/api/*`        | `https://nullbreach-api.wavival.dev/api/*` | 200    |
 | `/nullbreach/*` | `https://null-breach.netlify.app/*`        | 200    |
-| `/root/*`       | `https://ro-ot.netlify.app/root/*`         | 200    |
 
-Update or remove if the upstreams change.
+Update or remove if the upstreams change. Root now lives on its own domain (`okroot.co` landing, `app.okroot.co` PWA), so it is no longer proxied here.
 
 ## Using as a template
 
