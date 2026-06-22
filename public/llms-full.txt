@@ -24,7 +24,7 @@ Stack: Django, DRF, PostgreSQL, JWT, React, TypeScript, Tailwind CSS. Programmin
 
 Live app: https://app.terracoreapp.co · Case study: https://wavival.dev/proyectos/terracore
 
-## Root PWA (case study)
+## OKroot PWA (case study)
 
 Problem: people with celiac disease, diabetes, or lactose intolerance must manually read every food label and cross-reference hidden ingredients against several dietary restrictions at once.
 

@@ -39,11 +39,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Root moved to its own domain: project links and `llms.txt`/`llms-full.txt` now point at `https://okroot.co` (landing) and `https://app.okroot.co` (PWA) instead of `https://wavival.dev/root/`.
+- Okroot moved to its own domain: project links and `llms.txt`/`llms-full.txt` now point at `https://okroot.co` (landing) and `https://app.okroot.co` (PWA) instead of `https://wavival.dev/root/`.
 
 ### Removed
 
-- `/root/*` Netlify proxy to `ro-ot.netlify.app` (Root now self-hosted on `okroot.co`), and the now-unused `ro-ot.netlify.app` (`script-src`/`style-src`/`connect-src`) and `root-api.wavival.dev` (`connect-src`) entries from the CSP.
+- `/root/*` Netlify proxy to `ro-ot.netlify.app` (Okroot now self-hosted on `okroot.co`), and the now-unused `ro-ot.netlify.app` (`script-src`/`style-src`/`connect-src`) and `root-api.wavival.dev` (`connect-src`) entries from the CSP.
 
 ### Fixed
 

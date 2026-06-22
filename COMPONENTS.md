@@ -260,7 +260,7 @@ Path: `src/data/projects.ts`. Exports the `projects: Project[]` array plus the `
 - `schemaType?: "SoftwareApplication" | "WebSite" | "CreativeWork"` (drives the case-study JSON-LD)
 - `en?: ProjectEn` (English overrides: `imageAlt`, `tag`, `problem`, `solution`, `links`, plus the optional case-study fields). Section/page components read `p.en?.<field> ?? p.<field>` when `isEn`.
 
-Current projects (in array order): **TerraCore PWA** (`terracore`, SoftwareApplication), **TerraCore Landing** (`terracore-landing`, WebSite), **Root PWA** (`root`, SoftwareApplication), **Root Landing** (`root-landing`, WebSite), **NullBreach** (`nullbreach`, SoftwareApplication), **Lúmina W** (`lumina-w`, WebSite), **Blog Lúmina W** (`blog-lumina-w`, WebSite), **Forgotten Portal** (`forgotten-portal`, CreativeWork). Featured set (home + `featured` prop): `terracore`, `root`, `nullbreach`.
+Current projects (in array order): **TerraCore PWA** (`terracore`, SoftwareApplication), **TerraCore Landing** (`terracore-landing`, WebSite), **Okroot PWA** (`root`, SoftwareApplication), **Okroot Landing** (`root-landing`, WebSite), **NullBreach** (`nullbreach`, SoftwareApplication), **Lúmina W** (`lumina-w`, WebSite), **Blog Lúmina W** (`blog-lumina-w`, WebSite), **Forgotten Portal** (`forgotten-portal`, CreativeWork). Featured set (home + `featured` prop): `terracore`, `root`, `nullbreach`.
 
 ### `stack.ts`
 

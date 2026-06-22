@@ -108,6 +108,7 @@ const nextProject = idx < caseStudies.length - 1 ? caseStudies[idx + 1] : null;
   title={pageTitle}
   description={project.metaDescription ?? project.solution}
   ogImage={project.image ? `/${project.image}` : undefined}
+  ogImageAlt={project.imageAlt}
   alternates={[
     { hreflang: "es", href: `https://wavival.dev/proyectos/${project.slug}/` },
     { hreflang: "en", href: `https://wavival.dev/en/projects/${project.slug}/` },

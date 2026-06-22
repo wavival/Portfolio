@@ -323,7 +323,7 @@ If you add a third-party endpoint (Sentry, PostHog, etc.) update `script-src` / 
 | `/api/*`        | `https://nullbreach-api.wavival.dev/api/*` | 200    |
 | `/nullbreach/*` | `https://null-breach.netlify.app/*`        | 200    |
 
-Update or remove if the upstreams change. Root now lives on its own domain (`okroot.co` landing, `app.okroot.co` PWA), so it is no longer proxied here.
+Update or remove if the upstreams change. Okroot now lives on its own domain (`okroot.co` landing, `app.okroot.co` PWA), so it is no longer proxied here.
 
 ## Using as a template
 

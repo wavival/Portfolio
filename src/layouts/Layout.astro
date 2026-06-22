@@ -10,6 +10,7 @@ interface Props {
   description?: string;
   image?: string;
   ogImage?: string;
+  ogImageAlt?: string;
   noindex?: boolean;
   lang?: string;
   alternates?: { hreflang: string; href: string }[];
@@ -22,6 +23,7 @@ const {
   description = "Full Stack Developer especializada en Django y React. Construyo productos completos: backend sólido, frontend funcional, IA y seguridad desde el diseño.",
   image = "/images/profile.webp",
   ogImage,
+  ogImageAlt,
   noindex = false,
   alternates = [],
   preloadHero = false,
@@ -43,9 +45,10 @@ const socialCardType = (ogImage ?? "/images/og-card.webp").endsWith(".webp")
   ? "image/webp"
   : "image/png";
 const socialCardAlt =
-  lang === "en"
+  ogImageAlt ??
+  (lang === "en"
     ? "Valentina Ramírez: Full Stack Developer · Django + React · AI & Security"
-    : "Valentina Ramírez: Full Stack Developer · Django + React · IA & Seguridad";
+    : "Valentina Ramírez: Full Stack Developer · Django + React · IA & Seguridad");
 
 const UMAMI_SRC = import.meta.env.PUBLIC_UMAMI_SRC;
 const UMAMI_ID = import.meta.env.PUBLIC_UMAMI_ID;
