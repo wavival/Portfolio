@@ -189,9 +189,9 @@ Three columns: logo + social links, site navigation, resources. Year generated w
 - Per-page JSON-LD: `BreadcrumbList` on section/index pages, `/proyectos/[slug]`, `/contacto`, and `/en/contact`; `Service` (with `@id` and `priceRange`) + `FAQPage` on `/servicios` and `/en/services`; `ContactPage` on `/contacto` and `/en/contact`; case studies emit `SoftwareApplication` | `WebSite` | `CreativeWork` per `project.schemaType`, each with an `@id` (`<pageURL>#project`) and `datePublished`/`dateModified` sourced from `project.datePublished`/`dateModified` in `src/data/projects.ts` (fallback: build date; also drives the visible "Actualizado"/"Updated" date). In the JSON-LD these are emitted as full ISO 8601 datetimes: a date-only `YYYY-MM-DD` value is normalized to `YYYY-MM-DDT00:00:00-05:00` via `toIsoDateTime()` (Google's Profile page rich result rejects date-only `dateModified` as an invalid datetime); the visible label keeps the date-only form. `SoftwareApplication` nodes carry `applicationCategory` (`project.appCategory`), real `programmingLanguage` (`project.programmingLanguage`: Python/TypeScript/SQL), and `softwareRequirements` (frameworks/tools from `project.stack`)
 - All hreflang `href` values and BreadcrumbList/Service `item`/`url` values use trailing slashes to match canonical URLs
 - `lang` on `<html>` driven by the `lang` prop (`es` default, `en` on `/en/` pages)
-- Google Site Verification: env-driven via `PUBLIC_GSV` (meta tag only emitted when set)
+- Google Search Console: verified via a DNS TXT record (`google-site-verification=...`) on the apex domain, not an HTML meta tag. No env var or page markup involved
 - Analytics: Umami, env-driven via `PUBLIC_UMAMI_SRC` + `PUBLIC_UMAMI_ID` (cookieless; script only emitted when both are set; no Google Analytics)
-- Real User Monitoring: `src/scripts/vitals.ts` reports Core Web Vitals (LCP/INP/CLS/FCP/TTFB) to Umami as `web-vitals` custom events; bundled and emitted only when the Umami env vars are set (same gate as analytics), sent to `cloud.umami.is` (already in CSP `connect-src`)
+- Real User Monitoring: `src/scripts/vitals.ts` reports Core Web Vitals (LCP/INP/CLS/FCP/TTFB) to Umami as `web-vitals` custom events; bundled and emitted only when the Umami env vars are set (same gate as analytics), sent to `cloud.umami.is` / `analytics.umami.is` (both in CSP `script-src` + `connect-src`)
 - Sitemap auto-generated at `/sitemap-index.xml` by `@astrojs/sitemap` with both locales (`es-CO`, `en-US`); referenced from `robots.txt`. A `serialize` hook in `astro.config.mjs` emits reciprocal `xhtml:link` alternates (`es-CO` / `en-US` / `x-default`) on every bilingual URL by pairing ES↔EN from the exported `EN_PAGE_MAP` plus the `/proyectos/<slug>` ↔ `/en/projects/<slug>` rule (Astro's built-in i18n only pairs URLs sharing a locale path prefix, which the Spanish slugs do not). Alternate hrefs use trailing slashes to match the canonical. The same hook sets a per-type `priority` (home 1.0, section/index pages 0.8, case studies 0.7, legal pages 0.3) instead of a flat 1.0.
 - `llms.txt` at `/llms.txt` describes the site for AI assistants (llmstxt.org spec); `/llms-full.txt` is its long-form companion with expanded prose for every section (about, all case studies, services), linked from the `## Optional` section of `llms.txt`. Keep both in sync with site content (project metrics, stacks, services, contact).
 
@@ -222,7 +222,7 @@ Three columns: logo + social links, site navigation, resources. Year generated w
 - All icon `<img>` elements have `width` and `height` to prevent CLS.
 - Scroll reveal via IntersectionObserver: reveals once then `unobserve`s; when `prefers-reduced-motion` is set (or no IO support), elements show immediately with no transition.
 - Netlify cache: `/_astro/`, `/images/`, `/brand/`, `/icons/`, `/fonts/` served immutable (1y). CSP + HSTS + frame-deny baked in.
-- Netlify secrets scanning: `SECRETS_SCAN_OMIT_KEYS` in `netlify.toml` `[build.environment]` excludes the `PUBLIC_*` keys (`PUBLIC_UMAMI_SRC`, `PUBLIC_UMAMI_ID`, `PUBLIC_GSV`). These are client-exposed by design (Astro convention), so their values legitimately appear in repo docs (`.env.example`, `README.md`) and the built client bundle; without the omit, the scanner fails the build on those matches. Add any new `PUBLIC_*` key to this list.
+- Netlify secrets scanning: `SECRETS_SCAN_OMIT_KEYS` in `netlify.toml` `[build.environment]` excludes the `PUBLIC_*` keys (`PUBLIC_UMAMI_SRC`, `PUBLIC_UMAMI_ID`). These are client-exposed by design (Astro convention), so their values legitimately appear in repo docs (`.env.example`, `README.md`) and the built client bundle; without the omit, the scanner fails the build on those matches. Add any new `PUBLIC_*` key to this list.
 
 ---
 
@@ -230,25 +230,25 @@ Three columns: logo + social links, site navigation, resources. Year generated w
 
 If used as a template, these are the files containing Valentina's personal information:
 
-| File                                                         | Data                                                                                                                                        |
-| ------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| `src/layouts/Layout.astro`                                   | Default title, description, `site` constant, JSON-LD (Person + Organization + WebSite `@graph`: name, jobTitle, alumniOf, worksFor, sameAs) |
-| `.env` (`PUBLIC_UMAMI_SRC`, `PUBLIC_UMAMI_ID`, `PUBLIC_GSV`) | Umami script URL + website ID + Google Site Verification token                                                                              |
-| `src/components/sections/Hero.astro`                         | Name, tagline, CV URL, social links                                                                                                         |
-| `src/components/sections/Projects.astro`                     | All projects (title, description, links)                                                                                                    |
-| `src/components/sections/Stack.astro`                        | Stack categories and tools                                                                                                                  |
-| `src/components/sections/About.astro`                        | Bio, personal quote, additional links                                                                                                       |
-| `src/components/sections/Contact.astro`                      | Contact email                                                                                                                               |
-| `src/components/ui/NavBar.astro`                             | CTA email, blog URL                                                                                                                         |
-| `src/components/ui/Footer.astro`                             | Name in copyright, Lúmina W links                                                                                                           |
-| `public/robots.txt`                                          | Sitemap absolute URL                                                                                                                        |
-| `public/llms.txt`                                            | Personal description, projects, links (llmstxt.org spec)                                                                                    |
-| `astro.config.mjs`                                           | `site` URL                                                                                                                                  |
-| `public/cv_valentina_ramirez_es.pdf`                         | Spanish CV (resolved per-locale via `cvHref()` in `src/i18n/utils.ts`)                                                                      |
-| `public/cv_valentina_ramirez_en.pdf`                         | English CV (resolved per-locale via `cvHref()` in `src/i18n/utils.ts`)                                                                      |
-| `public/images/profile.webp`                                 | Profile photo                                                                                                                               |
-| `public/brand/logo-w.*`                                      | Brand logo                                                                                                                                  |
-| `public/site.webmanifest`                                    | App name + description (personal); icons derived from `brand/logo-w.webp`                                                                   |
+| File                                           | Data                                                                                                                                        |
+| ---------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| `src/layouts/Layout.astro`                     | Default title, description, `site` constant, JSON-LD (Person + Organization + WebSite `@graph`: name, jobTitle, alumniOf, worksFor, sameAs) |
+| `.env` (`PUBLIC_UMAMI_SRC`, `PUBLIC_UMAMI_ID`) | Umami script URL + website ID                                                                                                               |
+| `src/components/sections/Hero.astro`           | Name, tagline, CV URL, social links                                                                                                         |
+| `src/components/sections/Projects.astro`       | All projects (title, description, links)                                                                                                    |
+| `src/components/sections/Stack.astro`          | Stack categories and tools                                                                                                                  |
+| `src/components/sections/About.astro`          | Bio, personal quote, additional links                                                                                                       |
+| `src/components/sections/Contact.astro`        | Contact email                                                                                                                               |
+| `src/components/ui/NavBar.astro`               | CTA email, blog URL                                                                                                                         |
+| `src/components/ui/Footer.astro`               | Name in copyright, Lúmina W links                                                                                                           |
+| `public/robots.txt`                            | Sitemap absolute URL                                                                                                                        |
+| `public/llms.txt`                              | Personal description, projects, links (llmstxt.org spec)                                                                                    |
+| `astro.config.mjs`                             | `site` URL                                                                                                                                  |
+| `public/cv_valentina_ramirez_es.pdf`           | Spanish CV (resolved per-locale via `cvHref()` in `src/i18n/utils.ts`)                                                                      |
+| `public/cv_valentina_ramirez_en.pdf`           | English CV (resolved per-locale via `cvHref()` in `src/i18n/utils.ts`)                                                                      |
+| `public/images/profile.webp`                   | Profile photo                                                                                                                               |
+| `public/brand/logo-w.*`                        | Brand logo                                                                                                                                  |
+| `public/site.webmanifest`                      | App name + description (personal); icons derived from `brand/logo-w.webp`                                                                   |
 
 ---
 
@@ -299,7 +299,7 @@ npm run links         # linkinator: check ./dist for broken internal links (buil
 - Do not omit `aria-label` on interactive elements with no visible text
 - Do not set image dimensions via CSS only: always include HTML `width` and `height` attributes as well
 - Do not commit a static `public/sitemap.xml`: the sitemap is generated by `@astrojs/sitemap` at build time
-- Do not hardcode analytics or verification tokens: wire them through `PUBLIC_UMAMI_SRC` / `PUBLIC_UMAMI_ID` / `PUBLIC_GSV`
+- Do not hardcode analytics tokens: wire them through `PUBLIC_UMAMI_SRC` / `PUBLIC_UMAMI_ID`
 - Do not move the pre-paint theme `<script is:inline>` out of the top of `<head>`: it must execute before stylesheets load to avoid FOUC
 - Do not use the em-dash character (Unicode U+2014): use a colon, comma, parentheses, or hyphen instead (see Code conventions)
 - Do not use emoji characters anywhere: data files, copy, comments, docs, commits, or code

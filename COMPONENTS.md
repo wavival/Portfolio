@@ -52,7 +52,6 @@ What it injects in `<head>` (in order):
 - `<link rel="alternate" hreflang>` for each entry in `alternates`
 - OpenGraph: `og:type`, `og:url`, `og:title`, `og:description`, `og:image` (1200x630, `image/png`, alt, locale `ogLocale` + `og:locale:alternate` for the other locale), `og:site_name`
 - Twitter Card (`summary_large_image`, title, description, image, image alt)
-- Google Site Verification meta: emitted **only when `PUBLIC_GSV` is set**
 - Favicons / icons: `favicon.ico`, `icon-192.png`, `apple-touch-icon.png`, `site.webmanifest`
 - Theme color meta (light + dark variants)
 - Self-hosted font preloads (`<link rel="preload" as="font">` for the critical weights Poppins 400 + Raleway 700) and `<link rel="preload" as="image">` for the hero portrait (LCP optimization, gated by `preloadHero`)
