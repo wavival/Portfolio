@@ -11,8 +11,6 @@ const { repo, lang = "es", variant = "featured" } = Astro.props;
 
 const starLabel = (n: number) =>
   lang === "en" ? (n === 1 ? "star" : "stars") : n === 1 ? "estrella" : "estrellas";
-const ariaLabel =
-  lang === "en" ? `${repo.name} repository on GitHub` : `Repositorio ${repo.name} en GitHub`;
 
 const featuredCls =
   "card !p-5 !min-h-0 h-full flex flex-col gap-2 no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-link)]";
@@ -30,9 +28,8 @@ const nameCls = isResource
   target="_blank"
   rel="noopener noreferrer"
   class={isResource ? resourceCls : featuredCls}
-  aria-label={ariaLabel}
 >
-  <strong class={nameCls}>{repo.name}</strong>
+  <span class={nameCls}>{repo.name}</span>
   {
     repo.description && (
       <p class="text-sm text-[var(--text-muted)] leading-relaxed">{repo.description}</p>

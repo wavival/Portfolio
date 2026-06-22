@@ -82,6 +82,8 @@ export const projects: Project[] = [
   {
     title: "TerraCore PWA",
     slug: "terracore",
+    datePublished: "2026-06-16",
+    dateModified: "2026-06-16",
     tag: "Live",
     tagColor: "green",
     image: "images/og-terracore.webp",
@@ -353,6 +355,8 @@ export const projects: Project[] = [
   {
     title: "TerraCore Landing",
     slug: "terracore-landing",
+    datePublished: "2026-06-18",
+    dateModified: "2026-06-18",
     tag: "Live",
     tagColor: "green",
     image: "images/og-terracore.webp",
@@ -579,6 +583,8 @@ export const projects: Project[] = [
   {
     title: "OKroot PWA",
     slug: "root",
+    datePublished: "2026-06-16",
+    dateModified: "2026-06-16",
     tag: "Live",
     tagColor: "green",
     image: "images/og-okroot.webp",
@@ -806,6 +812,8 @@ export const projects: Project[] = [
   {
     title: "OKroot Landing",
     slug: "root-landing",
+    datePublished: "2026-06-18",
+    dateModified: "2026-06-18",
     tag: "Live",
     tagColor: "green",
     image: "images/og-okroot.webp",
@@ -881,6 +889,8 @@ export const projects: Project[] = [
   {
     title: "NullBreach",
     slug: "nullbreach",
+    datePublished: "2026-06-16",
+    dateModified: "2026-06-16",
     tag: "Live",
     tagColor: "green",
     image: "images/og-nullbreach.webp",
@@ -1132,6 +1142,8 @@ export const projects: Project[] = [
   {
     title: "Lúmina W",
     slug: "lumina-w",
+    datePublished: "2026-06-16",
+    dateModified: "2026-06-16",
     tag: "Live",
     tagColor: "green",
     image: "images/lumina-w.webp",
@@ -1279,6 +1291,8 @@ export const projects: Project[] = [
   {
     title: "Blog Lúmina W",
     slug: "blog-lumina-w",
+    datePublished: "2026-06-18",
+    dateModified: "2026-06-18",
     tag: "Live",
     tagColor: "green",
     image: "images/lumina-w.webp",
@@ -1358,6 +1372,8 @@ export const projects: Project[] = [
   {
     title: "Forgotten Portal",
     slug: "forgotten-portal",
+    datePublished: "2026-06-16",
+    dateModified: "2026-06-16",
     tag: "Laboratorio",
     tagColor: "gray",
     image: "images/forgotten-portal.webp",

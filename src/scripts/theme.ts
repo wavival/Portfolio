@@ -7,6 +7,10 @@ function syncIcons(isDark: boolean) {
   document.getElementById("sun-mobile")?.classList.toggle("hidden", !isDark);
   document.getElementById("moon-mobile")?.classList.toggle("hidden", isDark);
 
+  document
+    .querySelector('meta[name="theme-color"]')
+    ?.setAttribute("content", isDark ? "#0f1117" : "#f0f4ff");
+
   const isEn = root.lang === "en";
   const label = isDark
     ? isEn

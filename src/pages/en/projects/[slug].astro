@@ -132,6 +132,9 @@ const nextProject = idx < caseStudies.length - 1 ? caseStudies[idx + 1] : null;
   lang="en"
   ogImage={project.image ? `/${project.image}` : undefined}
   ogImageAlt={en?.imageAlt ?? project.imageAlt}
+  ogType="article"
+  ogPublishedTime={toIsoDateTime(datePublished)}
+  ogModifiedTime={toIsoDateTime(dateModified)}
   alternates={[
     { hreflang: "es", href: `https://wavival.dev/proyectos/${project.slug}/` },
     { hreflang: "en", href: `https://wavival.dev/en/projects/${project.slug}/` },
@@ -211,7 +214,6 @@ const nextProject = idx < caseStudies.length - 1 ? caseStudies[idx + 1] : null;
   <div class="w-full max-w-5xl mx-auto px-6 pt-16 pb-24 flex flex-col gap-20">
     <div
       class="rounded-[var(--radius-md)] border border-[var(--border-base)] bg-[var(--bg-blur)] p-6"
-      aria-label="Project summary"
       data-aos="fade-up"
     >
       <p class="text-xs font-bold uppercase tracking-widest text-[var(--brand-blue-text)] mb-2">
