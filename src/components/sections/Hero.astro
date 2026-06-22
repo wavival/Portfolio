@@ -14,14 +14,6 @@ const cv = cvHref(lang, base);
 const cvFile = cv.slice(base.length);
 ---
 
-<script>
-  document.getElementById("btn-download-cv")?.addEventListener("click", (e) => {
-    const el = e.currentTarget as HTMLElement;
-    const download = el.getAttribute("download") ?? "cv_valentina_ramirez_es.pdf";
-    window.umami?.track("cv_download", { file: download });
-  });
-</script>
-
 <section class="section min-h-[calc(100dvh-64px)] flex items-center" id="hero">
   <div class="w-full flex flex-col md:flex-row-reverse items-center gap-12">
     <div class="w-full md:w-2/5 flex justify-center">
@@ -72,10 +64,10 @@ const cvFile = cv.slice(base.length);
 
       <div class="flex items-center gap-5 flex-wrap">
         <Button
-          id="btn-download-cv"
           href={cv}
           download={cvFile}
           icon="download-cv-white"
+          data-umami-event={isEn ? "cv-descarga-en" : "cv-descarga-es"}
           aria-label={isEn
             ? "Download Valentina Ramírez's CV in PDF"
             : "Descargar CV de Valentina Ramírez en PDF"}

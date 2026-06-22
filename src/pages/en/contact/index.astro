@@ -43,6 +43,7 @@ const channels = [
     target: "_self" as const,
     cta: "Write to me",
     ariaLabel: "Send an email to Valentina Ramirez",
+    event: "contacto-email",
   },
   {
     icon: "whatsapp",
@@ -53,6 +54,7 @@ const channels = [
     target: "_blank" as const,
     cta: "Chat",
     ariaLabel: "Message Valentina Ramirez on WhatsApp",
+    event: "contacto-whatsapp",
   },
   {
     icon: "calendar-blue",
@@ -63,6 +65,7 @@ const channels = [
     target: "_self" as const,
     cta: "Schedule",
     ariaLabel: "Go to the calendar to schedule a call",
+    event: "contacto-calendly",
   },
 ];
 ---
@@ -106,7 +109,13 @@ const channels = [
               <h3 class="font-display font-bold text-lg text-[var(--text-primary)]">{c.title}</h3>
               <p class="text-sm text-[var(--text-muted)] leading-relaxed">{c.body}</p>
             </div>
-            <Link href={c.href} target={c.target} class="!text-sm mt-auto" aria-label={c.ariaLabel}>
+            <Link
+              href={c.href}
+              target={c.target}
+              class="!text-sm mt-auto"
+              aria-label={c.ariaLabel}
+              data-umami-event={c.event}
+            >
               {c.cta}
             </Link>
           </article>

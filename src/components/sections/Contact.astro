@@ -61,6 +61,7 @@ const base = import.meta.env.BASE_URL;
         <Button
           href={isEn ? `${base}en/contact` : `${base}contacto`}
           icon="send-email-white"
+          data-umami-event="cta-quiero-producto"
           aria-label={isEn ? "Go to the contact page" : "Ir a la página de contacto"}
         >
           {isEn ? "Start my project" : "Quiero mi producto"}

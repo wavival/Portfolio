@@ -160,12 +160,22 @@ const nextProject = idx < caseStudies.length - 1 ? caseStudies[idx + 1] : null;
         (siteLink || otherLinks.length > 0) && (
           <div class="flex flex-wrap items-center justify-center gap-5 mt-1" data-aos="fade-up">
             {siteLink && (
-              <Link href={siteLink.href} target="_blank" aria-label={siteLink.ariaLabel}>
+              <Link
+                href={siteLink.href}
+                target="_blank"
+                aria-label={siteLink.ariaLabel}
+                data-umami-event={siteLink.event}
+              >
                 Ver sitio en vivo
               </Link>
             )}
             {otherLinks.map((l) => (
-              <Link href={l.href} target="_blank" aria-label={l.ariaLabel}>
+              <Link
+                href={l.href}
+                target="_blank"
+                aria-label={l.ariaLabel}
+                data-umami-event={l.event}
+              >
                 {l.text}
               </Link>
             ))}

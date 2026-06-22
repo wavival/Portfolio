@@ -193,12 +193,19 @@ function getLinks(p: Project) {
                       class="!text-xs"
                       target="_blank"
                       aria-label={siteLink.ariaLabel}
+                      data-umami-event={siteLink.event}
                     >
                       {siteLink.text}
                     </Link>
                   )}
                   {otherLinks.map((l) => (
-                    <Link href={l.href} class="!text-xs" target="_blank" aria-label={l.ariaLabel}>
+                    <Link
+                      href={l.href}
+                      class="!text-xs"
+                      target="_blank"
+                      aria-label={l.ariaLabel}
+                      data-umami-event={l.event}
+                    >
                       {l.text}
                     </Link>
                   ))}

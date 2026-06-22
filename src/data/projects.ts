@@ -2,6 +2,8 @@ export interface ProjectLink {
   href: string;
   text: string;
   ariaLabel: string;
+  /** Optional Umami event name for click tracking (e.g. "ver-app-terracore"). */
+  event?: string;
 }
 
 export interface ProjectEn {
@@ -108,7 +110,12 @@ export const projects: Project[] = [
       "TLS en todos los endpoints; cumplimiento Ley 1581 de Habeas Data sin minería de datos para terceros ni entrenamiento de modelos con datos del usuario.",
     ],
     links: [
-      { href: "https://app.terracoreapp.co", text: "Ver app", ariaLabel: "Ver app de TerraCore" },
+      {
+        href: "https://app.terracoreapp.co",
+        text: "Ver app",
+        ariaLabel: "Ver app de TerraCore",
+        event: "ver-app-terracore",
+      },
     ],
     caseStudy: true,
     schemaType: "SoftwareApplication",
@@ -226,7 +233,12 @@ export const projects: Project[] = [
       solution:
         "TerraCore centralizes on a single screen everything a mid-sized farm needs to manage: livestock, inventory, production, animal health, costs, and finances. It replaces Excel, notebooks, and WhatsApp as operational tools. Built from the field with real producers in Urabá, it covers cattle, swine, equine, ovine, caprine, poultry, and associated crops (plantain, cacao, corn) in Colombia.",
       links: [
-        { href: "https://app.terracoreapp.co", text: "View app", ariaLabel: "View TerraCore app" },
+        {
+          href: "https://app.terracoreapp.co",
+          text: "View app",
+          ariaLabel: "View TerraCore app",
+          event: "ver-app-terracore",
+        },
       ],
       metaDescription:
         "TerraCore case study: agro-industrial SaaS for mid-sized farms in Colombia. Django, DRF, PostgreSQL, React. Offline-first PWA with multitenancy.",
@@ -595,6 +607,7 @@ export const projects: Project[] = [
         href: "https://app.okroot.co/",
         text: "Ver app",
         ariaLabel: "Ver app de Root",
+        event: "ver-app-root",
       },
     ],
     caseStudy: true,
@@ -665,6 +678,7 @@ export const projects: Project[] = [
           href: "https://app.okroot.co/",
           text: "Visit app",
           ariaLabel: "Visit Root app",
+          event: "ver-app-root",
         },
       ],
       metaDescription:
@@ -833,6 +847,7 @@ export const projects: Project[] = [
         href: "https://wavival.dev/nullbreach/",
         text: "Ver sitio",
         ariaLabel: "Ver sitio de NullBreach",
+        event: "ver-app-nullbreach",
       },
       {
         href: "https://github.com/wavival/nullbreach-api",
@@ -866,6 +881,7 @@ export const projects: Project[] = [
           href: "https://wavival.dev/nullbreach/",
           text: "Visit site",
           ariaLabel: "Visit NullBreach",
+          event: "ver-app-nullbreach",
         },
         {
           href: "https://github.com/wavival/nullbreach-api",
