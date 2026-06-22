@@ -17,7 +17,7 @@ Personal portfolio of **Valentina Ramírez**, Full Stack Developer (Django · Re
 - **Scroll reveal**: CSS transitions + IntersectionObserver (`[data-aos]` attributes, script inlined in `Layout.astro`, styles in `global.css`, re-run on `astro:page-load`); no JS animation library
 - **View Transitions**: Astro `<ClientRouter />` for SPA-like same-origin navigation (replaces the old full-screen Loader)
 - **web-vitals**: Core Web Vitals RUM, reports LCP/INP/CLS/FCP/TTFB to Umami as custom events (only when Umami env is set)
-- **GitHub widget**: build-time only. `src/data/github.ts` (`fetchGithubProfile`) fetches the public GitHub profile + recent non-fork repos in Astro frontmatter on `/herramientas` and `/en/uses`. Unauthenticated (no token; GitHub's ~60 req/h per IP), and fails soft: any error or rate-limit returns nulls so the build never breaks and the widget just does not render that build. No client-side JS and no CSP change (the fetch runs server-side at build, not in the browser)
+- **GitHub widget**: build-time only. `src/data/github.ts` (`fetchGithubProfile`) fetches the public GitHub profile + non-fork repos in Astro frontmatter on `/herramientas` and `/en/uses` (the `#repos` section). Unauthenticated (no token; GitHub's ~60 req/h per IP), and fails soft: any error or rate-limit returns nulls so the build never breaks and the widget just does not render that build. No client-side JS and no CSP change (the fetch runs server-side at build, not in the browser). `curateRepos()` splits the fetched repos into a flagship spotlight and a learning-resources grid: `FEATURED_REPOS` (`nullbreach-api` + `nullbreach-web`, shown in that order under a "Destacado"/"Featured" NullBreach card with no left accent: gradient `bg-blur`→`bg-card` container + a solid `--btn-bg` badge pill, white text for AA) and `HIDDEN_REPOS` (profile README `wavival`, this portfolio `wavival.dev`, and the one-off `prueba-tecnica-logika` test, none of which are learning resources). Everything else renders as "Recursos para aprender"/"Resources to learn from". To re-pin or hide a repo, edit those arrays, never the markup. Both the featured and resource cards use `RepoCard.astro` (see UI Components)
 - **`@astrojs/sitemap`**: generates `/sitemap-index.xml` + `/sitemap-0.xml` at build
 - **Playwright**: E2E smoke tests (`tests/`)
 - **Lighthouse CI** (`@lhci/cli`, config in `lighthouserc.json`): asserts perf/a11y/best-practices/SEO category scores against the built `dist/` per commit
@@ -60,7 +60,7 @@ The base layout (`src/layouts/Layout.astro`) owns the entire `<head>`: meta tags
 src/
   components/
     sections/         # Hero, Projects, Stack, About, Contact
-    ui/               # Button, Link, NavBar, Footer
+    ui/               # Button, Link, NavBar, Footer, RepoCard
   layouts/
     Layout.astro      # Base layout: full head, skip link, NavBar, Footer
   pages/
@@ -174,6 +174,10 @@ Fixed header with backdrop blur. Includes desktop nav (`<ul role="list">`), anim
 ### `Footer.astro`
 
 Three columns: logo + social links, site navigation, resources. Year generated with `new Date().getFullYear()`.
+
+### `RepoCard.astro`
+
+GitHub repo card used in the `#repos`/GitHub section of `/herramientas` and `/en/uses`, for both the featured spotlight and the resources grid. Props: `repo` (`GithubRepo`), `lang` (`"es"` | `"en"`, default `es`), `variant` (`"featured"` | `"resource"`, default `featured`). `featured` uses the `.card` utility (display-font name); `resource` uses a thin-border card that lifts and highlights its border to `--brand-blue` on hover, with a monospace name. Both show name, description, a language label with a small `--brand-blue` dot, and star count as localized text (`estrella(s)` / `star(s)`), never a `★` glyph (no-decorative-icon rule). Keeps ES/EN and featured/resources DRY.
 
 ---
 

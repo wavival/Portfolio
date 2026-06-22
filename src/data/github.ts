@@ -15,6 +15,32 @@ export interface GithubRepo {
 
 const GH_HEADERS = { Accept: "application/vnd.github.v3+json" };
 
+/** Flagship repos pinned to the "featured" spotlight, in display order. */
+export const FEATURED_REPOS = ["nullbreach-api", "nullbreach-web"];
+/** Repos hidden from the widget: profile README, this portfolio, and one-off
+ * technical tests, none of which are learning resources for others. */
+const HIDDEN_REPOS = ["wavival", "wavival.dev", "prueba-tecnica-logika"];
+
+export interface CuratedRepos {
+  featured: GithubRepo[];
+  resources: GithubRepo[];
+}
+
+/**
+ * Split fetched repos into the NullBreach flagship (api + web) and the rest,
+ * which are framed as learning resources. Featured order follows FEATURED_REPOS;
+ * hidden repos drop out entirely.
+ */
+export function curateRepos(repos: GithubRepo[]): CuratedRepos {
+  const featured = FEATURED_REPOS.map((name) => repos.find((r) => r.name === name)).filter(
+    (r): r is GithubRepo => Boolean(r)
+  );
+  const featuredNames = new Set(FEATURED_REPOS);
+  const hidden = new Set(HIDDEN_REPOS);
+  const resources = repos.filter((r) => !featuredNames.has(r.name) && !hidden.has(r.name));
+  return { featured, resources };
+}
+
 /**
  * Build-time fetch of a public GitHub profile plus its most recent non-fork repos.
  * Unauthenticated (GitHub allows ~60 req/h per IP), so it fails soft: any network
@@ -23,7 +49,7 @@ const GH_HEADERS = { Accept: "application/vnd.github.v3+json" };
  */
 export async function fetchGithubProfile(
   username: string,
-  count = 6
+  count = 30
 ): Promise<{ user: GithubUser | null; repos: GithubRepo[] }> {
   try {
     const [userRes, reposRes] = await Promise.all([
