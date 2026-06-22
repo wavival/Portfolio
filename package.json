@@ -20,7 +20,8 @@
     "test:ui": "playwright test --ui",
     "test:install": "playwright install --with-deps chromium",
     "lhci": "lhci autorun",
-    "links": "linkinator ./dist --recurse --skip \"^(?!https?://localhost)\""
+    "links": "linkinator ./dist --recurse --skip \"^(?!https?://localhost)\"",
+    "csp:check": "node scripts/check-csp-hashes.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",

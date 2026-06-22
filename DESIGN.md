@@ -115,14 +115,14 @@ Configured in `tailwind.config.mjs`:
 | Display | `font-display` | `Raleway, sans-serif` |
 | Body    | `font-body`    | `Poppins, sans-serif` |
 
-Self-hosted: latin-subset `woff2` in `public/fonts/`, declared via `@font-face` (`font-display: swap`) in `global.css`. Critical weights (Poppins 400 + Raleway 700) are preloaded in `Layout.astro`. No Google Fonts request or `preconnect`.
+Self-hosted: latin-subset `woff2` in `public/fonts/`, declared via `@font-face` (`font-display: swap`) in `global.css`. Poppins ships as static weights; Raleway is a single variable `woff2` (`wght` 600-800, one `@font-face` with `font-weight: 600 800`). Critical weights (Poppins 400 + Raleway variable) are preloaded in `Layout.astro`. No Google Fonts request or `preconnect`.
 
 **Weight palette:**
 
-| Family  | Weights loaded |
-| ------- | -------------- |
-| Poppins | 400, 500, 600  |
-| Raleway | 600, 700, 800  |
+| Family  | Weights loaded                    |
+| ------- | --------------------------------- |
+| Poppins | 400, 500, 600 (static files)      |
+| Raleway | 600-800 (single variable `woff2`) |
 
 ## Utility classes
 
@@ -193,5 +193,6 @@ The reduce-motion override lives in `global.css`:
 - Skip link to `#main-content` (`Layout.astro`), visible only on focus.
 - Heading hierarchy: single `h1` in `Hero`, one `h2` per section, `h3` inside cards.
 - Decorative `<img>` always has `alt=""`. Content images have descriptive `alt`.
-- Mobile menu: `aria-expanded`, `aria-controls`, Escape closes (`src/scripts/nav.ts`).
+- Mobile menu (`src/scripts/nav.ts`): `aria-expanded` + `aria-controls`; `inert` while closed (links never tabbable), focus moves to the first link on open, Tab is trapped, Escape closes and restores focus to the hamburger. The hamburger `aria-label` is localized + state-aware.
+- `aria-current="page"` on the active NavBar + Footer link, styled with an underline (not color alone).
 - WCAG AA contrast verified in both themes: `--text-muted` over `--bg-page` (≈5.9:1 light / ≈7.4:1 dark), button white-on-`#1565c0` (5.67:1), and interactive blue text on `--bg-page` (5.13:1 light / 5.93:1 dark).

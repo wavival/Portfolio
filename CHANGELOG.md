@@ -20,9 +20,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Sellable contact copy plus a footer CTA.
 - Self-hosted fonts in `public/fonts/` (Poppins 400/500/600 static + Raleway variable `wght` 600–800, latin-subset `woff2`), with `font-display: swap` and critical weights preloaded — removing the Google Fonts network request.
 - View Transitions via Astro `<ClientRouter />` for SPA-like same-origin navigation; DOM-binding scripts re-run on `astro:page-load` and the pre-paint theme re-applies on `astro:after-swap`.
+- `scripts/check-csp-hashes.mjs` (`npm run csp:check`): CI guard asserting every inline `<script>` in `dist/` has a `sha256-*` in the `netlify.toml` CSP `script-src`. Runs in the CI `quality` job after build.
 
 ### Changed
 
+- Hardened CSP: `script-src` is now hash-based (sha256 per inline script), dropping `'unsafe-inline'`. Removed the unused `fonts.googleapis.com` / `fonts.gstatic.com` allowances (fonts are self-hosted). `style-src` keeps `'unsafe-inline'` for Astro/Tailwind inline style attributes.
 - Repositioned SEO and copy around full-stack (Django + React) identity.
 - Reworked the Projects section content and ordering.
 - Colors are now token-only (no hardcoded color values in components).
