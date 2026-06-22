@@ -85,7 +85,7 @@ public/
   brand/              # logo-w.webp (visible brand logo in NavBar/Footer)
   icons/ui/           # Decorative SVGs (always alt=""); blue icons hardcode fill="#1565c0" (loaded via <img>, so no token; recolor in-file to change)
   images/             # profile.webp, og-card.webp (default OG), per-case-study OG cards (og-terracore/og-okroot/og-nullbreach.webp, all 1200x630 webp)
-  fonts/              # Self-hosted woff2: Poppins 400/500/600 (static), Raleway variable 600–800 (latin subset)
+  fonts/              # Self-hosted woff2: Poppins 400/500/600 (static), Raleway variable 600-800 (latin subset)
   favicon.ico         # Favicon (16/32/48 multi-res, generated from logo-w.webp)
   apple-touch-icon.png # 180x180 iOS home-screen icon
   icon-192.png        # PWA/manifest icon (purpose any)
@@ -219,14 +219,14 @@ GitHub repo card used in the `#repos`/GitHub section of `/herramientas` and `/en
 - `role="list"` on desktop nav `<ul>`
 - `prefers-reduced-motion` respected in the scroll-reveal init, `global.css`, the `proyectos/[slug]` accordion, and project filters. The accordion cancels any in-flight animation on re-click (no dropped Enter presses)
 - Visible focus ring (`focus-visible:ring-2 focus-visible:ring-[var(--accent-link)]`) on every interactive element: nav theme toggle, hamburger, and language toggle (inline classes), plus `.btn-primary`, `.btn-ghost`, and `.link`/icon anchors (baked into the utility classes). The skip link also has a focus ring.
-- WCAG AA contrast: `--text-muted` light `#4b5563` (~5.9:1 on `#f0f4ff`), dark `#9ca3af` (~7.4:1 on `#0f1117`). Interactive blue is `#1565c0` light / `#5b8cff` dark: button fill with white text is 5.67:1, and link/icon text on `--bg-page` is 5.13:1 (light) / 5.93:1 (dark) — all >=4.5:1. Small blue text uses `--brand-blue-text`; `--brand-blue` (#407bff) is reserved for fills, borders, and large/display text (>=3:1) only. Project tag chips use `text-blue-900` (light) / `text-blue-300` (dark) for the `blue` variant
+- WCAG AA contrast: `--text-muted` light `#4b5563` (~5.9:1 on `#f0f4ff`), dark `#9ca3af` (~7.4:1 on `#0f1117`). Interactive blue is `#1565c0` light / `#5b8cff` dark: button fill with white text is 5.67:1, and link/icon text on `--bg-page` is 5.13:1 (light) / 5.93:1 (dark), all >=4.5:1. Small blue text uses `--brand-blue-text`; `--brand-blue` (#407bff) is reserved for fills, borders, and large/display text (>=3:1) only. Project tag chips use `text-blue-900` (light) / `text-blue-300` (dark) for the `blue` variant
 
 ### Performance
 
 - Pre-paint theme script (sync `is:inline` in `<head>`) avoids FOUC; it re-applies `.dark` on `astro:after-swap` so the theme never flashes across View Transitions navigations.
 - View Transitions (`<ClientRouter />`): same-origin navigations swap without a full reload. DOM-binding scripts (theme toggle, mobile nav, scroll reveal) re-run on `astro:page-load`; document-level handlers (Escape/Tab focus trap) bind once and re-query the DOM. No full-screen Loader.
 - Hero image: WebP, `fetchpriority="high"`, `decoding="async"`, explicit dimensions, plus a `<link rel="preload" as="image">` for LCP emitted only on pages that render the photo (home and about) via the `preloadHero` Layout prop, so other routes do not preload an image they never show. The Hero `<section>` carries no `data-aos`, so the scroll-reveal init never sets `opacity:0` on the above-fold LCP element (the photo paints immediately); scroll reveal applies only to below-fold sections.
-- Fonts self-hosted in `public/fonts/`: Poppins 400/500/600 (static, latin subset) + Raleway as a single variable `woff2` (`wght` 600–800, latin subset, one `@font-face` with `font-weight: 600 800`). `font-display: swap` in `global.css`; critical weights (Poppins 400 + Raleway variable) preloaded in `Layout.astro`. No Google Fonts request or `preconnect`. Regenerate with `pyftsubset` (Raleway: `fonttools varLib.instancer ... wght=600:800` then `pyftsubset --flavor=woff2 --no-hinting`).
+- Fonts self-hosted in `public/fonts/`: Poppins 400/500/600 (static, latin subset) + Raleway as a single variable `woff2` (`wght` 600-800, latin subset, one `@font-face` with `font-weight: 600 800`). `font-display: swap` in `global.css`; critical weights (Poppins 400 + Raleway variable) preloaded in `Layout.astro`. No Google Fonts request or `preconnect`. Regenerate with `pyftsubset` (Raleway: `fonttools varLib.instancer ... wght=600:800` then `pyftsubset --flavor=woff2 --no-hinting`).
 - Umami analytics: cookieless, script injected only when `PUBLIC_UMAMI_SRC` + `PUBLIC_UMAMI_ID` are set.
 - Core Web Vitals RUM (`web-vitals` via `src/scripts/vitals.ts`): bundled and run only when the Umami env vars are set; reports field LCP/INP/CLS/FCP/TTFB to Umami.
 - All icon `<img>` elements have `width` and `height` to prevent CLS.

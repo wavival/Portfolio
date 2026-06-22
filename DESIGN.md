@@ -37,7 +37,7 @@ All tokens live in `src/styles/tokens.css`. Defined on `:root`, overridden on `.
 | Token               | Light     | Dark      | Usage                                                                                         |
 | ------------------- | --------- | --------- | --------------------------------------------------------------------------------------------- |
 | `--brand-blue`      | `#407bff` | (same)    | Decorative only: fills, borders, shadows, large/display text (>=3:1). Fails AA for small text |
-| `--brand-blue-text` | `#1565c0` | `#5b8cff` | Accessible blue for small text (subtitles, chips, labels) — >=4.5:1                           |
+| `--brand-blue-text` | `#1565c0` | `#5b8cff` | Accessible blue for small text (subtitles, chips, labels), >=4.5:1                            |
 | `--brand-dark`      | `#1b1f28` | (same)    | Reserved dark surface                                                                         |
 | `--brand-light`     | `#dee9ff` | (same)    | Reserved light surface                                                                        |
 
@@ -69,7 +69,7 @@ WCAG AA verified: muted on `--bg-page` ≈ 5.9:1 (light) and ≈ 7.4:1 (dark).
 | `--btn-bg`       | `#1565c0` | (same)    | `.btn-primary` fill + `.btn-ghost` hover fill (white text >=4.5:1 both themes) |
 | `--btn-bg-hover` | `#0f4c91` | (same)    | `.btn-primary` hover fill                                                      |
 
-All interactive blue resolves to one value per theme — `#1565c0` (light) / `#5b8cff` (dark) — across buttons, links, icon anchors, and the UI SVGs (which hardcode `fill="#1565c0"`, recolor in-file). The previous brighter accent (a dodger-blue) was retired: white-on-it was only 3.24:1 and failed AA.
+All interactive blue resolves to one value per theme (`#1565c0` light / `#5b8cff` dark) across buttons, links, icon anchors, and the UI SVGs (which hardcode `fill="#1565c0"`, recolor in-file). The previous brighter accent (a dodger-blue) was retired: white-on-it was only 3.24:1 and failed AA.
 
 WCAG AA verified: button white-on-`#1565c0` = 5.67:1; link text on `--bg-page` = 5.13:1 (light) / 5.93:1 (dark).
 
@@ -189,7 +189,7 @@ The reduce-motion override lives in `global.css`:
 ## Accessibility
 
 - All interactive elements have `aria-label`.
-- Focus rings: `focus-visible:ring-2 focus-visible:ring-[var(--accent-link)]` on every interactive element — `.btn-primary`, `.btn-ghost`, `.link`/icon anchors (baked into the utility classes), plus the NavBar theme toggle, language toggle, hamburger, and the skip link.
+- Focus rings: `focus-visible:ring-2 focus-visible:ring-[var(--accent-link)]` on every interactive element: `.btn-primary`, `.btn-ghost`, `.link`/icon anchors (baked into the utility classes), plus the NavBar theme toggle, language toggle, hamburger, and the skip link.
 - Skip link to `#main-content` (`Layout.astro`), visible only on focus.
 - Heading hierarchy: single `h1` in `Hero`, one `h2` per section, `h3` inside cards.
 - Decorative `<img>` always has `alt=""`. Content images have descriptive `alt`.
