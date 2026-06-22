@@ -41,24 +41,27 @@ Related docs: [DESIGN.md](./DESIGN.md) · [COMPONENTS.md](./COMPONENTS.md) · [C
 
 ## Stack
 
-| Layer         | Choice                                                                                                             |
-| ------------- | ------------------------------------------------------------------------------------------------------------------ |
-| Build         | Astro 6 (static output, `compressHTML`, `inlineStylesheets: 'auto'`)                                               |
-| Styling       | Tailwind CSS 3 (`darkMode: 'class'`) + CSS custom property tokens                                                  |
-| Scripts       | TypeScript (vanilla, no client-side framework)                                                                     |
-| i18n          | Bilingual: ES default at root, EN mirror under `/en/`, slug map in `src/i18n/utils.ts`                             |
-| Sitemap       | `@astrojs/sitemap` (auto-generated at build, both locales)                                                         |
-| Scroll reveal | Custom IntersectionObserver (`[data-aos]` + `.aos-in`), respects `prefers-reduced-motion`; no JS animation library |
-| Fonts         | Self-hosted latin-subset `woff2` (Raleway + Poppins), `@font-face` with `font-display: swap`; no Google Fonts      |
-| Analytics     | Umami (cookieless), env-driven, conditionally injected                                                             |
-| LLM SEO       | `/llms.txt` (llmstxt.org spec) for AI-assistant discovery                                                          |
-| Testing       | Playwright (Chromium desktop + mobile) + pure-unit specs                                                           |
-| Perf budget   | Lighthouse CI (`@lhci/cli`, `lighthouserc.json`)                                                                   |
-| Link check    | linkinator (crawls built `dist/` for broken internal links)                                                        |
-| Formatting    | Prettier + `prettier-plugin-astro`                                                                                 |
-| Automation    | Dependabot (weekly npm + github-actions PRs)                                                                       |
-| CI            | GitHub Actions: quality gate → E2E + Lighthouse + links                                                            |
-| Hosting       | Netlify (static publish + security headers + cache + redirects)                                                    |
+| Layer         | Choice                                                                                                                        |
+| ------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| Build         | Astro 6 (static output, `compressHTML`, `inlineStylesheets: 'auto'`)                                                          |
+| Styling       | Tailwind CSS 3 (`darkMode: 'class'`) + CSS custom property tokens                                                             |
+| Scripts       | TypeScript (vanilla, no client-side framework)                                                                                |
+| i18n          | Bilingual: ES default at root, EN mirror under `/en/`, slug map in `src/i18n/utils.ts`                                        |
+| Sitemap       | `@astrojs/sitemap` (auto-generated at build, both locales)                                                                    |
+| Scroll reveal | Custom IntersectionObserver (`[data-aos]` + `.aos-in`), respects `prefers-reduced-motion`; no JS animation library            |
+| Navigation    | View Transitions via Astro `<ClientRouter />` (SPA-like same-origin swaps; no full-screen loader)                             |
+| Fonts         | Self-hosted latin-subset `woff2` (Poppins static + Raleway variable), `@font-face` with `font-display: swap`; no Google Fonts |
+| Analytics     | Umami (cookieless), env-driven, conditionally injected                                                                        |
+| Web vitals    | `web-vitals` RUM (`src/scripts/vitals.ts`): reports LCP/INP/CLS/FCP/TTFB to Umami, same env gate as analytics                 |
+| GitHub widget | Build-time fetch of profile + non-fork repos (`src/data/github.ts`) on `/herramientas` + `/en/uses`; fails soft               |
+| LLM SEO       | `/llms.txt` (llmstxt.org spec) for AI-assistant discovery                                                                     |
+| Testing       | Playwright (Chromium desktop + mobile) + pure-unit specs                                                                      |
+| Perf budget   | Lighthouse CI (`@lhci/cli`, `lighthouserc.json`)                                                                              |
+| Link check    | linkinator (crawls built `dist/` for broken internal links)                                                                   |
+| Formatting    | Prettier + `prettier-plugin-astro`                                                                                            |
+| Automation    | Dependabot (weekly npm + github-actions PRs)                                                                                  |
+| CI            | GitHub Actions: quality gate → E2E + Lighthouse + links                                                                       |
+| Hosting       | Netlify (static publish + security headers + cache + redirects)                                                               |
 
 ## Local setup
 
@@ -67,7 +70,7 @@ git clone git@github.com:wavival/wavival.dev.git
 cd wavival.dev
 nvm use                           # Node 22 (pinned in .nvmrc)
 npm install
-cp .env.example .env              # optional: Umami + GSV vars (all optional)
+cp .env.example .env              # optional: Umami vars (all optional)
 npm run dev                       # http://localhost:4321
 ```
 
@@ -77,19 +80,20 @@ npm run dev                       # http://localhost:4321
 
 ### npm scripts
 
-| Script                 | What it does                                            |
-| ---------------------- | ------------------------------------------------------- |
-| `npm run dev`          | Astro dev server with HMR at `localhost:4321`           |
-| `npm run build`        | `astro build` → static output in `./dist/`              |
-| `npm run preview`      | Serve the production build locally                      |
-| `npm run check`        | `astro check` (type / diagnostic check, run in CI)      |
-| `npm run format`       | Prettier write across the repo                          |
-| `npm run format:check` | Prettier check (no writes), used in CI                  |
-| `npm test`             | Playwright E2E (boots `preview` on port 4329)           |
-| `npm run test:ui`      | Playwright in interactive UI mode                       |
-| `npm run test:install` | Install Playwright Chromium browser + system deps       |
-| `npm run lhci`         | Lighthouse CI against `./dist` (build first)            |
-| `npm run links`        | linkinator over `./dist` for broken links (build first) |
+| Script                 | What it does                                                                                     |
+| ---------------------- | ------------------------------------------------------------------------------------------------ |
+| `npm run dev`          | Astro dev server with HMR at `localhost:4321`                                                    |
+| `npm run build`        | `astro build` → static output in `./dist/`                                                       |
+| `npm run preview`      | Serve the production build locally                                                               |
+| `npm run check`        | `astro check` (type / diagnostic check, run in CI)                                               |
+| `npm run format`       | Prettier write across the repo                                                                   |
+| `npm run format:check` | Prettier check (no writes), used in CI                                                           |
+| `npm test`             | Playwright E2E (boots `preview` on port 4329)                                                    |
+| `npm run test:ui`      | Playwright in interactive UI mode                                                                |
+| `npm run test:install` | Install Playwright Chromium browser + system deps                                                |
+| `npm run lhci`         | Lighthouse CI against `./dist` (build first)                                                     |
+| `npm run links`        | linkinator over `./dist` for broken links (build first)                                          |
+| `npm run csp:check`    | Verify every inline `dist/` script has a matching sha256 in the `netlify.toml` CSP (build first) |
 
 > `lhci` and `links` run against the built output: run `npm run build` before them locally.
 
@@ -101,7 +105,6 @@ All client-exposed vars use the `PUBLIC_` prefix (Astro convention). They are ba
 | ------------------ | -------- | ---------------------------------- | --------------------------------------------------------------------------- |
 | `PUBLIC_UMAMI_SRC` | No       | `https://cloud.umami.is/script.js` | Umami script URL. Both Umami vars must be set or no `<script>` is injected. |
 | `PUBLIC_UMAMI_ID`  | No       | `xxxxxxxx-uuid`                    | Umami website ID. Cookieless, no Google Analytics.                          |
-| `PUBLIC_GSV`       | No       | `abc123...`                        | Google Site Verification token. Empty → `<meta>` not injected.              |
 
 Copy `.env.example` to `.env` for local development. In Netlify, set them under _Site settings → Environment variables_.
 
@@ -139,11 +142,11 @@ Multi-page static site with a bilingual routing scheme. The home is a single-pag
 src/
 ├── components/
 │   ├── sections/        # Hero · Projects · Stack · About · Contact
-│   └── ui/              # Button · Link · NavBar · Footer · Loader
-├── data/                # projects.ts · stack.ts
+│   └── ui/              # Button · Link · NavBar · Footer · RepoCard
+├── data/                # projects.ts · stack.ts · github.ts (build-time GitHub fetch)
 ├── i18n/                # ui.ts (strings) · utils.ts (slug map + helpers)
 ├── layouts/
-│   └── Layout.astro     # Full <head> · pre-paint theme · skip link · NavBar · Footer
+│   └── Layout.astro     # Full <head> · ClientRouter · pre-paint theme · skip link · NavBar · Footer
 ├── pages/
 │   ├── index.astro      # ES home: composes all sections
 │   ├── 404.astro        # ES error page (noindex)
@@ -152,21 +155,25 @@ src/
 │   ├── herramientas.astro · privacidad.astro
 │   └── en/              # EN mirror: index, 404, projects/, services, about, contact, uses, privacy
 ├── scripts/
-│   ├── nav.ts           # Mobile menu + Escape handler
-│   └── theme.ts         # Dark/light toggle + localStorage (post-paint sync)
+│   ├── nav.ts           # Mobile menu: inert/focus trap, Escape, focus restore
+│   ├── theme.ts         # Dark/light toggle + localStorage + theme-color sync (post-paint)
+│   └── vitals.ts        # Core Web Vitals RUM → Umami (only when Umami env set)
 └── styles/
     ├── global.css       # Imports + body base + prefers-reduced-motion
     ├── tokens.css       # CSS custom properties (design tokens)
     └── utilities.css    # @layer utilities: custom classes
 public/
-├── brand/               # logo-w.webp, logo-w.ico
+├── brand/               # logo-w.webp
+├── fonts/               # Self-hosted woff2: Poppins 400/500/600 + Raleway variable
 ├── icons/ui/            # Decorative SVG icons
-├── images/              # profile.webp
+├── images/              # profile.webp · og-card.webp · per-case-study OG cards · project covers
 ├── cv_valentina_ramirez_es.pdf · cv_valentina_ramirez_en.pdf
 ├── favicon.ico · apple-touch-icon.png · icon-{192,512}.png · icon-maskable-512.png
 ├── site.webmanifest     # Web app manifest (icons derived from brand/logo-w.webp)
-├── llms.txt             # llmstxt.org descriptor for AI assistants
+├── llms.txt · llms-full.txt # llmstxt.org index + long-form companion for AI assistants
+├── .well-known/security.txt # RFC 9116 security contact
 └── robots.txt           # Points at /sitemap-index.xml (generated)
+scripts/check-csp-hashes.mjs # Verifies inline-script sha256 hashes against the netlify.toml CSP
 tests/                   # Playwright E2E + pure-unit specs
 lighthouserc.json        # Lighthouse CI config (staticDistDir + category assertions)
 .nvmrc                   # Node version pin (22)
@@ -207,7 +214,7 @@ Brand palette quick-reference:
 | `--text-primary`    | `#1a1a2e` / `#e8eaf6` (dark) | Headings, copy                                   |
 | `--text-muted`      | `#4b5563` / `#9ca3af` (dark) | Secondary copy                                   |
 
-Interactive blue is one value per theme (`#1565c0` light / `#5b8cff` dark) across buttons, links, icon anchors, and UI SVGs. The previous brighter accent was retired — it failed AA (3.24:1 white-on-fill).
+Interactive blue is one value per theme (`#1565c0` light / `#5b8cff` dark) across buttons, links, icon anchors, and UI SVGs. The previous brighter accent was retired: it failed AA (3.24:1 white-on-fill).
 
 Full token table, dark overrides, utility classes, typography, motion, and A11Y notes: **[DESIGN.md](./DESIGN.md)**.
 
@@ -222,11 +229,12 @@ Full token table, dark overrides, utility classes, typography, motion, and A11Y 
 - Reciprocal `hreflang` (es / en / x-default) on every page via the `alternates` prop; ES/EN pair point at each other, `x-default` at the Spanish slug
 - OpenGraph (image with dimensions + `alt`, `og:locale` plus `og:locale:alternate`)
 - Twitter Card (`summary_large_image`)
-- JSON-LD `@graph`: `Person` + `Organization` (Lúmina W) + `WebSite`, plus per-page `BreadcrumbList`, `Service` + `FAQPage` (`/servicios`), `ContactPage` (`/contacto`), and `SoftwareApplication` | `WebSite` | `CreativeWork` per case study
-- `lang` on `<html>` driven by the `lang` prop (`es` default, `en` on `/en/`)
-- `PUBLIC_GSV` → `<meta name="google-site-verification">` (only when set)
+- JSON-LD `@graph`: `Person` + `Organization` (Lúmina W) + `WebSite` on every page, plus a home-only `ProfilePage`; per-page `BreadcrumbList`, `Service` + `FAQPage` (`/servicios` + `/en/services`), `ContactPage` (`/contacto` + `/en/contact`), and `SoftwareApplication` | `WebSite` | `CreativeWork` per case study
+- `lang` on `<html>` driven from the URL via `getLangFromUrl` (`es` default, `en` on `/en/`)
 - `/sitemap-index.xml` auto-generated by `@astrojs/sitemap` with both locales (`es-CO`, `en-US`), referenced from `/robots.txt`
-- `/llms.txt` describes the site for AI assistants per [llmstxt.org](https://llmstxt.org)
+- `/llms.txt` (index) + `/llms-full.txt` (long-form companion) describe the site for AI assistants per [llmstxt.org](https://llmstxt.org)
+- `/.well-known/security.txt` (RFC 9116): security contact, expiry, canonical URL
+- Build-time GitHub widget on `/herramientas` + `/en/uses`: `src/data/github.ts` fetches the public profile + non-fork repos in frontmatter (unauthenticated, fails soft), rendered via `RepoCard.astro`
 
 **A11Y:**
 
@@ -241,14 +249,15 @@ Full token table, dark overrides, utility classes, typography, motion, and A11Y 
 
 ## Performance
 
-- Pre-paint theme script (sync `is:inline` in `<head>`) applies `.dark` before first paint: zero FOUC.
-- Hero portrait: WebP, `fetchpriority="high"`, `decoding="async"`, explicit dimensions, plus `<link rel="preload" as="image">` in `<head>` to win LCP.
-- Fonts: self-hosted latin-subset `woff2` in `public/fonts/`, `@font-face` with `font-display: swap`; critical weights (Poppins 400 + Raleway 700) preloaded. No Google Fonts request or `preconnect`.
-- Umami analytics: cookieless, conditionally rendered (no Umami vars = no script tag = no network call).
+- Pre-paint theme script (sync `is:inline` in `<head>`) applies `.dark` before first paint (zero FOUC) and re-applies on `astro:after-swap` so the theme never flashes across View Transitions.
+- View Transitions (`<ClientRouter />`): same-origin navigations swap without a full reload. DOM-binding scripts (theme, mobile nav, scroll reveal) re-run on `astro:page-load`.
+- Hero portrait: WebP, `fetchpriority="high"`, `decoding="async"`, explicit dimensions, plus `<link rel="preload" as="image">` in `<head>` (gated by `preloadHero`, only on home + about) to win LCP.
+- Fonts: self-hosted latin-subset `woff2` in `public/fonts/` (Poppins 400/500/600 static + Raleway variable `wght` 600-800), `@font-face` with `font-display: swap`; critical weights (Poppins 400 + Raleway variable) preloaded. No Google Fonts request or `preconnect`.
+- Umami analytics: cookieless, conditionally rendered (no Umami vars = no script tag = no network call). Core Web Vitals RUM (`src/scripts/vitals.ts`) is bundled and run under the same gate.
 - Every icon `<img>` has explicit `width` + `height` to prevent CLS.
 - Scroll reveal: IntersectionObserver reveals each `[data-aos]` element once, then `unobserve`s. Under `prefers-reduced-motion` (or no IntersectionObserver support), elements show immediately with no transition.
 - Astro: `compressHTML: true`, `build.inlineStylesheets: 'auto'`: small critical CSS inlined into the document.
-- Netlify cache: `/_astro/*`, `/images/*`, `/brand/*`, `/icons/*` served `Cache-Control: public, max-age=31536000, immutable`. CV PDFs are `max-age=86400`. HTML uses Netlify defaults (revalidate on each deploy).
+- Netlify cache: `/_astro/*`, `/images/*`, `/brand/*`, `/icons/*`, `/fonts/*` served `Cache-Control: public, max-age=31536000, immutable`. HTML uses Netlify defaults (revalidate on each deploy).
 - Lighthouse CI asserts category scores per commit (a11y + SEO are hard errors, perf + best-practices are warnings) against the built `dist/`.
 
 ## Testing and CI
@@ -276,7 +285,7 @@ Two Playwright projects run by default: `chromium-desktop` (Desktop Chrome) and 
 | `not-found.spec.ts`   | `/404` renders heading and emits `noindex`                               |
 | `seo.spec.ts`         | `robots.txt` content + localized `<loc>` entries in generated sitemap    |
 
-CI (`.github/workflows/ci.yml`) runs four jobs on every push and PR to `main`: `quality` (format check → type check via `astro check` → build) gates the rest, then `e2e` (Playwright), `lighthouse` (Lighthouse CI), and `links` (linkinator) run in parallel before Netlify publishes. All jobs read the Node version from `.nvmrc`.
+CI (`.github/workflows/ci.yml`) runs four jobs on every push and PR to `main`: `quality` (dependency audit via `npm audit --audit-level=high --omit=dev` → format check → lint → type check via `astro check` → build → CSP hash check via `npm run csp:check`) gates the rest, then `e2e` (Playwright), `lighthouse` (Lighthouse CI), and `links` (linkinator) run in parallel before Netlify publishes. All jobs read the Node version from `.nvmrc`.
 
 ## Deploying to Netlify
 
@@ -289,15 +298,16 @@ CI (`.github/workflows/ci.yml`) runs four jobs on every push and PR to `main`: `
    - Node version: `22` (pinned in `[build.environment]`)
 3. **Environment variables** → _Site settings → Environment variables_ (all optional):
    - `PUBLIC_UMAMI_SRC` + `PUBLIC_UMAMI_ID` (both required to enable analytics)
-   - `PUBLIC_GSV`
 4. **Custom domain:** _Domain settings_ → add `wavival.dev` → follow CNAME instructions. SSL auto-provisions via Let's Encrypt.
 5. **Deploy:** push to `main`. CI runs quality → e2e + lighthouse + links; on green, Netlify auto-builds and publishes.
 
 ### What's already in the repo
 
-- `netlify.toml`: Node 22 pin, security headers, immutable cache for static assets, redirects + proxies.
+- `netlify.toml`: Node 22 pin, security headers (hash-based CSP, HSTS, frame-deny), immutable cache for static assets, redirects + proxies.
 - `astro.config.mjs`: `site: "https://wavival.dev"`, bilingual sitemap integration, HTML compression.
-- `public/robots.txt`, `public/llms.txt`: `sitemap-index.xml` generated at build.
+- `public/robots.txt`, `public/llms.txt`, `public/llms-full.txt`: `sitemap-index.xml` generated at build; AI-assistant descriptors.
+- `public/.well-known/security.txt`: RFC 9116 security contact.
+- `scripts/check-csp-hashes.mjs`: CI guard that keeps the CSP inline-script hashes in sync with the build.
 - `.github/workflows/ci.yml`: quality + e2e + lighthouse + links gates before Netlify deploys.
 - `.github/dependabot.yml`: weekly npm + github-actions update PRs.
 
@@ -305,17 +315,17 @@ CI (`.github/workflows/ci.yml`) runs four jobs on every push and PR to `main`: `
 
 `netlify.toml` declares:
 
-| Header                                               | Value                                                                            |
-| ---------------------------------------------------- | -------------------------------------------------------------------------------- |
-| `Content-Security-Policy`                            | Strict CSP: `font-src 'self'` (self-hosted fonts), allows Umami Cloud + Calendly |
-| `Strict-Transport-Security`                          | `max-age=63072000; includeSubDomains; preload`                                   |
-| `X-Frame-Options`                                    | `DENY`                                                                           |
-| `X-Content-Type-Options`                             | `nosniff`                                                                        |
-| `Referrer-Policy`                                    | `strict-origin-when-cross-origin`                                                |
-| `Permissions-Policy`                                 | Locks camera, microphone, geolocation                                            |
-| Cache (`/_astro/`, `/images/`, `/brand/`, `/icons/`) | `public, max-age=31536000, immutable`                                            |
+| Header                                                          | Value                                                                                                                                                                                       |
+| --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Content-Security-Policy`                                       | Hash-based `script-src` (per-inline-script `sha256-`, no `unsafe-inline`) + Umami Cloud + Calendly; `font-src 'self'`; `connect-src` allows Umami + `nullbreach-api.wavival.dev` + Calendly |
+| `Strict-Transport-Security`                                     | `max-age=63072000; includeSubDomains; preload`                                                                                                                                              |
+| `X-Frame-Options`                                               | `DENY`                                                                                                                                                                                      |
+| `X-Content-Type-Options`                                        | `nosniff`                                                                                                                                                                                   |
+| `Referrer-Policy`                                               | `strict-origin-when-cross-origin`                                                                                                                                                           |
+| `Permissions-Policy`                                            | Locks camera, microphone, geolocation                                                                                                                                                       |
+| Cache (`/_astro/`, `/images/`, `/brand/`, `/icons/`, `/fonts/`) | `public, max-age=31536000, immutable`                                                                                                                                                       |
 
-If you add a third-party endpoint (Sentry, PostHog, etc.) update `script-src` / `connect-src` in the CSP.
+The `script-src` is hash-based: each inline script carries its own `sha256-` hash, so adding or editing an inline script means its hash drifts and the browser would block it. `npm run csp:check` (a CI step, run after `build`) catches that drift before deploy. If you add a third-party endpoint (Sentry, PostHog, etc.) update `script-src` / `connect-src` in the CSP too.
 
 ### Redirects and proxies
 
@@ -326,7 +336,7 @@ If you add a third-party endpoint (Sentry, PostHog, etc.) update `script-src` / 
 | `/api/*`        | `https://nullbreach-api.wavival.dev/api/*` | 200    |
 | `/nullbreach/*` | `https://null-breach.netlify.app/*`        | 200    |
 
-Update or remove if the upstreams change. Root now lives on its own domain (`okroot.co` landing, `app.okroot.co` PWA), so it is no longer proxied here.
+Update or remove if the upstreams change. Okroot now lives on its own domain (`okroot.co` landing, `app.okroot.co` PWA), so it is no longer proxied here.
 
 ## Using as a template
 
@@ -352,22 +362,22 @@ You're welcome to clone this repo as a base for your own portfolio. Design syste
 | `public/cv_valentina_ramirez_{es,en}.pdf` | CV files (rename + update `cvHref` in `src/i18n/utils.ts`)                    |
 | `public/images/profile.webp`              | Profile photo                                                                 |
 | `public/brand/logo-w.*`                   | Brand logo (regenerate favicon/manifest icons with `sharp`)                   |
-| `.env.example`                            | `PUBLIC_UMAMI_SRC`, `PUBLIC_UMAMI_ID`, `PUBLIC_GSV`                           |
+| `.env.example`                            | `PUBLIC_UMAMI_SRC`, `PUBLIC_UMAMI_ID`                                         |
 
 Token, typography, and utility-class values are centralized in `src/styles/`, so you can re-skin without touching components.
 
 ## Troubleshooting
 
-| Symptom                                          | Fix                                                                                                               |
-| ------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------- |
-| `npm install` fails on `ERESOLVE` peer warning   | `.npmrc` already sets `legacy-peer-deps=true`. If you removed it, re-add or run `npm install --legacy-peer-deps`. |
-| Dark mode flashes on first paint                 | The pre-paint script lives at the top of `<head>` in `Layout.astro`. Don't move it below other tags.              |
-| Fonts flash unstyled (FOUT)                      | Expected with the `media="print"` + `onload` strategy. To eliminate, self-host Poppins + Raleway.                 |
-| `npm test` fails with stale content              | Run `npm run build` first: the suite serves the static `dist/`, it does not build for you.                        |
-| Playwright fails locally with "browsers missing" | Run `npm run test:install` once.                                                                                  |
-| Language toggle points at a wrong URL            | Update the slug map (`EN_PAGE_MAP` / `getAltLangUrl`) in `src/i18n/utils.ts` after any page or slug rename.       |
-| Umami not firing                                 | Confirm both `PUBLIC_UMAMI_SRC` and `PUBLIC_UMAMI_ID` are set and the build was triggered after setting them.     |
-| CSP blocks a new third-party script              | Edit `Content-Security-Policy` in `netlify.toml` to add the origin to `script-src` / `connect-src`.               |
+| Symptom                                          | Fix                                                                                                                                         |
+| ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| `npm install` fails on `ERESOLVE` peer warning   | `.npmrc` already sets `legacy-peer-deps=true`. If you removed it, re-add or run `npm install --legacy-peer-deps`.                           |
+| Dark mode flashes on first paint                 | The pre-paint script lives at the top of `<head>` in `Layout.astro`. Don't move it below other tags.                                        |
+| Fonts flash unstyled (FOUT)                      | Fonts are self-hosted in `public/fonts/` with `font-display: swap` and critical weights preloaded. A brief swap is expected and acceptable. |
+| `npm test` fails with stale content              | Run `npm run build` first: the suite serves the static `dist/`, it does not build for you.                                                  |
+| Playwright fails locally with "browsers missing" | Run `npm run test:install` once.                                                                                                            |
+| Language toggle points at a wrong URL            | Update the slug map (`EN_PAGE_MAP` / `getAltLangUrl`) in `src/i18n/utils.ts` after any page or slug rename.                                 |
+| Umami not firing                                 | Confirm both `PUBLIC_UMAMI_SRC` and `PUBLIC_UMAMI_ID` are set and the build was triggered after setting them.                               |
+| CSP blocks a new third-party script              | Edit `Content-Security-Policy` in `netlify.toml` to add the origin to `script-src` / `connect-src`.                                         |
 
 ## Roadmap / known gaps
 

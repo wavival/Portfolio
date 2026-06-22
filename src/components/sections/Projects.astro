@@ -193,12 +193,19 @@ function getLinks(p: Project) {
                       class="!text-xs"
                       target="_blank"
                       aria-label={siteLink.ariaLabel}
+                      data-umami-event={siteLink.event}
                     >
                       {siteLink.text}
                     </Link>
                   )}
                   {otherLinks.map((l) => (
-                    <Link href={l.href} class="!text-xs" target="_blank" aria-label={l.ariaLabel}>
+                    <Link
+                      href={l.href}
+                      class="!text-xs"
+                      target="_blank"
+                      aria-label={l.ariaLabel}
+                      data-umami-event={l.event}
+                    >
                       {l.text}
                     </Link>
                   ))}
@@ -211,7 +218,7 @@ function getLinks(p: Project) {
     }
   </div>
 
-  <div id="projects-no-results" class="hidden mt-12 py-8 text-center">
+  <div id="projects-no-results" class="hidden mt-12 py-8 text-center" role="status">
     <p class="font-display font-semibold text-lg text-[var(--text-primary)]">
       {isEn ? "No results" : "Sin resultados"}
     </p>

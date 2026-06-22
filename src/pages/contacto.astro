@@ -42,6 +42,7 @@ const channels = [
     target: "_self" as const,
     cta: "Escríbeme",
     ariaLabel: "Enviar un correo electrónico a Valentina Ramírez",
+    event: "contacto-email",
   },
   {
     icon: "whatsapp",
@@ -52,6 +53,7 @@ const channels = [
     target: "_blank" as const,
     cta: "Chatear",
     ariaLabel: "Escribir a Valentina Ramírez por WhatsApp",
+    event: "contacto-whatsapp",
   },
   {
     icon: "calendar-blue",
@@ -62,6 +64,7 @@ const channels = [
     target: "_self" as const,
     cta: "Agendar",
     ariaLabel: "Ir al calendario para agendar una llamada",
+    event: "contacto-calendly",
   },
 ];
 ---
@@ -104,7 +107,13 @@ const channels = [
               <h3 class="font-display font-bold text-lg text-[var(--text-primary)]">{c.title}</h3>
               <p class="text-sm text-[var(--text-muted)] leading-relaxed">{c.body}</p>
             </div>
-            <Link href={c.href} target={c.target} class="!text-sm mt-auto" aria-label={c.ariaLabel}>
+            <Link
+              href={c.href}
+              target={c.target}
+              class="!text-sm mt-auto"
+              aria-label={c.ariaLabel}
+              data-umami-event={c.event}
+            >
               {c.cta}
             </Link>
           </article>
@@ -192,27 +201,6 @@ const channels = [
       s.src = "https://assets.calendly.com/assets/external/widget.js";
       s.async = true;
       document.body.appendChild(s);
-    })();
-  </script>
-
-  <script is:inline>
-    (function () {
-      function method(href) {
-        if (!href) return null;
-        if (href.indexOf("mailto:") === 0) return "email";
-        if (href.indexOf("wa.me") !== -1) return "whatsapp";
-        if (href.indexOf("#agenda") !== -1 || href.indexOf("calendly.com") !== -1)
-          return "calendly";
-        return null;
-      }
-      document.addEventListener("click", function (e) {
-        const a = e.target.closest && e.target.closest("a");
-        if (!a) return;
-        const m = method(a.getAttribute("href"));
-        if (m && window.umami) {
-          window.umami.track("contact_click", { method: m });
-        }
-      });
     })();
   </script>
 

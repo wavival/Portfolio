@@ -1,9 +1,14 @@
 ---
 import Layout from "@/layouts/Layout.astro";
 import Link from "@/components/ui/Link.astro";
+import RepoCard from "@/components/ui/RepoCard.astro";
 import { stack } from "@/data/stack";
+import { fetchGithubProfile, curateRepos } from "@/data/github";
 
 const base = import.meta.env.BASE_URL;
+
+const { user: githubUser, repos: githubRepos } = await fetchGithubProfile("wavival");
+const { featured: featuredRepos, resources: resourceRepos } = curateRepos(githubRepos);
 
 const pageTitle = "Uses: Tools and stack | Valentina Ramirez";
 const pageDescription =
@@ -63,7 +68,7 @@ const breadcrumbLd = JSON.stringify({
                 <p class="text-[var(--text-muted)] leading-relaxed mt-2">{s.whyEn ?? s.why}</p>
               )}
               <div class="flex flex-wrap gap-2 mt-4">
-                {s.tools.map((t) => (
+                {(s.toolsEn ?? s.tools).map((t) => (
                   <span class="chip !text-[var(--text-primary)]">{t}</span>
                 ))}
               </div>
@@ -168,6 +173,70 @@ const breadcrumbLd = JSON.stringify({
         </section>
       </div>
     </div>
+
+    {
+      githubUser && (
+        <div id="repos" class="mt-16 pt-10 border-t border-[var(--border-base)] scroll-mt-24">
+          <p class="section-subtitle">GitHub</p>
+          <h2 class="font-display font-bold text-2xl text-[var(--text-primary)]">
+            Learn, build, share
+          </h2>
+          <p class="text-[var(--text-muted)] leading-relaxed max-w-3xl mt-3">
+            {githubUser.public_repos} public repos · {githubUser.followers} followers ·{" "}
+            <Link
+              href={githubUser.html_url}
+              target="_blank"
+              class="inline"
+              aria-label="See Valentina Ramirez's full GitHub profile"
+            >
+              See full profile
+            </Link>
+          </p>
+
+          {featuredRepos.length > 0 && (
+            <div
+              class="mt-10 rounded-2xl border border-[var(--border-base)] bg-gradient-to-br from-[var(--bg-blur)] to-[var(--bg-card)] p-6 md:p-8"
+              data-aos="fade-up"
+            >
+              <span class="inline-flex items-center rounded-full bg-[var(--btn-bg)] px-3 py-1 text-xs font-bold uppercase tracking-widest text-white">
+                Featured
+              </span>
+              <h3 class="font-display font-bold text-2xl text-[var(--text-primary)] mt-4">
+                NullBreach
+              </h3>
+              <p class="text-sm text-[var(--text-muted)] leading-relaxed mt-2 max-w-2xl">
+                My flagship project: AI-powered security analysis. A Django REST backend and a React
+                interface, open end to end.
+              </p>
+              <div class="grid gap-4 mt-6 sm:grid-cols-2">
+                {featuredRepos.map((repo) => (
+                  <RepoCard repo={repo} lang="en" />
+                ))}
+              </div>
+            </div>
+          )}
+
+          {resourceRepos.length > 0 && (
+            <div class="mt-12">
+              <h3 class="font-display font-bold text-xl text-[var(--brand-blue)]">
+                Resources to learn from
+              </h3>
+              <p class="text-[var(--text-muted)] leading-relaxed max-w-3xl mt-2">
+                I take courses on Platzi, YouTube, and other sources, and turn what I learn into
+                public repos so other people can learn too.
+              </p>
+              <ul class="grid gap-4 mt-8 sm:grid-cols-2 lg:grid-cols-3 max-w-5xl" role="list">
+                {resourceRepos.map((repo) => (
+                  <li>
+                    <RepoCard repo={repo} lang="en" variant="resource" />
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+      )
+    }
 
     <div class="mt-16 pt-10 border-t border-[var(--border-base)] flex flex-wrap gap-5">
       <Link href={`${base}en/projects`} aria-label="See projects where I use this stack">

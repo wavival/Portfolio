@@ -56,15 +56,15 @@ export default defineConfig({
       lastmod: new Date(),
       i18n: {
         defaultLocale: "es",
-        locales: { es: "es-CO", en: "en-US" },
+        locales: { es: "es", en: "en" },
       },
       serialize(item) {
         item.priority = priorityFor(item.url);
         const pair = altPair(item.url);
         if (pair) {
           item.links = [
-            { lang: "es-CO", url: pair.esUrl },
-            { lang: "en-US", url: pair.enUrl },
+            { lang: "es", url: pair.esUrl },
+            { lang: "en", url: pair.enUrl },
             { lang: "x-default", url: pair.esUrl },
           ];
         }

@@ -20,9 +20,9 @@ If a user is searching for a Spanish-speaking full stack developer who pairs Dja
 ## Projects
 
 - [TerraCore (live)](https://terracoreapp.co): Multitenancy agricultural operations platform: inventory, livestock health, real-time dashboards. Django · DRF · PostgreSQL · JWT · React · TypeScript · Tailwind CSS. Reduced administrative task time by 42% in pilot farms (Urabá, Colombia). Case study: https://wavival.dev/proyectos/terracore
-- [Root (live)](https://okroot.co/): Offline-first PWA with AI-powered food-label scanner for celiac, diabetic, and lactose-intolerant users. Django · DRF · PostgreSQL · React · TypeScript · Claude API · PWA. Case study: https://wavival.dev/proyectos/root
+- [OKroot (live)](https://okroot.co/): Offline-first PWA with AI-powered food-label scanner for celiac, diabetic, and lactose-intolerant users. Django · DRF · PostgreSQL · React · TypeScript · Claude API · PWA. Case study: https://wavival.dev/proyectos/root
 - [NullBreach (live)](https://wavival.dev/nullbreach/): Full stack app: OWASP Top 10 static code analysis + AI chat with persistent context. Django · DRF · PostgreSQL · JWT · Claude API · React · TypeScript · Astro. Case study: https://wavival.dev/proyectos/nullbreach
-- [Lúmina W (live)](https://luminaw.co): Studio landing: designed, built, and maintained by Valentina. Astro, Tailwind CSS, Formspree.
+- [Lúmina W (live)](https://luminaw.co): Studio landing: designed, built, and maintained by Valentina. Astro, Tailwind CSS, Supabase.
 - [Forgotten Portal (pentesting writeup)](https://blog.luminaw.co/forgotten-portal-pentesting-dockerlabs/): Full pentest exercise: recon, PHP upload exploit, reverse shell, privilege escalation to root. Documented with PTES methodology and MITRE ATT&CK TTPs.
 
 ## Stack

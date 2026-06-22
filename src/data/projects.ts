@@ -2,6 +2,8 @@ export interface ProjectLink {
   href: string;
   text: string;
   ariaLabel: string;
+  /** Optional Umami event name for click tracking (e.g. "ver-app-terracore"). */
+  event?: string;
 }
 
 export interface ProjectEn {
@@ -80,6 +82,8 @@ export const projects: Project[] = [
   {
     title: "TerraCore PWA",
     slug: "terracore",
+    datePublished: "2026-06-16",
+    dateModified: "2026-06-16",
     tag: "Live",
     tagColor: "green",
     image: "images/og-terracore.webp",
@@ -108,7 +112,12 @@ export const projects: Project[] = [
       "TLS en todos los endpoints; cumplimiento Ley 1581 de Habeas Data sin minería de datos para terceros ni entrenamiento de modelos con datos del usuario.",
     ],
     links: [
-      { href: "https://app.terracoreapp.co", text: "Ver app", ariaLabel: "Ver app de TerraCore" },
+      {
+        href: "https://app.terracoreapp.co",
+        text: "Ver app",
+        ariaLabel: "Ver app de TerraCore",
+        event: "ver-app-terracore",
+      },
     ],
     caseStudy: true,
     schemaType: "SoftwareApplication",
@@ -226,7 +235,12 @@ export const projects: Project[] = [
       solution:
         "TerraCore centralizes on a single screen everything a mid-sized farm needs to manage: livestock, inventory, production, animal health, costs, and finances. It replaces Excel, notebooks, and WhatsApp as operational tools. Built from the field with real producers in Urabá, it covers cattle, swine, equine, ovine, caprine, poultry, and associated crops (plantain, cacao, corn) in Colombia.",
       links: [
-        { href: "https://app.terracoreapp.co", text: "View app", ariaLabel: "View TerraCore app" },
+        {
+          href: "https://app.terracoreapp.co",
+          text: "View app",
+          ariaLabel: "View TerraCore app",
+          event: "ver-app-terracore",
+        },
       ],
       metaDescription:
         "TerraCore case study: agro-industrial SaaS for mid-sized farms in Colombia. Django, DRF, PostgreSQL, React. Offline-first PWA with multitenancy.",
@@ -341,6 +355,8 @@ export const projects: Project[] = [
   {
     title: "TerraCore Landing",
     slug: "terracore-landing",
+    datePublished: "2026-06-18",
+    dateModified: "2026-06-18",
     tag: "Live",
     tagColor: "green",
     image: "images/og-terracore.webp",
@@ -348,7 +364,7 @@ export const projects: Project[] = [
       "Landing de TerraCore: propuesta de valor y planes para productores agropecuarios colombianos",
     imageWidth: 1200,
     imageHeight: 630,
-    stack: ["Astro", "Tailwind CSS", "SEO", "A11y", "GA4", "Performance"],
+    stack: ["Astro", "Tailwind CSS", "Supabase", "SEO", "A11y", "GA4", "Performance"],
     filters: ["landing", "diseno"],
     problem:
       "Una plataforma SaaS sin una landing de conversión pierde el tráfico orgánico antes de que el productor llegue a la app: hay que presentar el producto, los módulos y los planes en una sola pantalla.",
@@ -359,7 +375,7 @@ export const projects: Project[] = [
       "Flujo de conversión vertical en 8 secciones: Hero, propuesta de valor, 6 módulos, integración en cascada, UX para el campo, beneficios, precios y FAQ.",
       "Tres planes con precio explícito en COP: Semilla ($2.5M/mes, 1 sede, 5 usuarios), Profesional ($5M/mes, 3 sedes, 15 usuarios) y Enterprise (desde $10M/mes, ilimitado).",
       "Sección de privacidad y seguridad dedicada: Ley 1581 de 2012, TLS en endpoints, sin minería de datos y exportación CSV garantizada.",
-      "Sin backend propio: CTAs apuntan a formulario de demo y canal de WhatsApp directo.",
+      "Formulario de demo conectado a Supabase (Postgres gestionado), sin servidor propio que construir ni mantener; CTAs adicionales a canal de WhatsApp directo.",
       "Google Analytics (GA4) para tracking de comportamiento: sesiones, scroll depth por sección, clics en CTAs y origen del tráfico.",
       "SEO técnico completo: title, meta-description, og:*, twitter:*, canonical y schema markup.",
       "Accesibilidad (a11y): jerarquía de encabezados, aria-labels y contraste WCAG AA.",
@@ -477,7 +493,7 @@ export const projects: Project[] = [
         "Vertical conversion flow in 8 sections: Hero, value proposition, 6 modules, cascade integration, field UX, benefits, pricing, and FAQ.",
         "Three plans with explicit pricing in COP: Seed ($2.5M/mo, 1 location, 5 users), Professional ($5M/mo, 3 locations, 15 users), and Enterprise (from $10M/mo, unlimited).",
         "Dedicated privacy and security section: Ley 1581 de 2012, TLS on endpoints, no data mining, and guaranteed CSV export.",
-        "No own backend: CTAs point to a demo form and direct WhatsApp channel.",
+        "Demo form connected to Supabase (managed Postgres), no own server to build or maintain; additional CTAs to a direct WhatsApp channel.",
         "Google Analytics (GA4) for behavior tracking: sessions, scroll depth per section, CTA clicks, and traffic source.",
         "Full technical SEO: title, meta-description, og:*, twitter:*, canonical, and schema markup.",
         "Accessibility (a11y): heading hierarchy, aria-labels, and WCAG AA contrast.",
@@ -565,12 +581,14 @@ export const projects: Project[] = [
     },
   },
   {
-    title: "Root PWA",
+    title: "OKroot PWA",
     slug: "root",
+    datePublished: "2026-06-16",
+    dateModified: "2026-06-16",
     tag: "Live",
     tagColor: "green",
-    image: "images/og-root.webp",
-    imageAlt: "Root: PWA con scanner de etiquetas por IA y perfil de restricciones alimentarias",
+    image: "images/og-okroot.webp",
+    imageAlt: "OKroot: PWA con scanner de etiquetas por IA y perfil de restricciones alimentarias",
     imageWidth: 1200,
     imageHeight: 630,
     stack: ["Django", "DRF", "PostgreSQL", "React", "TypeScript", "Claude API", "PWA"],
@@ -582,7 +600,7 @@ export const projects: Project[] = [
     problem:
       "Comer con celiaquía, diabetes o intolerancia a la lactosa implica leer cada etiqueta, descifrar ingredientes escondidos bajo otros nombres y buscar recetas que cumplan varias restricciones a la vez, todo de forma manual y dispersa.",
     solution:
-      "El usuario fotografía un producto y en segundos sabe si puede comerlo con sus restricciones activas (celiaquía, diabetes, intolerancia a la lactosa), combinables entre sí. Root va más allá del scanner: recetas curadas con filtrado estricto y diario alimentario offline para quien ya sabe qué no puede comer y quiere saber qué sí.",
+      "El usuario fotografía un producto y en segundos sabe si puede comerlo con sus restricciones activas (celiaquía, diabetes, intolerancia a la lactosa), combinables entre sí. OKroot va más allá del scanner: recetas curadas con filtrado estricto y diario alimentario offline para quien ya sabe qué no puede comer y quiere saber qué sí.",
     architecture: [
       "PWA offline-first con Service Workers: el diario de consumo funciona sin conexión y sincroniza al recuperarla.",
       "Scanner de etiquetas por IA: el usuario fotografía un producto y Claude API analiza los ingredientes contra su perfil de restricciones activo.",
@@ -594,13 +612,14 @@ export const projects: Project[] = [
       {
         href: "https://app.okroot.co/",
         text: "Ver app",
-        ariaLabel: "Ver app de Root",
+        ariaLabel: "Ver app de OKroot",
+        event: "ver-app-root",
       },
     ],
     caseStudy: true,
     schemaType: "SoftwareApplication",
     metaDescription:
-      "Caso de estudio de Root: PWA offline-first con scanner de etiquetas por IA (Claude API) para celíacos, diabéticos e intolerantes a la lactosa.",
+      "Caso de estudio de OKroot: PWA offline-first con scanner de etiquetas por IA (Claude API) para celíacos, diabéticos e intolerantes a la lactosa.",
     results: [
       "Scanner de etiquetas funcional: el usuario fotografía un producto y Claude API analiza los ingredientes contra su perfil de restricciones activo, incluso cuando varias condiciones aplican a la vez.",
       "Diario de consumo operativo sin conexión gracias al diseño offline-first; los registros se persisten en local y sincronizan al recuperar la red.",
@@ -609,6 +628,20 @@ export const projects: Project[] = [
     learnings: [
       "Offline-first no es una capa que se añade al final: condiciona el modelo de sincronización desde el primer endpoint y obliga a resolver conflictos de datos en vez de asumir una única fuente de verdad.",
       "Para que las respuestas del modelo sean fiables, el perfil de salud no puede ir solo en el prompt: tratar las restricciones como estado persistente y verificable, y no como contexto que se pierde entre peticiones, es lo que evita falsos seguros al combinar celiaquía, diabetes e intolerancia a la lactosa.",
+    ],
+    painPoints: [
+      {
+        title: "Cada etiqueta, a mano",
+        text: "Comprar o comer fuera implica leer el reverso de cada producto, una y otra vez.",
+      },
+      {
+        title: "Ingredientes con disfraz",
+        text: "La lactosa, el gluten o el azúcar aparecen bajo nombres técnicos que pocos reconocen.",
+      },
+      {
+        title: "Restricciones que se acumulan",
+        text: "Las soluciones existentes validan una condición a la vez, dispersas y sin funcionar sin conexión.",
+      },
     ],
     modules: [
       {
@@ -624,6 +657,13 @@ export const projects: Project[] = [
         text: "Registro de consumo con soporte offline completo. Los registros se persisten localmente y sincronizan al recuperar la red.",
       },
     ],
+    chainStepsTitle: "Una foto, una respuesta. Esto pasa por debajo.",
+    chainSteps: [
+      "Fotografías la etiqueta de un producto",
+      "Claude API lee los ingredientes, incluidos los nombres técnicos que esconden lactosa, gluten o azúcar",
+      "El análisis se cruza contra todas tus restricciones activas a la vez",
+      "Respuesta en segundos: puedes comerlo, o el ingrediente exacto que lo descarta",
+    ],
     decisions: [
       {
         title: "Nicho médico real, no wellness genérico",
@@ -632,7 +672,7 @@ export const projects: Project[] = [
         tradeoff:
           "Un producto más amplio alcanza más usuarios pero diluye la propuesta y baja el estándar de validación.",
         decision:
-          "Root está diseñada para quien tiene una condición médica diagnosticada. Eso define el catálogo, los criterios del scanner y cómo se presentan los resultados.",
+          "OKroot está diseñada para quien tiene una condición médica diagnosticada. Eso define el catálogo, los criterios del scanner y cómo se presentan los resultados.",
       },
       {
         title: "Restricciones compuestas: lógica AND, no OR",
@@ -644,37 +684,61 @@ export const projects: Project[] = [
           "El perfil de salud es estado persistente, no contexto de sesión. Cada análisis del scanner valida contra todas las restricciones activas al mismo tiempo.",
       },
       {
+        title: "Claude API vs lista hardcodeada de ingredientes",
+        context:
+          "Un ingrediente prohibido aparece bajo decenas de nombres: la lactosa como suero, caseína o lactosuero; el gluten como malta, sémola o espelta. Una lista fija envejece y nunca cubre todos los casos.",
+        tradeoff:
+          "Una lista hardcodeada es predecible y barata, pero exige mantenimiento constante y falla ante nombres nuevos o redacciones ambiguas.",
+        decision:
+          "El análisis lo hace Claude API contra el perfil de restricciones activo: generaliza a nombres alternativos y redacciones que una lista fija no anticipa, y explica el ingrediente concreto por el que un producto se descarta.",
+      },
+      {
         title: "PWA offline-first para el diario alimentario",
         context: "El registro de consumo ocurre en el momento, no siempre con buena señal.",
         tradeoff:
           "Una app web tradicional falla sin conexión. Una app nativa requiere publicación en stores y más mantenimiento.",
         decision:
-          "Service Worker que persiste el diario localmente y sincroniza en batch al recuperar la red. Se instala desde el navegador sin pasar por App Store.",
+          "Service Worker que persiste el diario en IndexedDB y sincroniza en batch al recuperar la red, resolviendo conflictos contra el backend. Se instala desde el navegador sin pasar por App Store.",
       },
     ],
     en: {
       summary:
         "Offline-first PWA that scans food labels with AI (Claude API) and instantly tells you whether you can eat a product based on your active restrictions (celiac, diabetes, lactose intolerance). Django, DRF, PostgreSQL, React.",
-      imageAlt: "Root: PWA with AI food-label scanner and dietary restriction profile",
+      imageAlt: "OKroot: PWA with AI food-label scanner and dietary restriction profile",
       problem:
         "Eating with celiac disease, diabetes, or lactose intolerance means reading every label, deciphering hidden ingredients listed under other names, and finding recipes that comply with multiple restrictions at the same time, all manually and scattered across sources.",
       solution:
-        "The user photographs a product and within seconds knows whether they can eat it given their active restrictions (celiac disease, diabetes, lactose intolerance), combinable with each other. Root goes beyond the scanner: curated recipes with strict filtering and an offline food diary for those who already know what they cannot eat and want to know what they can.",
+        "The user photographs a product and within seconds knows whether they can eat it given their active restrictions (celiac disease, diabetes, lactose intolerance), combinable with each other. OKroot goes beyond the scanner: curated recipes with strict filtering and an offline food diary for those who already know what they cannot eat and want to know what they can.",
       links: [
         {
           href: "https://app.okroot.co/",
           text: "Visit app",
-          ariaLabel: "Visit Root app",
+          ariaLabel: "Visit OKroot app",
+          event: "ver-app-root",
         },
       ],
       metaDescription:
-        "Root case study: offline-first PWA with AI food label scanner (Claude API) for celiac, diabetic, and lactose-intolerant users. Architecture and decisions.",
+        "OKroot case study: offline-first PWA with AI food label scanner (Claude API) for celiac, diabetic, and lactose-intolerant users. Architecture and decisions.",
       architecture: [
         "Offline-first PWA with Service Workers: the food diary works without connection and syncs when connectivity is restored.",
         "AI food label scanner: the user photographs a product and Claude API analyzes the ingredients against their active restriction profile.",
         "Persistent health profile that conditions all model responses (celiac disease, type 2 diabetes, lactose intolerance, combinable).",
         "Curated recipe system with strict filtering by multiple simultaneous conditions.",
         "Backend in Django REST Framework + PostgreSQL; frontend in React + TypeScript.",
+      ],
+      painPoints: [
+        {
+          title: "Every label, by hand",
+          text: "Shopping or eating out means reading the back of every product, over and over.",
+        },
+        {
+          title: "Ingredients in disguise",
+          text: "Lactose, gluten, or sugar show up under technical names few people recognize.",
+        },
+        {
+          title: "Restrictions that stack",
+          text: "Existing tools validate one condition at a time, scattered and useless offline.",
+        },
       ],
       modules: [
         {
@@ -690,6 +754,13 @@ export const projects: Project[] = [
           text: "Consumption log with full offline support. Records are persisted locally and sync when connectivity is restored.",
         },
       ],
+      chainStepsTitle: "One photo, one answer. Here is what happens underneath.",
+      chainSteps: [
+        "You photograph a product's label",
+        "Claude API reads the ingredients, including the technical names that hide lactose, gluten, or sugar",
+        "The analysis is cross-checked against all your active restrictions at once",
+        "Answer in seconds: you can eat it, or the exact ingredient that rules it out",
+      ],
       decisions: [
         {
           title: "Real medical niche, not generic wellness",
@@ -698,7 +769,7 @@ export const projects: Project[] = [
           tradeoff:
             "A broader product reaches more users but dilutes the proposition and lowers the validation standard.",
           decision:
-            "Root is designed for people with a diagnosed medical condition. That defines the catalog, scanner criteria, and how results are presented.",
+            "OKroot is designed for people with a diagnosed medical condition. That defines the catalog, scanner criteria, and how results are presented.",
         },
         {
           title: "Compound restrictions: AND logic, not OR",
@@ -710,12 +781,21 @@ export const projects: Project[] = [
             "The health profile is persistent state, not session context. Each scanner analysis validates against all active restrictions at the same time.",
         },
         {
+          title: "Claude API vs a hardcoded ingredient list",
+          context:
+            "A restricted ingredient shows up under dozens of names: lactose as whey, casein, or milk solids; gluten as malt, semolina, or spelt. A fixed list ages and never covers every case.",
+          tradeoff:
+            "A hardcoded list is predictable and cheap, but needs constant maintenance and breaks on new names or ambiguous wording.",
+          decision:
+            "Claude API runs the analysis against the active restriction profile: it generalizes to alternative names and phrasings a fixed list cannot anticipate, and explains the specific ingredient that rules a product out.",
+        },
+        {
           title: "Offline-first PWA for the food diary",
           context: "Consumption logging happens in the moment, not always with a good signal.",
           tradeoff:
             "A traditional web app fails without connection. A native app requires store publishing and more maintenance.",
           decision:
-            "Service Worker that persists the diary locally and syncs in batch when connectivity returns. Installs from the browser without going through the App Store.",
+            "Service Worker that persists the diary in IndexedDB and syncs in batch when connectivity returns, resolving conflicts against the backend. Installs from the browser without going through the App Store.",
         },
       ],
       results: [
@@ -730,20 +810,22 @@ export const projects: Project[] = [
     },
   },
   {
-    title: "Root Landing",
+    title: "OKroot Landing",
     slug: "root-landing",
+    datePublished: "2026-06-18",
+    dateModified: "2026-06-18",
     tag: "Live",
     tagColor: "green",
-    image: "images/og-root.webp",
-    imageAlt: "Landing de Root: scanner de etiquetas por IA para restricciones alimentarias",
+    image: "images/og-okroot.webp",
+    imageAlt: "Landing de OKroot: scanner de etiquetas por IA para restricciones alimentarias",
     imageWidth: 1200,
     imageHeight: 630,
-    stack: ["Astro", "Tailwind CSS", "SEO", "A11y", "GA4", "Performance"],
+    stack: ["Astro", "Tailwind CSS", "Supabase", "SEO", "A11y", "GA4", "Performance"],
     filters: ["landing", "diseno"],
     problem:
       "Una app con múltiples restricciones dietéticas necesita comunicar con precisión a quién está dirigida y qué hace antes de que el usuario la instale o la pruebe.",
     solution:
-      "Landing de Root que explica el scanner de etiquetas por IA, las restricciones activas compatibles (celiaquía, diabetes, intolerancia a la lactosa) y el acceso a la PWA.",
+      "Landing de OKroot que explica el scanner de etiquetas por IA, las restricciones activas compatibles (celiaquía, diabetes, intolerancia a la lactosa) y el acceso a la PWA.",
     architecture: [
       "Astro con output estático: componentes por sección y deploy continuo en Netlify.",
       "Tailwind CSS para diseño responsivo.",
@@ -751,6 +833,7 @@ export const projects: Project[] = [
       "Accesibilidad (a11y): jerarquía de encabezados, aria-labels y contraste WCAG AA.",
       "Performance: output estático, imágenes WebP y caché inmutable en Netlify.",
       "Analíticas de Google (GA4): seguimiento de visitas y comportamiento del usuario.",
+      "Formulario de contacto conectado a Supabase (Postgres gestionado): captura de interesados en una base de datos propia, sin servidor propio que mantener.",
     ],
     results: [
       "Landing publicada en producción con las secciones principales del scanner de etiquetas por IA, las restricciones alimentarias activas y el acceso directo a la PWA.",
@@ -762,29 +845,29 @@ export const projects: Project[] = [
     caseStudy: true,
     schemaType: "WebSite",
     metaDescription:
-      "Caso de estudio de Root Landing: landing en Astro y Tailwind CSS que comunica el scanner de etiquetas por IA y las restricciones alimentarias compatibles.",
+      "Caso de estudio de OKroot Landing: landing en Astro y Tailwind CSS que comunica el scanner de etiquetas por IA y las restricciones alimentarias compatibles.",
     links: [
       {
         href: "https://okroot.co/",
         text: "Ver sitio",
-        ariaLabel: "Ver landing de Root",
+        ariaLabel: "Ver landing de OKroot",
       },
     ],
     en: {
-      imageAlt: "Root landing: AI food label scanner for dietary restrictions",
+      imageAlt: "OKroot landing: AI food label scanner for dietary restrictions",
       problem:
         "A multi-restriction diet app needs to communicate with precision who it is for and what it does before the user installs or tries it.",
       solution:
-        "Root landing that explains the AI label scanner, the compatible active restrictions (celiac disease, diabetes, lactose intolerance), and access to the PWA.",
+        "OKroot landing that explains the AI label scanner, the compatible active restrictions (celiac disease, diabetes, lactose intolerance), and access to the PWA.",
       links: [
         {
           href: "https://okroot.co/",
           text: "Visit site",
-          ariaLabel: "Visit Root landing",
+          ariaLabel: "Visit OKroot landing",
         },
       ],
       metaDescription:
-        "Root Landing case study: landing in Astro and Tailwind CSS that communicates the AI label scanner and compatible dietary restrictions.",
+        "OKroot Landing case study: landing in Astro and Tailwind CSS that communicates the AI label scanner and compatible dietary restrictions.",
       architecture: [
         "Astro with static output: section components and continuous deployment to Netlify.",
         "Tailwind CSS for responsive design.",
@@ -792,6 +875,7 @@ export const projects: Project[] = [
         "Accessibility (a11y): heading hierarchy, aria-labels, and WCAG AA contrast.",
         "Performance: static output, WebP images, and immutable cache on Netlify.",
         "Google Analytics (GA4): visit tracking and user behavior.",
+        "Contact form connected to Supabase (managed Postgres): captures interested users in an owned database, with no own server to maintain.",
       ],
       results: [
         "Landing published in production with the main sections of the AI label scanner, the active dietary restrictions, and direct access to the PWA.",
@@ -805,6 +889,8 @@ export const projects: Project[] = [
   {
     title: "NullBreach",
     slug: "nullbreach",
+    datePublished: "2026-06-16",
+    dateModified: "2026-06-16",
     tag: "Live",
     tagColor: "green",
     image: "images/og-nullbreach.webp",
@@ -833,6 +919,7 @@ export const projects: Project[] = [
         href: "https://wavival.dev/nullbreach/",
         text: "Ver sitio",
         ariaLabel: "Ver sitio de NullBreach",
+        event: "ver-app-nullbreach",
       },
       {
         href: "https://github.com/wavival/nullbreach-api",
@@ -852,6 +939,86 @@ export const projects: Project[] = [
     learnings: [
       "Combinar análisis estático determinista con un LLM exige separar lo que el motor afirma con certeza de lo que el modelo sugiere: presentarlos como una sola respuesta erosiona la confianza en un producto de seguridad.",
       "Desacoplar el backend de Django del frontend en Astro impuso un contrato de API explícito desde el inicio; esa frontera obligó a pensar paginación, autenticación JWT y persistencia del historial como parte del diseño, no como añadidos posteriores.",
+      "El prompt engineering para seguridad no es pedir 'busca vulnerabilidades': exige fijar el marco (OWASP Top 10), el formato de salida (categoría, severidad, recomendación) y el rol del modelo, para que el diagnóstico sea estructurado y comparable entre análisis.",
+    ],
+    painPoints: [
+      {
+        title: "Scanners con curva alta",
+        text: "Semgrep o SonarQube resuelven mucho, pero montar y afinar las reglas cuesta un tiempo que una duda puntual no justifica.",
+      },
+      {
+        title: "Respuestas dispersas",
+        text: "La guía vive repartida entre documentación densa y foros que envejecen mal.",
+      },
+      {
+        title: "Sin memoria del análisis",
+        text: "Las herramientas no conversan: cada pregunta nueva obliga a re-explicar el código.",
+      },
+    ],
+    modules: [
+      {
+        name: "Análisis OWASP",
+        text: "Pega un fragmento y recibe un diagnóstico contra el OWASP Top 10 en el momento.",
+      },
+      {
+        name: "Chat con memoria",
+        text: "Pregunta de seguimiento sin repetir el código: el chat retiene el hilo del análisis.",
+      },
+      {
+        name: "Diagnóstico estructurado",
+        text: "Cada hallazgo trae categoría OWASP, severidad y recomendación de corrección.",
+      },
+      {
+        name: "API pública",
+        text: "El backend está abierto en github.com/wavival/nullbreach-api.",
+      },
+    ],
+    decisions: [
+      {
+        title: "Claude API vs análisis estático tradicional",
+        context:
+          "Los SAST tradicionales (Semgrep, SonarQube) detectan patrones, pero no explican el porqué ni razonan sobre código fuera de sus reglas.",
+        tradeoff:
+          "Un motor de reglas es determinista y rápido, pero rígido: no generaliza a código nuevo ni da una explicación accionable.",
+        decision:
+          "Claude API aporta razonamiento estructurado sobre el fragmento: clasifica contra OWASP Top 10, explica la causa y propone la corrección. El análisis determinista se mantiene para lo que se afirma con certeza; el modelo aporta el razonamiento, etiquetado como tal.",
+      },
+      {
+        title: "Contexto de chat persistente",
+        context:
+          "Una consulta de seguridad tiene contexto: el dev no repite el fragmento ni el fondo en cada mensaje.",
+        tradeoff:
+          "Un chat sin estado es más simple, pero obliga a repetir contexto y rompe el hilo del análisis.",
+        decision:
+          "Historial de conversación en base de datos, enviado como contexto en cada petición. El modelo recuerda el hilo sin que el usuario lo repita.",
+      },
+      {
+        title: "JWT para aislar sesiones de análisis",
+        context:
+          "Cada usuario analiza código potencialmente sensible; sus sesiones y su historial no pueden mezclarse.",
+        tradeoff:
+          "Las sesiones por cookie son cómodas, pero acoplan un frontend y un backend desacoplados y complican el aislamiento entre usuarios.",
+        decision:
+          "Autenticación JWT con endpoints protegidos: cada análisis e historial queda aislado por usuario, encaja con el backend desacoplado y no asume estado de sesión compartido.",
+      },
+      {
+        title: "Astro para el frontend",
+        context:
+          "El frontend de NullBreach es mayormente contenido y formularios de análisis, no una SPA pesada.",
+        tradeoff:
+          "Una SPA pura penaliza el arranque y el SEO con JavaScript que la mayoría de la página no necesita.",
+        decision:
+          "Astro con output estático e islas de React solo donde hay interactividad (análisis, chat): mejor rendimiento y SEO sin renunciar a React donde aporta.",
+      },
+      {
+        title: "Django + DRF como backbone",
+        context:
+          "NullBreach comparte stack con TerraCore y Root: Django REST Framework + PostgreSQL.",
+        tradeoff:
+          "Elegir un stack distinto por proyecto puede optimizar casos puntuales, pero fragmenta el conocimiento y ralentiza el mantenimiento.",
+        decision:
+          "Mismo backbone Django + DRF en todos los proyectos: patrones coherentes (serializers, auth JWT, paginación) que aceleran construir y mantener cada uno.",
+      },
     ],
     en: {
       summary:
@@ -866,6 +1033,7 @@ export const projects: Project[] = [
           href: "https://wavival.dev/nullbreach/",
           text: "Visit site",
           ariaLabel: "Visit NullBreach",
+          event: "ver-app-nullbreach",
         },
         {
           href: "https://github.com/wavival/nullbreach-api",
@@ -881,24 +1049,82 @@ export const projects: Project[] = [
         "JWT authentication with protected endpoints; paginated responses.",
         "Decoupled architecture: backend in Django REST Framework + PostgreSQL, frontend in Astro + React + TypeScript.",
       ],
-      decisions: [
+      painPoints: [
         {
-          title: "Static analysis + LLM: separate certainty from suggestion",
-          context:
-            "Static analysis produces deterministic findings. An LLM produces probabilistic suggestions. Mixing them without distinction erodes trust in a security product.",
-          tradeoff:
-            "A single combined response is simpler to build but trains users to distrust both signals.",
-          decision:
-            "The static engine asserts with certainty; the model suggests. Results are presented as separate layers with explicit labeling of their nature.",
+          title: "Scanners with a steep curve",
+          text: "Semgrep or SonarQube solve a lot, but setting up and tuning the rules costs time a quick question does not justify.",
         },
         {
-          title: "Persistent chat context per user",
+          title: "Scattered answers",
+          text: "Guidance is spread across dense documentation and forums that age badly.",
+        },
+        {
+          title: "No memory of the analysis",
+          text: "The tools do not converse: every new question forces re-explaining the code.",
+        },
+      ],
+      modules: [
+        {
+          name: "OWASP analysis",
+          text: "Paste a snippet and get a diagnosis against the OWASP Top 10 on the spot.",
+        },
+        {
+          name: "Chat with memory",
+          text: "Ask follow-ups without repeating the code: the chat retains the analysis thread.",
+        },
+        {
+          name: "Structured diagnosis",
+          text: "Each finding carries an OWASP category, severity, and a remediation recommendation.",
+        },
+        {
+          name: "Public API",
+          text: "The backend is open at github.com/wavival/nullbreach-api.",
+        },
+      ],
+      decisions: [
+        {
+          title: "Claude API vs traditional static analysis",
+          context:
+            "Traditional SAST tools (Semgrep, SonarQube) match patterns but do not explain the why or reason about code outside their rules.",
+          tradeoff:
+            "A rule engine is deterministic and fast but rigid: it does not generalize to new code or give an actionable explanation.",
+          decision:
+            "Claude API brings structured reasoning over the snippet: it classifies against OWASP Top 10, explains the cause, and proposes the fix. Deterministic analysis stays for what it asserts with certainty; the model adds the reasoning, labeled as such.",
+        },
+        {
+          title: "Persistent chat context",
           context:
             "Security questions have context: a developer does not repeat the full background on every message.",
           tradeoff:
             "Stateless chat is simpler but forces the user to repeat context and breaks the analysis thread.",
           decision:
             "Conversation history stored in the database and sent as context on each request. The model remembers the thread without the user repeating it.",
+        },
+        {
+          title: "JWT to isolate analysis sessions",
+          context:
+            "Each user analyzes potentially sensitive code; their sessions and history cannot mix.",
+          tradeoff:
+            "Cookie sessions are convenient but couple the decoupled frontend and backend and complicate per-user isolation.",
+          decision:
+            "JWT authentication with protected endpoints: each analysis and history is isolated per user, fits the decoupled backend, and assumes no shared session state.",
+        },
+        {
+          title: "Astro for the frontend",
+          context: "NullBreach's frontend is mostly content and analysis forms, not a heavy SPA.",
+          tradeoff:
+            "A pure SPA penalizes startup and SEO with JavaScript most of the page does not need.",
+          decision:
+            "Astro with static output and React islands only where there is interactivity (analysis, chat): better performance and SEO without giving up React where it adds value.",
+        },
+        {
+          title: "Django + DRF as the backbone",
+          context:
+            "NullBreach shares its stack with TerraCore and Root: Django REST Framework + PostgreSQL.",
+          tradeoff:
+            "Choosing a different stack per project can optimize specific cases but fragments knowledge and slows maintenance.",
+          decision:
+            "Same Django + DRF backbone across all projects: consistent patterns (serializers, JWT auth, pagination) that speed up building and maintaining each one.",
         },
       ],
       results: [
@@ -909,31 +1135,34 @@ export const projects: Project[] = [
       learnings: [
         "Combining deterministic static analysis with an LLM requires separating what the engine asserts with certainty from what the model suggests: presenting them as a single response erodes trust in a security product.",
         "Decoupling the Django backend from the Astro frontend imposed an explicit API contract from the start; that boundary forced thinking about pagination, JWT authentication, and history persistence as part of the design, not as later additions.",
+        "Prompt engineering for security is not asking 'find vulnerabilities': it requires fixing the framework (OWASP Top 10), the output format (category, severity, recommendation), and the model's role, so the diagnosis is structured and comparable across analyses.",
       ],
     },
   },
   {
     title: "Lúmina W",
     slug: "lumina-w",
+    datePublished: "2026-06-16",
+    dateModified: "2026-06-16",
     tag: "Live",
     tagColor: "green",
     image: "images/lumina-w.webp",
     imageAlt: "Landing de Lúmina W: hero con tagline de marca y llamado a la acción",
     imageWidth: 1280,
     imageHeight: 853,
-    stack: ["Astro", "Tailwind CSS", "Formspree", "SEO", "A11y", "GA4", "Performance"],
+    stack: ["Astro", "Tailwind CSS", "Supabase", "SEO", "A11y", "GA4", "Performance"],
     filters: ["landing", "diseno"],
     problem:
       "Toda empresa necesita una presencia digital que comunique con claridad quién es y qué hace.",
     solution:
-      "Diseñé e implementé la landing completa de Lúmina W: arquitectura con Astro, estilos con Tailwind CSS, formulario de contacto integrado con Formspree, SEO técnico completo y deploy continuo.",
+      "Diseñé e implementé la landing completa de Lúmina W: arquitectura con Astro, estilos con Tailwind CSS, formulario de contacto sobre Supabase, SEO técnico completo y deploy continuo.",
     architecture: [
       "Astro con output estático: componentes por sección, build optimizado y deploy continuo en Netlify.",
       "SEO técnico completo: title, meta-description, og:*, twitter:*, canonical y schema markup.",
       "Accesibilidad (a11y): jerarquía de encabezados, aria-labels y contraste WCAG AA.",
       "Performance: output estático, imágenes WebP y caché inmutable en Netlify.",
       "Analíticas de Google (GA4): seguimiento de visitas, scroll depth y comportamiento del usuario.",
-      "Formulario de contacto sin backend propio usando Formspree: nombre, empresa, correo y mensaje con confirmación automática al usuario.",
+      "Formulario de contacto sobre Supabase (Postgres gestionado): nombre, empresa, correo y mensaje persistidos en una base de datos propia, sin servidor que mantener.",
       "Diseño responsivo con Tailwind CSS y modo claro/oscuro.",
       "Estructura de dos tracks de negocio: desarrollo a medida y SaaS en alquiler (TerraCore), cada uno con su propio flujo de fases.",
     ],
@@ -967,45 +1196,45 @@ export const projects: Project[] = [
           "Sección dedicada a TerraCore con módulos, características y CTA. Funciona como caso de uso propio que prueba que Lúmina W construye lo que predica.",
       },
       {
-        title: "Formulario sin backend propio",
+        title: "Formulario sobre Supabase, sin servidor propio",
         context:
           "Una landing de agencia necesita capturar leads desde el primer día sin infraestructura propia de backend.",
         tradeoff:
-          "Construir un backend de contacto propio toma tiempo y es sobredimensionado para una landing. Formspree resuelve el caso de uso al 100%.",
+          "Construir y hostear un backend de contacto propio toma tiempo y es sobredimensionado para una landing. Supabase aporta Postgres gestionado y API instantánea, asi que los leads quedan en una base de datos propia y consultable sin montar servidor.",
         decision:
-          "Formspree para el formulario de contacto: sin backend propio, sin mantenimiento, con confirmación automática al usuario.",
+          "Supabase para el formulario de contacto: Postgres gestionado con API instantánea, sin servidor que mantener y con los leads guardados en una base de datos propia y consultable.",
       },
     ],
     results: [
       "Landing completa de Lúmina W en producción con dos tracks de servicio diferenciados y formulario de contacto funcional.",
       "TerraCore visible como producto propio dentro de la landing, funcionando como prueba de capacidad de la agencia.",
-      "Formulario de contacto activo via Formspree sin backend propio: captura nombre, empresa, correo y mensaje con confirmación automática al usuario.",
+      "Formulario de contacto activo sobre Supabase: captura nombre, empresa, correo y mensaje en Postgres gestionado, sin servidor propio que mantener.",
     ],
     learnings: [
       "Comunicar dos servicios distintos (desarrollo a medida y SaaS) en una sola landing exige estructura clara: sin separar los tracks por comprador, la propuesta se diluye.",
-      "Formspree elimina la necesidad de un endpoint propio en la landing: para una agencia en arranque, esa decisión redujo el tiempo de lanzamiento sin comprometer la captura de leads.",
+      "Supabase da una base de datos propia y consultable sin montar servidor: para una agencia en arranque, esa decisión redujo el tiempo de lanzamiento y dejó los leads bajo control propio.",
     ],
     caseStudy: true,
     schemaType: "WebSite",
     metaDescription:
-      "Caso de estudio de Lúmina W: landing completa con Astro, Tailwind CSS y Formspree. SEO técnico, formulario de contacto y deploy continuo en Netlify.",
+      "Caso de estudio de Lúmina W: landing completa con Astro, Tailwind CSS y Supabase. SEO técnico, formulario de contacto y deploy continuo en Netlify.",
     links: [{ href: "https://luminaw.co", text: "Ver sitio", ariaLabel: "Ver sitio de Lúmina W" }],
     en: {
       imageAlt: "Lumina W landing: brand tagline and call to action",
       problem:
         "Every company needs a digital presence that clearly communicates who they are and what they do.",
       solution:
-        "I designed and implemented the complete Lumina W landing: Astro architecture, Tailwind CSS styling, Formspree-integrated contact form, full technical SEO, and continuous deployment.",
+        "I designed and implemented the complete Lumina W landing: Astro architecture, Tailwind CSS styling, Supabase-backed contact form, full technical SEO, and continuous deployment.",
       links: [{ href: "https://luminaw.co", text: "Visit site", ariaLabel: "Visit Lumina W" }],
       metaDescription:
-        "Lumina W case study: complete landing with Astro, Tailwind CSS, and Formspree. Technical SEO, contact form, and continuous deployment to Netlify.",
+        "Lumina W case study: complete landing with Astro, Tailwind CSS, and Supabase. Technical SEO, contact form, and continuous deployment to Netlify.",
       architecture: [
         "Astro with static output: section components, optimized build, and continuous deployment to Netlify.",
         "Full technical SEO: title, meta-description, og:*, twitter:*, canonical, and schema markup.",
         "Accessibility (a11y): heading hierarchy, aria-labels, and WCAG AA contrast.",
         "Performance: static output, WebP images, and immutable cache on Netlify.",
         "Google Analytics (GA4): session tracking, scroll depth, and user behavior.",
-        "No own backend contact form using Formspree: name, company, email, and message with automatic confirmation to the user.",
+        "Contact form on Supabase (managed Postgres): name, company, email, and message persisted in an owned database, with no server to maintain.",
         "Responsive design with Tailwind CSS and light/dark mode.",
         "Two-track business structure: custom development and SaaS rental (TerraCore), each with its own phase flow.",
       ],
@@ -1039,29 +1268,31 @@ export const projects: Project[] = [
             "Section dedicated to TerraCore with modules, features, and CTA. It works as a proprietary case that proves Lumina W builds what it preaches.",
         },
         {
-          title: "Contact form without own backend",
+          title: "Contact form on Supabase, no own server",
           context:
             "An agency landing needs to capture leads from day one without own backend infrastructure.",
           tradeoff:
-            "Building an own contact backend takes time and is oversized for a landing. Formspree solves the use case 100%.",
+            "Building and hosting an own contact backend takes time and is oversized for a landing. Supabase provides managed Postgres and an instant API, so leads land in an owned, queryable database with no server to run.",
           decision:
-            "Formspree for the contact form: no own backend, no maintenance, with automatic confirmation to the user.",
+            "Supabase for the contact form: managed Postgres with an instant API, no server to maintain, and leads stored in an owned, queryable database.",
         },
       ],
       results: [
         "Complete Lumina W landing in production with two differentiated service tracks and functional contact form.",
         "TerraCore visible as a proprietary product within the landing, functioning as proof of agency capability.",
-        "Active contact form via Formspree without own backend: captures name, company, email, and message with automatic user confirmation.",
+        "Active contact form on Supabase: captures name, company, email, and message in managed Postgres, with no own server to maintain.",
       ],
       learnings: [
         "Communicating two distinct services (custom development and SaaS) on a single landing requires clear structure: without separating tracks by buyer, the proposition is diluted.",
-        "Formspree eliminates the need for an own endpoint on the landing: for a starting agency, that decision reduced launch time without compromising lead capture.",
+        "Supabase gives an owned, queryable database without standing up a server: for a starting agency, that decision reduced launch time and kept the leads under own control.",
       ],
     },
   },
   {
     title: "Blog Lúmina W",
     slug: "blog-lumina-w",
+    datePublished: "2026-06-18",
+    dateModified: "2026-06-18",
     tag: "Live",
     tagColor: "green",
     image: "images/lumina-w.webp",
@@ -1141,6 +1372,8 @@ export const projects: Project[] = [
   {
     title: "Forgotten Portal",
     slug: "forgotten-portal",
+    datePublished: "2026-06-16",
+    dateModified: "2026-06-16",
     tag: "Laboratorio",
     tagColor: "gray",
     image: "images/forgotten-portal.webp",
@@ -1226,7 +1459,7 @@ export const projects: Project[] = [
         "Remote shell: Bash payload over Netcat establishes interactive reverse shell",
         "Horizontal escalation: Base64 credential in access_log decoded (alice:s3cr3tp@ssw0rd^487)",
         "Lateral pivot: shared id_rsa allows moving to bob's account",
-        "Root: sudo tar without password exploited via GTFOBins, full system access",
+        "Okroot: sudo tar without password exploited via GTFOBins, full system access",
       ],
       results: [
         "Full machine compromise in 7 phases without using zero-day exploits: all vectors are configuration errors and human mistakes reproducible in real environments.",
@@ -1260,7 +1493,7 @@ export const projects: Project[] = [
       "Shell remota: payload Bash sobre Netcat establece reverse shell interactiva",
       "Escalada horizontal: credencial Base64 en access_log decodificada (alice:s3cr3tp@ssw0rd^487)",
       "Pivote lateral: id_rsa compartida permite moverse a la cuenta de bob",
-      "Root: sudo tar sin contrasena explotado via GTFOBins, acceso total al sistema",
+      "Okroot: sudo tar sin contrasena explotado via GTFOBins, acceso total al sistema",
     ],
     results: [
       "Compromiso total de la maquina en 7 fases sin usar exploits de dia cero: todos los vectores son errores de configuracion y errores humanos reproducibles en entornos reales.",
