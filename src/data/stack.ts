@@ -3,6 +3,8 @@ export interface StackCategory {
   description: string;
   descriptionEn?: string;
   tools: string[];
+  /** English chip labels; only set for categories with translatable (non-proper-noun) tools. Falls back to `tools`. */
+  toolsEn?: string[];
   /** Longer rationale shown on the /uses page. */
   why?: string;
   whyEn?: string;
@@ -32,6 +34,7 @@ export const stack: StackCategory[] = [
     description: "Productos que se ven bien y cualquiera puede usar.",
     descriptionEn: "Products that look good and anyone can use.",
     tools: ["UX/UI", "Figma", "Accesibilidad (a11y)", "SEO técnico", "Web Performance"],
+    toolsEn: ["UX/UI", "Figma", "Accessibility (a11y)", "Technical SEO", "Web Performance"],
     why: "Diseño en Figma antes de escribir código. Accesibilidad y SEO técnico no son extras: son parte de que el producto funcione para personas y para buscadores. El rendimiento es una feature.",
     whyEn:
       "I design in Figma before writing code. Accessibility and technical SEO are not extras: they are part of making the product work for people and for search engines. Performance is a feature.",
@@ -47,6 +50,14 @@ export const stack: StackCategory[] = [
       "APIs REST",
       "Multitenancy",
       "Modelado relacional",
+    ],
+    toolsEn: [
+      "Software architecture",
+      "PWAs",
+      "Offline-first",
+      "REST APIs",
+      "Multitenancy",
+      "Relational modeling",
     ],
     why: "Decido la arquitectura pensando en el segundo año, no solo en el MVP. Multitenancy, offline-first y APIs limpias son decisiones que se pagan caras si se dejan para después.",
     whyEn:

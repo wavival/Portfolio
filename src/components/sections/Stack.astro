@@ -32,7 +32,7 @@ const base = import.meta.env.BASE_URL;
             </p>
           </div>
           <div class="flex flex-wrap gap-2">
-            {s.tools.map((t) => (
+            {(isEn ? (s.toolsEn ?? s.tools) : s.tools).map((t) => (
               <span class="chip !text-[var(--text-primary)]">{t}</span>
             ))}
           </div>
